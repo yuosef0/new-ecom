@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Checkout Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#B12A34", // CTA Red
+                        "brand": "#6F1D2A", // Burgundy
+                        "brand-dark": "#5A1621", // Dark Burgundy
+                        "cream": "#F3EDE7", // Off-White/Cream
+                        "charcoal": "#1E1E1E", // Charcoal Black
+                        "muted": "#CFC7BF", // Muted Gray
+                        "background-light": "#F3EDE7", // Using Cream as main light background
+                        "background-dark": "#1f1314",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hide for cleaner UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-cream dark:bg-background-dark font-display text-charcoal antialiased overflow-x-hidden">
+<div class="relative flex min-h-screen w-full flex-col group/design-root pb-[180px]"> <!-- Padding bottom for fixed footers -->
+<!-- Top App Bar -->
+<header class="sticky top-0 z-30 flex items-center bg-brand px-4 py-3 justify-between shadow-md">
+<button class="flex size-10 shrink-0 items-center justify-center rounded-full text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 24px;">arrow_back</span>
+</button>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight flex-1 text-center pr-10">Checkout</h2>
+</header>
+<!-- Progress Stepper (Visual Only) -->
+<div class="w-full bg-white py-4 px-6 border-b border-muted/30">
+<div class="flex items-center justify-between relative">
+<div class="absolute left-0 top-1/2 w-full h-0.5 bg-gray-200 -z-0"></div>
+<div class="relative z-10 flex flex-col items-center gap-1">
+<div class="size-6 rounded-full bg-brand flex items-center justify-center text-white text-xs font-bold">1</div>
+<span class="text-[10px] font-semibold text-brand">Shipping</span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-1">
+<div class="size-6 rounded-full bg-white border-2 border-muted flex items-center justify-center text-muted text-xs font-bold">2</div>
+<span class="text-[10px] font-medium text-gray-400">Payment</span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-1">
+<div class="size-6 rounded-full bg-white border-2 border-muted flex items-center justify-center text-muted text-xs font-bold">3</div>
+<span class="text-[10px] font-medium text-gray-400">Review</span>
+</div>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex flex-col gap-6 p-4">
+<!-- Shipping Information Section -->
+<section>
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-charcoal text-lg font-bold leading-tight">Shipping Information</h3>
+<button class="text-primary text-sm font-semibold">Edit</button>
+</div>
+<div class="bg-white rounded-xl border border-muted p-4 shadow-sm flex flex-col gap-4">
+<!-- Full Name -->
+<label class="flex flex-col w-full">
+<span class="text-charcoal text-sm font-semibold mb-1.5">Full Name</span>
+<input class="form-input w-full rounded-lg border-muted bg-white h-12 px-4 text-base placeholder:text-gray-400 focus:border-primary focus:ring-primary/20 transition-all" placeholder="Enter your full name" type="text" value="Alex Johnson"/>
+</label>
+<!-- Address -->
+<label class="flex flex-col w-full">
+<span class="text-charcoal text-sm font-semibold mb-1.5">Address</span>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">location_on</span>
+<input class="form-input w-full rounded-lg border-muted bg-white h-12 pl-10 pr-4 text-base placeholder:text-gray-400 focus:border-primary focus:ring-primary/20 transition-all" type="text" value="123 Fashion St, Apt 4B"/>
+</div>
+</label>
+<!-- City & Zip -->
+<div class="flex gap-4">
+<label class="flex flex-col flex-1">
+<span class="text-charcoal text-sm font-semibold mb-1.5">City</span>
+<input class="form-input w-full rounded-lg border-muted bg-white h-12 px-4 text-base placeholder:text-gray-400 focus:border-primary focus:ring-primary/20 transition-all" type="text" value="New York"/>
+</label>
+<label class="flex flex-col w-32">
+<span class="text-charcoal text-sm font-semibold mb-1.5">Zip Code</span>
+<input class="form-input w-full rounded-lg border-muted bg-white h-12 px-4 text-base placeholder:text-gray-400 focus:border-primary focus:ring-primary/20 transition-all" type="text" value="10012"/>
+</label>
+</div>
+</div>
+</section>
+<!-- Shipping Method -->
+<section>
+<h3 class="text-charcoal text-lg font-bold leading-tight mb-3">Shipping Method</h3>
+<div class="grid grid-cols-2 gap-3">
+<!-- Standard -->
+<label class="relative cursor-pointer group">
+<input checked="" class="peer sr-only" name="shipping" type="radio"/>
+<div class="bg-white rounded-xl border border-muted p-4 peer-checked:border-primary peer-checked:bg-primary/5 transition-all h-full flex flex-col justify-between">
+<div class="flex justify-between items-start mb-2">
+<span class="material-symbols-outlined text-gray-500 peer-checked:text-primary">local_shipping</span>
+<div class="size-5 rounded-full border border-gray-300 peer-checked:border-primary peer-checked:bg-primary flex items-center justify-center">
+<div class="size-2 rounded-full bg-white hidden peer-checked:block"></div>
+</div>
+</div>
+<div>
+<p class="font-bold text-charcoal">Standard</p>
+<p class="text-xs text-gray-500">5-7 Days</p>
+<p class="font-bold text-charcoal mt-1">$5.00</p>
+</div>
+</div>
+</label>
+<!-- Express -->
+<label class="relative cursor-pointer group">
+<input class="peer sr-only" name="shipping" type="radio"/>
+<div class="bg-white rounded-xl border border-muted p-4 peer-checked:border-primary peer-checked:bg-primary/5 transition-all h-full flex flex-col justify-between">
+<div class="flex justify-between items-start mb-2">
+<span class="material-symbols-outlined text-gray-500 peer-checked:text-primary">rocket_launch</span>
+<div class="size-5 rounded-full border border-gray-300 peer-checked:border-primary peer-checked:bg-primary flex items-center justify-center">
+<div class="size-2 rounded-full bg-white hidden peer-checked:block"></div>
+</div>
+</div>
+<div>
+<p class="font-bold text-charcoal">Express</p>
+<p class="text-xs text-gray-500">1-2 Days</p>
+<p class="font-bold text-charcoal mt-1">$15.00</p>
+</div>
+</div>
+</label>
+</div>
+</section>
+<!-- Payment Details -->
+<section>
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-charcoal text-lg font-bold leading-tight">Payment Details</h3>
+<div class="flex items-center gap-1 text-green-700 bg-green-50 px-2 py-1 rounded text-xs font-medium">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+                        Secure
+                    </div>
+</div>
+<div class="bg-white rounded-xl border border-muted p-4 shadow-sm flex flex-col gap-4">
+<!-- Tab Switcher inside card -->
+<div class="flex bg-gray-100 p-1 rounded-lg mb-2">
+<button class="flex-1 py-1.5 px-3 rounded-md bg-white shadow-sm text-sm font-semibold text-charcoal">Card</button>
+<button class="flex-1 py-1.5 px-3 rounded-md text-sm font-medium text-gray-500">Apple Pay</button>
+</div>
+<!-- Card Number -->
+<label class="flex flex-col w-full">
+<span class="text-charcoal text-sm font-semibold mb-1.5">Card Number</span>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">credit_card</span>
+<input class="form-input w-full rounded-lg border-muted bg-white h-12 pl-10 pr-4 text-base placeholder:text-gray-400 focus:border-primary focus:ring-primary/20 transition-all font-mono" placeholder="0000 0000 0000 0000" type="text"/>
+<div class="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
+<div class="w-8 h-5 bg-gray-200 rounded"></div> <!-- Placeholder for Visa Icon -->
+</div>
+</div>
+</label>
+<div class="flex gap-4">
+<label class="flex flex-col flex-1">
+<span class="text-charcoal text-sm font-semibold mb-1.5">Expiry Date</span>
+<input class="form-input w-full rounded-lg border-muted bg-white h-12 px-4 text-base placeholder:text-gray-400 focus:border-primary focus:ring-primary/20 transition-all font-mono" placeholder="MM/YY" type="text"/>
+</label>
+<label class="flex flex-col flex-1">
+<span class="text-charcoal text-sm font-semibold mb-1.5">CVV</span>
+<div class="relative">
+<input class="form-input w-full rounded-lg border-muted bg-white h-12 px-4 text-base placeholder:text-gray-400 focus:border-primary focus:ring-primary/20 transition-all font-mono" placeholder="123" type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">help</span>
+</div>
+</label>
+</div>
+</div>
+</section>
+<!-- Order Summary -->
+<section>
+<h3 class="text-charcoal text-lg font-bold leading-tight mb-3">Order Summary</h3>
+<div class="bg-white rounded-xl border border-muted overflow-hidden shadow-sm">
+<!-- Item 1 -->
+<div class="flex gap-3 p-3 border-b border-gray-100">
+<div class="h-20 w-16 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+<img alt="T-Shirt" class="h-full w-full object-cover" data-alt="Oversized graphic tee with street art design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFQa4zK_h3UmGfFU60QKfvK2aOSxqu8-ljHrv3-0aprEB2sLuxqPrHZsa0B5vdephfhAQTAH7Y8sndHa4JjbEwBDsIF1qKmxS5kKa6qQ89rsgtErdZR5crl_vrh0zaWsDgkvyzH9WlHmeJ5S8E5zHUtwzyognFqNtslBvKUCQZEIU47lORQdcGVfKzYGs8Yd7tUUZN_ffntZGFKhGzHcVUcYq4689wzVB9Ai9lmF8UAV5CRKeDTln9Jpbjms_1u64f0bC3jKBCL21S"/>
+</div>
+<div class="flex flex-1 flex-col justify-between py-1">
+<div>
+<h4 class="text-sm font-bold text-charcoal">Urban Oversized Tee</h4>
+<p class="text-xs text-gray-500">Size: L • Color: Black</p>
+</div>
+<div class="flex justify-between items-end">
+<p class="text-sm font-bold text-charcoal">$45.00</p>
+<p class="text-xs text-gray-400">Qty: 1</p>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex gap-3 p-3 border-b border-gray-100">
+<div class="h-20 w-16 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+<img alt="Jacket" class="h-full w-full object-cover" data-alt="Distressed denim jacket street style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8qMQ_Cb7e1FE22iRfF1VOTOi0WKKaBzZeDoKUq90_WTesHpz7dBTzuWx2TAv7XEAQNOd1TuQ2DLIDqcMNPkJWZj_Q1VJN-7j4uZVE3WkddAWARObqVcwl-U4HoZH51FMdkRhixjopj_M7sc2MMY7YSshHyAQdMLs-DpX8VoP9hSxZIPhUiN8yeKYZbXnTLB-ZsMAZNnOazus78YW_tQQVJjlI85ukz6jzYmIu_BsSn7qDSZGUify0CU4mRNMM3XGAarKmbB8cu99M"/>
+</div>
+<div class="flex flex-1 flex-col justify-between py-1">
+<div>
+<h4 class="text-sm font-bold text-charcoal">Distressed Denim Jacket</h4>
+<p class="text-xs text-gray-500">Size: M • Color: Blue</p>
+</div>
+<div class="flex justify-between items-end">
+<p class="text-sm font-bold text-charcoal">$89.00</p>
+<p class="text-xs text-gray-400">Qty: 1</p>
+</div>
+</div>
+</div>
+<!-- Cost Breakdown -->
+<div class="p-4 bg-gray-50/50">
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm text-gray-500">Subtotal</span>
+<span class="text-sm font-medium text-charcoal">$134.00</span>
+</div>
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm text-gray-500">Shipping (Standard)</span>
+<span class="text-sm font-medium text-charcoal">$5.00</span>
+</div>
+<div class="flex justify-between items-center mb-3">
+<span class="text-sm text-gray-500">Tax</span>
+<span class="text-sm font-medium text-charcoal">$10.72</span>
+</div>
+<div class="h-px bg-gray-200 w-full mb-3"></div>
+<div class="flex justify-between items-center">
+<span class="text-base font-bold text-charcoal">Total</span>
+<span class="text-xl font-extrabold text-primary">$149.72</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Sticky Footer Action & Navigation -->
+<div class="fixed bottom-0 left-0 right-0 z-40">
+<!-- Place Order Floating Bar -->
+<div class="px-4 pb-2 w-full max-w-md mx-auto relative">
+<div class="bg-white rounded-t-xl shadow-[0_-4px_20px_rgba(0,0,0,0.1)] border-t border-muted p-4 flex items-center justify-between gap-4">
+<div class="flex flex-col">
+<span class="text-xs text-gray-500 font-medium">Total Amount</span>
+<span class="text-lg font-extrabold text-charcoal">$149.72</span>
+</div>
+<button class="flex-1 bg-primary hover:bg-red-700 text-white font-bold h-12 rounded-lg shadow-lg shadow-red-900/20 flex items-center justify-center gap-2 transition-transform active:scale-95">
+<span>Place Order</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Bottom Navigation -->
+<nav class="bg-white border-t border-muted pb-safe pt-2 px-2 flex justify-between items-center w-full max-w-md mx-auto">
+<a class="flex flex-col items-center justify-center w-full py-1 gap-1 group" href="#">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">storefront</span>
+<span class="text-[10px] font-medium text-gray-400 group-hover:text-primary">Shop</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full py-1 gap-1 group" href="#">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">favorite</span>
+<span class="text-[10px] font-medium text-gray-400 group-hover:text-primary">Wishlist</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full py-1 gap-1 group relative" href="#">
+<div class="absolute top-0 right-1/4 size-2 bg-primary rounded-full"></div>
+<span class="material-symbols-outlined text-primary fill-current">shopping_bag</span>
+<span class="text-[10px] font-bold text-primary">Cart</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full py-1 gap-1 group" href="#">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">person</span>
+<span class="text-[10px] font-medium text-gray-400 group-hover:text-primary">Account</span>
+</a>
+</nav>
+</div>
+</div>
+</body></html>

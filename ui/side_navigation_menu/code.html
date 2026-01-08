@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Side Navigation Menu</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#B12A34", // CTA Red for buttons
+            "background-light": "#F3EDE7", // Off-White/Cream
+            "background-dark": "#1E1E1E", // Charcoal Black
+            "burgundy-bg": "#6F1D2A", // Burgundy for drawer background
+            "dark-burgundy": "#5A1621",
+            "brand-cream": "#F3EDE7",
+            "brand-white": "#FFFFFF",
+            "brand-charcoal": "#1E1E1E",
+            "brand-muted-gray": "#CFC7BF",
+          },
+          fontFamily: {
+            display: ["Roboto", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "8px",
+          },
+        },
+      },
+    };
+  </script>
+<style>
+    .material-icons {
+      vertical-align: middle;
+      line-height: 1;
+      font-size: 20px;}
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative min-h-screen">
+<div class="absolute inset-0">
+<div class="bg-gray-100 dark:bg-gray-800 p-4">
+<h1 class="text-xl font-bold text-gray-800 dark:text-gray-200">Main Content Area</h1>
+<p class="text-gray-600 dark:text-gray-400">This is the page behind the drawer.</p>
+</div>
+</div>
+<div class="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+<div class="fixed inset-y-0 left-0 w-4/5 max-w-sm bg-burgundy-bg text-brand-cream flex flex-col z-50 p-4 space-y-3">
+<div class="flex justify-start pb-2">
+<button class="text-brand-cream">
+<span class="material-icons text-2xl">close</span>
+</button>
+</div>
+<nav class="flex-grow overflow-y-auto">
+<ul class="space-y-2 text-base">
+<li><a class="block py-2" href="#">Home</a></li>
+<li class="border-t border-white/20"></li>
+<li><a class="block py-2" href="#">All Products</a></li>
+<li class="border-t border-white/20"></li>
+<li>
+<div class="flex justify-between items-center py-2">
+<span>Winter Collection</span>
+<span class="material-icons !text-lg">remove</span>
+</div>
+<ul class="pl-4 space-y-2 pt-2 text-sm font-light">
+<li><a href="#">Track Suits</a></li>
+<li><a href="#">Sets</a></li>
+<li><a href="#">Sweatpants</a></li>
+<li><a href="#">Blanket</a></li>
+<li><a href="#">Hoodies</a></li>
+<li><a href="#">Quarter Zippers</a></li>
+</ul>
+</li>
+<li class="border-t border-white/20"></li>
+<li><a class="block py-2" href="#">About us</a></li>
+<li class="border-t border-white/20"></li>
+<li><a class="block py-2" href="#">Contact us</a></li>
+</ul>
+<div class="grid grid-cols-2 gap-2 pt-6">
+<button class="bg-primary text-white py-2 px-3 rounded flex items-center justify-center text-sm">
+<span class="material-icons !text-lg mr-1">favorite_border</span>
+<span>Wishlist</span>
+</button>
+<button class="bg-primary text-white py-2 px-3 rounded flex items-center justify-center text-sm">
+<span class="material-icons !text-lg mr-1">search</span>
+<span>Search</span>
+</button>
+</div>
+</nav>
+<div class="flex-shrink-0 space-y-3">
+<button class="w-full bg-brand-cream text-burgundy-bg py-2 px-4 rounded flex items-center justify-center text-sm font-medium">
+<span class="material-icons !text-lg mr-1">person_outline</span>
+<span>Login</span>
+</button>
+<div class="border-t border-white/20"></div>
+<div class="flex items-center space-x-2 text-brand-cream text-sm">
+<img alt="Flag of Egypt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGaHxposYp7CUF-BmTmwF-ABqemzeeiEDmhrRb9Gp41w8zn14E_h4r_J9awv5rof6xDmPwdyDVpHy3OvZ537fsNlcVAwkFPMFTt_g9YBiAMsXSSupd3uk9yDJPLjw5KABayPInr3SUL6pU0UEmNXZNUwYR-W_EaTeCUTamciLx7kDAAFXITmTjlBkI_c0uTx-F1q8Xs_u-rjHL55THfoHsV4WKTW_fWmOIfqui2jeRFQTfJRmKyuxgnnDnsDrYqElA6YmtG1VOP6Lh" srcset="https://flagcdn.com/w40/eg.png 2x" width="20"/>
+<span>EGP</span>
+<span class="material-icons !text-base">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>

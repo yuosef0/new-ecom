@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Product Details - DXLR</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#B12A34", // CTA Buttons
+                        "brand-bg": "#6F1D2A", // Burgundy
+                        "brand-dark": "#5A1621", // Dark Burgundy
+                        "brand-cream": "#F3EDE7", // Cards / Strips
+                        "brand-white": "#FFFFFF",
+                        "brand-charcoal": "#1E1E1E",
+                        "brand-gray": "#CFC7BF",
+                        "price-green": "#84CC16", // Lime green for price, keeping close to original intent for price/stock
+                        "stock-green": "#84CC16",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                    },
+                    fontSize: {
+                        'xxs': '0.625rem',
+                    }
+                },
+            },
+        };
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined|Material+Icons" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }.hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-brand-bg text-brand-white antialiased">
+<div class="bg-brand-dark text-center py-2 text-xs font-bold uppercase tracking-wider text-brand-white border-b border-brand-bg">
+        Free Shipping on All Orders
+    </div>
+<header class="bg-brand-bg px-4 py-3 flex items-center justify-between sticky top-0 z-50 shadow-md">
+<button class="text-brand-white">
+<span class="material-icons-outlined">menu</span>
+</button>
+<div class="text-2xl font-black tracking-tighter text-lime-400">DXLR</div>
+<div class="flex items-center space-x-4">
+<button class="text-brand-white">
+<span class="material-icons-outlined">search</span>
+</button>
+<button class="text-brand-white">
+<span class="material-icons-outlined">person_outline</span>
+</button>
+<button class="text-brand-white relative">
+<span class="material-icons-outlined">favorite_border</span>
+<span class="absolute -top-1 -right-1 bg-lime-500 text-brand-dark text-xxs font-bold rounded-full h-4 w-4 flex items-center justify-center">1</span>
+</button>
+<button class="text-brand-white relative">
+<span class="material-icons-outlined">shopping_bag</span>
+<span class="absolute -top-1 -right-1 bg-lime-500 text-brand-dark text-xxs font-bold rounded-full h-4 w-4 flex items-center justify-center">1</span>
+</button>
+</div>
+</header>
+<main class="pb-24">
+<div class="p-4">
+<div class="flex flex-col lg:flex-row gap-6">
+<div class="w-full lg:w-1/2">
+<div class="relative w-full aspect-[4/5] bg-gray-200 rounded-lg overflow-hidden mb-3">
+<img alt="Track Suit Black Main" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSrJ5f0IgTh3gpHTMHMERrVUmGVIb_gsmKG-GHWFFeIhEl4oS3mG_iHH_jJ3qcTefqKqYPao__NVZd3ZuMiomnRX1_f8_lNzRYfgPlWMd0jHQIjodz5VNlkigOT2J8DhaRWJH7FbtGzwmcn0tvw_UHScvZ_N5Phixlc5E5c9xeeF16XhK3Gwt68OWn0y2Kuvp77-JLDq2rCn3iTAQxkxWHF_OYVyydxxxghGQJLnIj0psp8lKES94-pBJOJbQb_vR6yGsufpTEnflu"/>
+<button class="absolute top-4 right-4 bg-brand-white/80 p-2 rounded-full text-brand-dark">
+<span class="material-icons-outlined">fullscreen</span>
+</button>
+</div>
+<div class="flex gap-2 overflow-x-auto hide-scrollbar pb-2">
+<div class="w-1/5 min-w-[60px] aspect-[3/4] rounded border-2 border-brand-white overflow-hidden">
+<img alt="Thumb 1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTqouS8wjg-LFmzvK6HqeS_IyLhMmDC8k8x83KT75justkL_txyYVlKRlMB7McCjj9SZe19Ra-Dy1gDApomAcRshINJxsqB-_POSx6Q_mgE81fjrmOPG7s6NAKYCvhqgdGyrZX6RXYlcARb-CXOam6AvfzyZvziK7yO92_2GtKT1dU2vrR68htKdidlbkqRF-y_g7waBBPvnNYKxk9dh1IyI7m0Zn3JKEwvOINLjeVlMpDmsjoJUkntxnQsOxgLoAryNXmi6P6_Woy"/>
+</div>
+<div class="w-1/5 min-w-[60px] aspect-[3/4] rounded border border-transparent overflow-hidden opacity-70">
+<img alt="Thumb 2" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBN_hZCM34VVMKe46RqSUnOvqU-hQvq5Th7JSKIkJrfJ4g9MCRrn0fc85uKeIFk-EDjVSf4zZshsendapH5d5GADbR89XwWm-rdBuOUISajggzvV5uxBFeyzI2oF5kXBOk_v7SQg3NKJGJ8_pH0Do4NQwsiR7NLMyfK7HRXwb8wn29eS99GJHbfiml5mvWE5NzkmsSE36GzjnWSeZdCTA1B9qd9CQlXiwb6EYGQcYlAfVIcnkNp630CoLGPN4N0V9x4Y7WTGtxJ60uP"/>
+</div>
+<div class="w-1/5 min-w-[60px] aspect-[3/4] rounded border border-transparent overflow-hidden opacity-70">
+<img alt="Thumb 3" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIR_dd2IgtJVFZPus6nYLL6wFxawuuXC4skopeRc-D0vwSVxSXqpIyiQ61F5aX77Lm5qMFp0I1cssSxBuLVSpUz8Tl1qxeIdwAxzS4by4LlnGSGIOkrEbTiYqd5l6L3Im-J0KrYITlcqM3po_nUEuHXYKdx8m8QigpNS9Z9D31g4WgnwFDlkATQe_bcq3Vylr_ZpE2PseFULIaq0-rouJdlE3SMAUA3F600vIUTWvzKXHmDASf88N-G_jcGEqvTlqTi4LcL5wvNPt1"/>
+</div>
+<div class="w-1/5 min-w-[60px] aspect-[3/4] rounded border border-transparent overflow-hidden opacity-70">
+<img alt="Thumb 4" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkXwuV0jlCOUeRq1-FZt4DfY257rZOCGJhhZNrmanUDezoRpouO6sngQ19S4Bh-zzPxN_EtK03zn2CDSrSiVS5EfqmQIrEkZAsWJZrjuX2uV1woWaz9GPXA90t1JzK6Vn_RjTW25SHz199j_h7bkUKknqu1jPmeDr4TthQ8a-YiySmT1n_V-jqIK1QllcpYHU47-0KDYFLmzOmSoPz-HqkKiqSCS-nWwuLczeUgqc9-KxA6sneq6TicbaBwXEG63Iq978q21_vekGp"/>
+</div>
+<div class="w-1/5 min-w-[60px] aspect-[3/4] rounded border border-transparent overflow-hidden opacity-70">
+<img alt="Thumb 5" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBydtOHaoNXqKe_X5IeC3uBWsX-6P4ADn9sUh9rNEsX7c2514lVuY7Glcn0Che3ijB4aqPgh56QkOWngAvdKIV0p9ibog8Dx_SxUGv6e8ENfTSiqccQIZQe7XmwQ1N6-aEWdCAMxiPvXRUr0bTJvYFGDsQHKDYyeWCzMMABDDnGraoXKFOCI4UMGQW_yb-Ziz94CwZwnOBdtjxlpl3QK7nYQciUZl35mj16c1CgoyipXokL439twZFF-yhMskaY-Rn9S0WYhWOWd5HL"/>
+</div>
+</div>
+</div>
+<div class="w-full lg:w-1/2 text-brand-cream">
+<div class="flex justify-between items-start mb-2">
+<h1 class="text-xl font-bold text-lime-400">Track Suit (Black)</h1>
+<a class="text-xs underline text-brand-white opacity-80" href="#">Find your size</a>
+</div>
+<div class="flex items-center gap-3 mb-4">
+<span class="text-xl font-bold text-lime-500">LE 1,549.00</span>
+<span class="text-sm line-through text-brand-gray opacity-60">LE 2,000.00</span>
+<span class="bg-brand-cream text-brand-dark text-xs font-bold px-2 py-0.5 rounded-sm">23% OFF</span>
+</div>
+<div class="mb-4">
+<div class="flex items-center gap-2 mb-1">
+<span class="w-2 h-2 rounded-full bg-lime-500 animate-pulse"></span>
+<span class="text-sm font-medium text-brand-white">Low stock</span>
+</div>
+<div class="w-full h-1 bg-brand-dark rounded-full overflow-hidden">
+<div class="h-full bg-lime-500 w-1/4 rounded-full"></div>
+</div>
+</div>
+<div class="mb-2 text-sm underline text-brand-white opacity-80"><a href="#">Find your size</a></div>
+<div class="mb-4">
+<p class="text-sm font-semibold mb-2 text-brand-gray">Size: S (40-55)kg</p>
+<div class="grid grid-cols-2 gap-2">
+<button class="bg-primary text-white border border-primary py-2 px-3 text-sm font-bold text-center rounded">S (40-55)kg</button>
+<button class="bg-transparent text-brand-gray border border-brand-gray/30 py-2 px-3 text-sm font-medium text-center rounded hover:border-brand-gray">M (55-70)kg</button>
+<button class="bg-transparent text-brand-gray border border-brand-gray/30 py-2 px-3 text-sm font-medium text-center rounded hover:border-brand-gray">L (70-80)kg</button>
+<button class="bg-transparent text-brand-gray border border-brand-gray/30 py-2 px-3 text-sm font-medium text-center rounded opacity-50 cursor-not-allowed line-through">XL (80-90)kg</button>
+</div>
+<div class="mt-2 text-right">
+<a class="text-xs underline text-brand-white opacity-80" href="#">Find your size</a>
+</div>
+</div>
+<div class="mb-6">
+<p class="text-sm font-semibold mb-2 text-brand-gray">Quantity (1 in cart)</p>
+<div class="flex items-center border border-brand-gray/30 rounded bg-brand-dark/50 w-32">
+<button class="px-3 py-2 text-brand-white hover:bg-brand-white/10">-</button>
+<input class="w-full bg-transparent text-center text-brand-white border-none focus:ring-0 p-0 text-sm font-bold" type="text" value="1"/>
+<button class="px-3 py-2 text-brand-white hover:bg-brand-white/10">+</button>
+</div>
+</div>
+<div class="flex flex-col gap-3 mb-4">
+<div class="flex gap-2">
+<button class="flex-1 bg-primary hover:bg-red-700 text-white font-bold py-3 px-4 rounded transition uppercase text-sm">
+                                Add to cart - LE 1,549.00
+                            </button>
+<button class="bg-transparent border border-brand-gray/30 rounded p-3 text-brand-white hover:bg-brand-white/10">
+<span class="material-icons-outlined">favorite_border</span>
+</button>
+</div>
+<button class="w-full bg-lime-500 hover:bg-lime-600 text-brand-dark font-bold py-3 px-4 rounded transition uppercase text-sm">
+                            Buy it now
+                        </button>
+</div>
+<div class="flex items-center gap-2 mb-8">
+<span class="material-icons-outlined text-brand-gray text-sm">help_outline</span>
+<a class="text-sm text-brand-white underline" href="#">Ask a question</a>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 px-4">
+<div class="flex border-b border-brand-gray/20 gap-6 text-sm font-bold text-brand-gray">
+<button class="pb-2 border-b-2 border-brand-white text-brand-white">Description</button>
+<button class="pb-2 hover:text-brand-white transition">Details</button>
+<button class="pb-2 hover:text-brand-white transition">Reviews</button>
+</div>
+<div class="py-6 text-brand-cream/90 text-sm leading-relaxed border border-brand-gray/20 rounded mt-4 p-4 bg-brand-dark/20">
+<p class="font-bold mb-2 text-lime-400">Details :</p>
+<ul class="list-disc pl-5 space-y-2 marker:text-brand-gray">
+<li>Boxy fit Track Suit</li>
+<li>Customized Zipper With "X" Logo</li>
+<li>100% Melton Cotton</li>
+<li>350 GSM</li>
+<li>Machine wash cold / hang to dry (recommended)</li>
+<li>Male model is 183cm wearing size L</li>
+<li>Female model is 167cm wearing size M</li>
+</ul>
+</div>
+</div>
+<div class="mt-8 px-4">
+<h3 class="text-center text-xl font-bold text-brand-cream mb-6">Recommended products</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-brand-cream rounded overflow-hidden shadow-sm group">
+<div class="relative aspect-[3/4]">
+<span class="absolute top-2 right-2 bg-brand-white/90 text-brand-dark text-xxs font-bold px-1.5 py-0.5 rounded">-23%</span>
+<img alt="Track Suit Olive" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhNRbQlNMPR54pi_xx5mQGmhq9FncxXXiCPllLut3v0DEESRpxJjlnChhJg2yO28HizNzrUYBTCh-0bP2QsWAdT0QBhBkczRtuQ3l5nZNHd0yLfCHnMc3Gb_KIUZYbto9t0BUyYp7NyMYPaF79OViAJ_DCNR2UwDN4_S1ovpVQNNLrdbrrJtW3Ltofz9R59WcD9CF8ZJdDZ5XMy2GRjn-4Lh7H9XG1dIAXiQzftEcNx5qzz7lXOWdRFeOx0F35FcPkyN824X8QuGZM"/>
+<button class="absolute bottom-2 right-2 bg-primary text-white rounded-full p-1.5 shadow-md transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition duration-300">
+<span class="material-icons text-sm">favorite_border</span>
+</button>
+</div>
+<div class="p-3 bg-brand-dark text-brand-white">
+<h4 class="text-xs font-bold mb-1 truncate text-lime-400">Track Suit (Olive)</h4>
+<div class="flex items-center gap-2 mb-3">
+<span class="text-xs line-through text-brand-gray/60">LE 2,000.00</span>
+<span class="text-xs font-bold text-lime-500">LE 1,549.00</span>
+</div>
+<button class="w-full bg-primary hover:bg-red-700 text-white text-xs font-bold py-2 px-2 rounded uppercase">
+                            Quick Add
+                        </button>
+</div>
+</div>
+<div class="bg-brand-cream rounded overflow-hidden shadow-sm group">
+<div class="relative aspect-[3/4]">
+<span class="absolute top-2 right-2 bg-brand-white/90 text-brand-dark text-xxs font-bold px-1.5 py-0.5 rounded">-23%</span>
+<img alt="Track Suit Navy" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3WAc6KKhgQVUP-AyLLSfhuNCaR3aUxP7dSTYmPxPDEuXgRfWlggQOWASOrZKJJul4cnXBcJcTyXhcanJgnTNk7p-NZlP5F0WMwrs8OYAN52hLWf3zl2ll2xOwfJu9_OK7-YXlAOGK4jXkBkcKBKluAfCx5KhhF4l4Adfxn0ZBBibVfkoUfzjUZk_RKLacK4c2P2nQXX3dlR8ATB-XugGG2LDJwcCyp5Lj_vxk8yTew7hPtV1mswdmEK7dFIEjQlhGtxnE-8rZL2YS"/>
+<button class="absolute bottom-2 right-2 bg-primary text-white rounded-full p-1.5 shadow-md transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition duration-300">
+<span class="material-icons text-sm">favorite_border</span>
+</button>
+</div>
+<div class="p-3 bg-brand-dark text-brand-white">
+<h4 class="text-xs font-bold mb-1 truncate text-lime-400">Track Suit (Navy)</h4>
+<div class="flex items-center gap-2 mb-3">
+<span class="text-xs line-through text-brand-gray/60">LE 2,000.00</span>
+<span class="text-xs font-bold text-lime-500">LE 1,549.00</span>
+</div>
+<button class="w-full bg-primary hover:bg-red-700 text-white text-xs font-bold py-2 px-2 rounded uppercase">
+                            Quick Add
+                        </button>
+</div>
+</div>
+</div>
+<div class="flex justify-center mt-4">
+<div class="flex gap-1">
+<span class="w-2 h-2 rounded-full border border-brand-white bg-brand-dark"></span>
+<span class="w-2 h-2 rounded-full bg-brand-gray/30"></span>
+</div>
+</div>
+</div>
+<div class="mt-8 px-4 pb-8 border-b border-brand-gray/20">
+<h3 class="text-center text-xl font-bold text-brand-cream mb-6">Recently Viewed</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-brand-cream rounded overflow-hidden shadow-sm group">
+<div class="relative aspect-[3/4]">
+<span class="absolute top-2 right-2 bg-brand-white/90 text-brand-dark text-xxs font-bold px-1.5 py-0.5 rounded">-21%</span>
+<img alt="Batman Blanket" class="w-full h-full object-cover object-top" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfy_7zUFefs9_eGdY8MjBDXxCBy7i9OFsYJLYoqxLX8rKZlDE1heZB22ocV2k-peHOHrC-jrffx5VBgvc_ZK8qZM4IVaz0HonpxSR0pRG_DDnxZqASjEpHlDdNrHHgjPo5-i8zMx_Y1Pg5fMYOwbkMHvYPqVpPRgBgJQcFKrCnz0EzRYBDhzDpLSp7Hd1sIOBw_4g3qvvVhgW-lQql7PnNWqRvdp-3OY95aIGjaZDauLOcrJqoc583iSoXCJv2BSdzTj9-n4xCblQk"/>
+<button class="absolute bottom-2 right-2 bg-primary text-white rounded-full p-1.5 shadow-md transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition duration-300">
+<span class="material-icons text-sm">delete_outline</span>
+</button>
+</div>
+<div class="p-3 bg-brand-dark text-brand-white">
+<h4 class="text-xs font-bold mb-1 truncate text-lime-400">BATMAN Blanket</h4>
+<div class="flex items-center gap-2 mb-3">
+<span class="text-xs line-through text-brand-gray/60">LE 1,900.00</span>
+<span class="text-xs font-bold text-lime-500">LE 1,499.00</span>
+</div>
+<button class="w-full bg-primary hover:bg-red-700 text-white text-xs font-bold py-2 px-2 rounded uppercase">
+                            Quick Add
+                        </button>
+</div>
+</div>
+<div class="bg-brand-cream rounded overflow-hidden shadow-sm group">
+<div class="relative aspect-[3/4]">
+<span class="absolute top-2 right-2 bg-brand-white/90 text-brand-dark text-xxs font-bold px-1.5 py-0.5 rounded">-23%</span>
+<img alt="Track Suit Olive" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaGhReFj5NkAjwfnNoF_AGfNk1jbJjD64AGAt3PFbAdqoX4kCH3O3geg913X3kS-UN0Nq2Oh8azB57fUiIlmRgDelwkZLdatq5xIQdIQJX97xhlIX3CVTIIDE-YLTLvWwNUMO5xf92HHn4TarOWqL2BPLdcKwgce3Vs5BPhyrh-x9XUJAXEpkwuDkRIdd8Dibcp4IjUKA18kvGfQfu9K_aR-MuwVF5KmoVMZkzlUwPBt46G4vmxqkIPMgyCvrGb9-hRQl-CJD6OcC6"/>
+<button class="absolute bottom-2 right-2 bg-primary text-white rounded-full p-1.5 shadow-md transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition duration-300">
+<span class="material-icons text-sm">favorite_border</span>
+</button>
+</div>
+<div class="p-3 bg-brand-dark text-brand-white">
+<h4 class="text-xs font-bold mb-1 truncate text-lime-400">Track Suit (Olive)</h4>
+<div class="flex items-center gap-2 mb-3">
+<span class="text-xs line-through text-brand-gray/60">LE 2,000.00</span>
+<span class="text-xs font-bold text-lime-500">LE 1,549.00</span>
+</div>
+<button class="w-full bg-primary hover:bg-red-700 text-white text-xs font-bold py-2 px-2 rounded uppercase">
+                            Quick Add
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-brand-dark px-4 py-8 text-brand-cream">
+<div class="mb-8">
+<h4 class="text-lg font-bold text-brand-white mb-4 uppercase">About DXLR</h4>
+<p class="text-xs leading-5 opacity-80 mb-4">
+                    We are a clothing brand designed for tech enthusiasts and gamers who value simplicity. Our products blend comfort with minimalist design, offering a style that celebrates individuality in the digital age.
+                </p>
+<a class="text-xs font-bold underline flex items-center gap-1" href="#">
+                    Discover Products <span class="material-icons-outlined text-xs">north_east</span>
+</a>
+<div class="flex gap-4 mt-6">
+<a class="w-8 h-8 rounded-full border border-brand-gray flex items-center justify-center hover:bg-brand-white hover:text-brand-dark transition" href="#"><i class="fa fa-facebook"></i><span class="sr-only">Facebook</span><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg></a>
+<a class="w-8 h-8 rounded-full border border-brand-gray flex items-center justify-center hover:bg-brand-white hover:text-brand-dark transition" href="#"><span class="sr-only">Instagram</span><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.069-4.85.069-3.204 0-3.585-.011-4.849-.069-3.225-.149-4.771-1.664-4.919-4.919-.058-1.265-.07-1.644-.069-4.849 0-3.204.013-3.583.069-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg></a>
+<a class="w-8 h-8 rounded-full border border-brand-gray flex items-center justify-center hover:bg-brand-white hover:text-brand-dark transition" href="#"><span class="sr-only">Youtube</span><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path></svg></a>
+<a class="w-8 h-8 rounded-full border border-brand-gray flex items-center justify-center hover:bg-brand-white hover:text-brand-dark transition" href="#"><span class="sr-only">TikTok</span><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.65-1.62-1.12-1.62-1.12-3.24-1.11-4.85-1.12v.12c-.06 2.55-.21 5.09.46 7.57.57 2.11 1.95 3.98 3.89 4.97 1.95 1.01 4.3.84 6.22-.16 1.92-1.01 3.3-3 3.63-5.18.33-2.18-.32-4.43-1.87-6.02-.27-.27-.55-.52-.86-.76v-4.2c2.11.49 4.07 1.83 5.37 3.59 1.3 1.76 1.83 4.01 1.45 6.23-.39 2.22-1.63 4.19-3.41 5.48-1.78 1.29-4.04 1.7-6.22 1.14-2.18-.56-4.07-2.07-5.12-4.06-1.05-1.99-1.2-4.38-.41-6.52.79-2.14 2.56-3.79 4.75-4.47v-4.52c-2.89.83-5.26 2.92-6.38 5.72-1.12 2.8-1 5.96.34 8.65 1.34 2.69 3.88 4.63 6.84 5.23 2.96.6 6.09-.16 8.36-2.09 2.27-1.93 3.59-4.79 3.55-7.77-.04-2.98-1.45-5.82-3.79-7.66-2.34-1.84-5.41-2.48-8.29-1.73V0h.02z"></path></svg></a>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+<div>
+<h4 class="font-bold text-brand-white mb-4">Quick Links</h4>
+<ul class="space-y-2 text-xs opacity-80">
+<li><a class="hover:text-brand-white transition" href="#">About us</a></li>
+<li><a class="hover:text-brand-white transition" href="#">Contact us</a></li>
+<li><a class="hover:text-brand-white transition" href="#">FAQs</a></li>
+<li><a class="hover:text-brand-white transition" href="#">Shipping &amp; Delivery</a></li>
+<li><a class="hover:text-brand-white transition" href="#">Return &amp; Exchange</a></li>
+<li><a class="hover:text-brand-white transition" href="#">Privacy Policy</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-brand-white mb-4">Join For Exclusive Email Offers!</h4>
+<p class="text-xs opacity-80 mb-4">Enter your email to receive the latest offers and new products.</p>
+<div class="flex bg-brand-white p-1 rounded">
+<input class="flex-1 bg-transparent border-none text-xs text-brand-dark px-2 focus:ring-0" placeholder="yousefmontaser656@gm..." type="email"/>
+<button class="bg-primary text-white text-xs font-bold px-4 py-2 rounded flex items-center gap-1 hover:bg-red-700 transition">
+                            Subscribe <span class="material-icons-outlined text-xs">north_east</span>
+</button>
+</div>
+</div>
+</div>
+<div class="border-t border-brand-gray/20 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-xs opacity-60">© 2026 RIGHTS RESERVED TO DXLR</p>
+<div class="flex gap-2 text-brand-white">
+<span class="bg-white text-black px-1 rounded text-xs font-bold border flex items-center">VISA</span>
+<span class="bg-white text-black px-1 rounded text-xs font-bold border flex items-center"><span class="text-red-500">Master</span>Card</span>
+<span class="bg-white text-black px-1 rounded text-xs font-bold border flex items-center">AMEX</span>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed bottom-[60px] left-0 right-0 bg-brand-dark border-t border-brand-gray/20 px-4 py-3 z-40 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-brand-white">
+<img alt="Small Thumb" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2DIa8D3qD9uVGTAGLrGWKRMhu08te9iqA04Q1dPJmv1mjhsJnbZ3FiZPkkUVXduvABseUNCpvnCmn5K5sWt_87gUoygQ8TDmmAfKc_SWe0tFxXL8wXp42z7L3QAbDl81M2wz34u_6EQomt4kjFW1J-IXhMUdEdoMNdufKLRjbWc37kQ7kv9ts99mxBYIRwsQJpxlbcYrPZw7Ecb_mB_qyWkphj4kTdreqDLjAmjM26KB51WIxqvqIjsM-kvGr4LwCrBH5vj4lieMj"/>
+</div>
+</div>
+<div class="flex gap-2">
+<div class="flex items-center border border-brand-gray/30 rounded bg-brand-bg/50 h-10">
+<button class="px-3 text-brand-white hover:bg-brand-white/10 h-full">-</button>
+<span class="px-2 text-brand-white text-sm font-bold">1</span>
+<button class="px-3 text-brand-white hover:bg-brand-white/10 h-full">+</button>
+</div>
+<button class="bg-primary hover:bg-red-700 text-white font-bold px-6 rounded h-10 text-sm uppercase">
+                Add to cart
+            </button>
+</div>
+</div>
+<nav class="fixed bottom-0 left-0 right-0 bg-brand-bg border-t border-brand-gray/20 px-6 py-2 z-50 flex justify-between items-end pb-4 shadow-lg">
+<a class="flex flex-col items-center text-brand-white gap-1 group" href="#">
+<span class="material-icons-outlined group-hover:text-lime-400 transition">grid_view</span>
+<span class="text-xxs font-medium group-hover:text-lime-400 transition">Shop</span>
+</a>
+<a class="flex flex-col items-center text-brand-gray gap-1 group hover:text-brand-white" href="#">
+<span class="material-icons-outlined group-hover:text-lime-400 transition">person_outline</span>
+<span class="text-xxs font-medium group-hover:text-lime-400 transition">Account</span>
+</a>
+<a class="flex flex-col items-center text-brand-gray gap-1 relative group hover:text-brand-white" href="#">
+<div class="relative">
+<span class="material-icons-outlined group-hover:text-lime-400 transition">favorite_border</span>
+<span class="absolute -top-1 -right-1 bg-lime-500 text-brand-dark text-xxs font-bold rounded-full h-3.5 w-3.5 flex items-center justify-center">1</span>
+</div>
+<span class="text-xxs font-medium group-hover:text-lime-400 transition">Wishlist</span>
+</a>
+<a class="flex flex-col items-center text-brand-gray gap-1 relative group hover:text-brand-white" href="#">
+<div class="relative">
+<span class="material-icons-outlined group-hover:text-lime-400 transition">shopping_bag</span>
+<span class="absolute -top-1 -right-1 bg-lime-500 text-brand-dark text-xxs font-bold rounded-full h-3.5 w-3.5 flex items-center justify-center">1</span>
+</div>
+<span class="text-xxs font-medium group-hover:text-lime-400 transition">Cart</span>
+</a>
+</nav>
+
+</body></html>

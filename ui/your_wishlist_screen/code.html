@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Your Wishlist</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#B12A34",
+              "background-light": "#F3EDE7",
+              "background-dark": "#6F1D2A",
+              "card-light": "#FFFFFF",
+              "card-dark": "#5A1621",
+              "text-light": "#1E1E1E",
+              "text-dark": "#F3EDE7",
+              "muted-light": "#CFC7BF",
+              "muted-dark": "#CFC7BF",
+              "sale": "#84CC16", // Lime-500 for sale text
+            },
+            fontFamily: {
+              display: ["Roboto", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "12px",
+            },
+          },
+        },
+      };
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="flex flex-col min-h-screen">
+<header class="sticky top-0 z-20">
+<div class="bg-text-light dark:bg-text-light text-background-light dark:text-background-light text-center py-2 text-xs font-bold uppercase">
+                Free Shipping On All Orders
+            </div>
+<div class="bg-background-light dark:bg-background-dark px-4 py-4">
+<div class="flex justify-between items-center text-text-light dark:text-text-dark">
+<button class="p-1">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="text-2xl font-bold tracking-wider text-[#84CC16]">DXLR</h1>
+<div class="flex items-center space-x-4">
+<button class="p-1">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="relative p-1">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-sale text-xs font-bold text-white">1</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow px-4 pb-8">
+<h2 class="text-3xl font-bold text-text-light dark:text-text-dark text-center my-6">Your Wishlist</h2>
+<div class="flex justify-end items-center space-x-2 text-text-light dark:text-text-dark mb-6">
+<button class="p-1"><span class="material-symbols-outlined text-sm">view_list</span></button>
+<button class="p-1"><span class="material-symbols-outlined text-sm">apps</span></button>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-card-light dark:bg-card-dark rounded-lg overflow-hidden shadow">
+<div class="relative">
+<img alt="A person wearing a large, black, hooded blanket that resembles a cape." class="w-full h-auto object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJYTUYyu5YF88f1lyh-8jzcDnVupHoB6gmSEcnFljEdM0Owb7v9lEUXPsaEfk3qyNzbI2Lpk5ZHTKV7sQcOw7uU0XNgWlQAml8w010fvHM-vpLnq6vyQC4wBQKszGolgQ5t2HsATciX_3jIK2aAdFYe7EfwFMaoMuwxPuOz_rUmeK7kNETRm8BpevJ9MdoFakvjGGMDmU6CMg0LJ2GIveqi4XCyv4ecnu0XQJscILRf_vGclZpbHTt-gicqIqTrF06UhJDryij8Z_n"/>
+<div class="absolute top-2 left-2 bg-sale text-white text-xs font-bold py-1 px-2 rounded">-21%</div>
+<button class="absolute top-2 right-2 bg-primary text-white p-2 rounded-md">
+<span class="material-symbols-outlined" style="font-size: 16px;">delete</span>
+</button>
+<button class="absolute bottom-2 right-2 bg-primary text-white p-2 rounded-md">
+<span class="material-symbols-outlined" style="font-size: 16px;">shopping_cart</span>
+</button>
+</div>
+<div class="p-3">
+<h3 class="font-bold text-sm text-text-light dark:text-text-dark">BATMAN Blanket</h3>
+<div class="flex items-baseline space-x-2 mt-1">
+<p class="text-xs text-muted-light dark:text-muted-dark line-through">LE 1,900.00</p>
+<p class="font-bold text-sale">LE 1,499.00</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="bg-card-light dark:bg-card-dark text-text-light dark:text-text-dark p-6 space-y-8">
+<div class="space-y-4">
+<h4 class="font-bold text-lg">ABOUT DXLR</h4>
+<p class="text-sm">We are a clothing brand designed for tech enthusiasts and gamers who value simplicity. Our products blend comfort with minimalist design, offering a style that celebrates individuality in the digital age.</p>
+<a class="inline-flex items-center text-sm font-semibold border-b border-text-light dark:border-text-dark pb-1" href="#">
+                    Discover Products
+                    <span class="material-symbols-outlined ml-1 text-base">arrow_forward</span>
+</a>
+</div>
+<div class="flex space-x-4">
+<a class="border border-muted-light dark:border-muted-dark rounded-full p-2" href="#"><img alt="Facebook icon" class="w-5 h-5 dark:invert" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzFjM0P9VkpCEa3uMwIYAQXxk16r5O07_6z9_O6JxJ_J8HtYBi8BdruSA9Zj25mebfEF7a0Y0aLLLjiiLjKDCQ0oZu4htyyrhrMtmUUjzReZZyxoWsJXyzV4nWhv3euDI4RBM86eW8zrc9DktVuT-d69kwP6uEbLSvvnkipe_C69m4ppWjXl4S4TUJXZRl0cnJ0jNJl4lrHWssmNjPUJV_D1RjSwt13n6eB0b6VXtFCrpPYIXM1R0QTOfy6v5fIWN8AA5XV26BKhSF"/></a>
+<a class="border border-muted-light dark:border-muted-dark rounded-full p-2" href="#"><img alt="Instagram icon" class="w-5 h-5 dark:invert" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhbcIrRDcOANs3AXwXHVgP2r_Rtu3fPzMh6zEQb-quS76FdPKisoTFWnBOLkA63cN28ZybEJPVW8-AdPc4JEna9sfqgdHZm6bL-hwq0Ywp2VJpiHT7b8fzl0RdZhgMfruaVZ6FwVYwYqeViZRZC7x5pmdz5mT7ttHDl4Hvd6N7v9ENbEv0ZW2zvzKfk3OrVX8LVDKNJJWEB3ovvh7TpcDIC8fu4tZmzx0jhoFZ4gFUIBQbo2537VGSmx7_LV7vxMZWmKeAIrqvKxv6"/></a>
+<a class="border border-muted-light dark:border-muted-dark rounded-full p-2" href="#"><img alt="YouTube icon" class="w-5 h-5 dark:invert" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2tCnqf8Gm3cjdwItTIPIYPCTP7D7U6Q6wNYdm_4piZHdSF2J6p7v69_VIlfYfExgD8pZaxaOI0vopuFCSea00joTfCGj87g6yc1l0Dd0LS6Nv1XamLwlQVGvTVUSduFzsnJtzNJK_eAKmQL0OzCRtIFwgqd-kH6kTr2HW-suzZVSXJdCcQjq8dKbF8Sm3Du-X6kZ6sTZwx8Fe__cLIjtfxVF12SquJT0GnflHrdt6HtRWVD6oZea5QQBHhttM8wvC0NrLBMe8K3ix"/></a>
+<a class="border border-muted-light dark:border-muted-dark rounded-full p-2" href="#"><img alt="TikTok icon" class="w-5 h-5 dark:invert" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXn_QAlwOTi8STPRTdWs3adZqKtiL0lTNbpqF0CzplxCYi5FY_k-ReWzt9GjxSQcsjgYGpbOkseAOTI3VH82iI6ku3DGISxAzrKx7QITW5_eBO9MN59WilWeVwtARZnKCcnqyqiqxAO_KnRjw76d7D2NSdZKLqodhMdEVx1G7mcK1VE2EbtEQyxDRgvUKW2AahPzSJyYrfNevG-_Cuu7rnW0tjVCvOA9bMoH6oS-Q62K_NmZZgnbEDSNru4MlBt4giwv8cToIirl1B"/></a>
+</div>
+<div>
+<h4 class="font-bold text-lg mb-2">Quick Links</h4>
+<ul class="space-y-2 text-sm">
+<li><a href="#">About us</a></li>
+<li><a href="#">Contact us</a></li>
+<li><a href="#">FAQs</a></li>
+<li><a href="#">Shipping &amp; Delivery</a></li>
+<li><a href="#">Return &amp; Exchange</a></li>
+<li><a href="#">Privacy Policy</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-lg">Join For Exclusive Email Offers!</h4>
+<p class="text-sm mt-1 mb-4">Enter your email to receive the latest offers and new products.</p>
+<div class="flex">
+<input class="flex-grow bg-background-light dark:bg-background-dark border border-muted-light dark:border-muted-dark rounded-l-md text-sm placeholder-muted-light dark:placeholder-muted-dark focus:ring-primary focus:border-primary" placeholder="your-email@example.com" type="email"/>
+<button class="bg-primary text-white font-bold py-2 px-4 rounded-r-md flex items-center">
+                        Subscribe
+                        <span class="material-symbols-outlined ml-1 text-base">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="text-center pt-4 border-t border-muted-light dark:border-muted-dark">
+<p class="text-xs mb-4">© 2026 RIGHTS RESERVED TO DXLR</p>
+<div class="flex justify-center items-center space-x-2">
+<img alt="Visa card logo" class="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLXfq4f-Vkw_5GIWrRlN1I02XPPxTN3ucQA17SwLi-QbvrqTJF-ETndlIkHIeJXVnegpIraJ-54d14trDtTlN2EWJYrhezNTl6OxZPHQ3WBx3GP8-upTFM8q2MdtJ9tWb9wX6DMmbB_NfgrhGXI8jFqxBDVmbEnhC79BD1QLAMukAmHxzf-Vavn7P2IOI-nsBA5i497Xv9l2Qrzl_ZaCjaSRuHdGLq1YhDu5iwSPbfQmUrwHix8jlJAMfE9vgDeQK4pivpsg6DKWwa"/>
+<img alt="Mastercard logo" class="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0lnItSz5gptzrekzsvIYmUaOp8KzIh1ZR7orDRWJra-nob7gAk3Dh9aoXuMrkKuLhQZpnPpcP-U-oBAU5O3zUsR4pyXZ4LnW1DpwthwUqNptKCgRO96YqoGIFROZdWGdF6KLCTKu_lCKwFRmw2Cdmu-GbAaZ2kKnaq5PT1zr21QYaXtRQgdbt9qfDzilFRVvIE9_61RxY4vcZQf5WQu898HQk7uRRkCD1EJ5qw-DCFMeotiNlBm41qPOmqA3urEyqhgyQneMD4y8S"/>
+<img alt="Meeza card logo" class="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtIHR9idRq5UOlZxVlrckxGoX1smJLvHPw6ObL66O0cA0bH91vSWdP_cNpWTPSQPZ9ejuuIa2gM6lvr93aupAZyulgJz1RZRNjsUT9M3bDTkkRlmN5UbohQEdfc2L4FpHNgm63szgjKdI-u4WHXQA1eknauYyrXBK9qgZPpnSKzi7NBC4lrSbvznNxC0pEvPLVrVA3WwhOswbNq5GsTXCgicuVpX82jKr_S43et3gLQLh0hb5XzPAb8Gk2NEMyKH9fB-9_NDeyFzE4"/>
+</div>
+</div>
+</footer>
+<nav class="sticky bottom-0 bg-card-light dark:bg-card-dark shadow-t-lg border-t border-muted-light dark:border-muted-dark px-4 py-2 flex justify-around text-center text-xs text-text-light dark:text-text-dark">
+<a class="flex flex-col items-center" href="#">
+<span class="material-symbols-outlined">store</span>
+<span>Shop</span>
+</a>
+<a class="flex flex-col items-center" href="#">
+<span class="material-symbols-outlined">person</span>
+<span>Account</span>
+</a>
+<a class="flex flex-col items-center text-sale" href="#">
+<div class="relative">
+<span class="material-symbols-outlined">favorite</span>
+<span class="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-sale text-xs font-bold text-white">1</span>
+</div>
+<span>Wishlist</span>
+</a>
+<a class="flex flex-col items-center" href="#">
+<div class="relative">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-sale text-xs font-bold text-white">1</span>
+</div>
+<span>Cart</span>
+</a>
+</nav>
+</div>
+
+</body></html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sets - Product Listing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+    :root {
+      --brand-light: #6F1D2A;
+      --surface-dark: #5A1621;
+      --surface-light: #F3EDE7;
+      --white: #FFFFFF;
+      --text-primary-light: #1E1E1E;
+      --primary: #B12A34;
+      --icon-light: #CFC7BF;
+    }
+    body {
+      background-color: var(--brand-light);
+    }
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        font-size: 24px;
+    }
+  </style>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#B12A34",
+            "background-light": "#F3EDE7",
+            "background-dark": "#1E1E1E",
+            "surface-light": "#F3EDE7",
+            "surface-dark": "#5A1621",
+            "text-primary-light": "#1E1E1E",
+            "text-primary-dark": "#F3EDE7",
+            "text-secondary-light": "#FFFFFF",
+            "text-secondary-dark": "#F3EDE7",
+            "icon-light": "#CFC7BF",
+            "icon-dark": "#CFC7BF",
+            "border-light": "#CFC7BF",
+            "border-dark": "#CFC7BF",
+            "brand-light": "#6F1D2A",
+            "brand-dark": "#6F1D2A"
+          },
+          fontFamily: {
+            display: ["Roboto", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "0.5rem",
+          },
+        },
+      },
+    };
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-brand-light font-display text-text-secondary-light">
+<div class="max-w-md mx-auto bg-brand-light min-h-screen flex flex-col relative pb-16">
+<div class="bg-surface-dark py-2 text-center">
+<p class="text-text-secondary-light font-bold text-xs tracking-wider italic">FREE SHIPPING ON All Orders</p>
+</div>
+<header class="bg-brand-light p-4 flex justify-between items-center sticky top-0 z-20 shadow-sm">
+<span class="material-symbols-outlined text-text-secondary-light cursor-pointer">menu</span>
+<div class="text-3xl font-bold text-primary tracking-widest">DXLR</div>
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-text-secondary-light cursor-pointer">search</span>
+<div class="relative cursor-pointer">
+<span class="material-symbols-outlined text-text-secondary-light">shopping_bag</span>
+<span class="absolute -top-1 -right-2 bg-primary text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold">1</span>
+</div>
+</div>
+</header>
+<main class="flex-grow">
+<div class="text-center py-6">
+<h1 class="text-4xl font-medium text-icon-light">Sets</h1>
+</div>
+<div class="px-4 pb-6 flex items-center justify-between">
+<button class="flex items-center space-x-2 border border-surface-dark bg-surface-dark/50 px-4 py-2 rounded text-xs font-bold tracking-wider hover:bg-surface-dark transition">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+<span>FILTER</span>
+</button>
+<div class="flex items-center space-x-4 text-icon-light">
+<span class="material-symbols-outlined cursor-pointer opacity-50 text-[20px]">view_list</span>
+<span class="material-symbols-outlined cursor-pointer text-white text-[20px]">grid_view</span>
+</div>
+<button class="flex items-center space-x-1 text-xs font-bold tracking-wider text-icon-light">
+<span>Sort</span>
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+<div class="px-4 grid grid-cols-2 gap-x-3 gap-y-8">
+<div class="flex flex-col">
+<div class="relative rounded-lg overflow-hidden bg-surface-light mb-3">
+<img alt="The Brand Dxlr (Beige)" class="w-full h-auto aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDa01mJO639sFKeF_o348Wy2aKHrSNt6NI9L5mqn3v9lT6bkX32kKoF2xXgO7rCKEZzI4-XTfYQ6Y4_FlK9eiiqGUEMNc4euygTSC65o_QnScrMbIpu1s2Xn-r8kYStJlRYTFhfkuk9yVjqiOtfi5ZqG4fUxvaGRVJo0xwCYfQGqK15ICwHagXurS3c5DhfMmCTeYCOdUF5JAQHzs4LXHn30fihM_-qnLKVaDc7i0NpEmxLoK796Xy7hVjAmmuNn3EgoCQIbNKaPVIV"/>
+<span class="absolute top-2 right-2 bg-background-light/80 backdrop-blur-sm text-brand-light text-xs font-bold px-2 py-1 rounded">-21%</span>
+</div>
+<div class="space-y-1">
+<h3 class="text-icon-light font-bold text-sm">The Brand Dxlr (Beige)</h3>
+<div class="flex items-center space-x-2">
+<p class="text-icon-light line-through text-xs opacity-60">LE 1,900.00</p>
+<p class="text-primary font-bold text-sm">LE 1,499.00</p>
+</div>
+<button class="w-full mt-2 py-2 border border-primary text-primary hover:bg-primary hover:text-white transition rounded uppercase text-xs font-bold tracking-wider">
+                        Quick Add
+                    </button>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="relative rounded-lg overflow-hidden bg-surface-light mb-3">
+<img alt="The Brand Dxlr (Navy)" class="w-full h-auto aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyHH4j97N9Ys1baNt0KoykRcLgxaUuCYuhpUfRy-Tfp9wnPKv2zCe-uF5AZmQfrGBHT-_Ao7uPPyAAM6jj8igslZqezIdgEmzsClt381lUe7turX4zBpx1yx5JMQMDdZe4px0rcY5TVL2AxdnRGqkjUU3oCbIpbRlx86tGd7PAuC7aHx8JXG-7gSp7XFf8xGo15XIvcscQnJfczlzVUqf-DaV_NYS0_jJ7E2zQh5TaufttpJV8e7niZcUIzfMN89ucxsH0crkYrC-g"/>
+<span class="absolute top-2 right-2 bg-background-light/80 backdrop-blur-sm text-brand-light text-xs font-bold px-2 py-1 rounded">-21%</span>
+</div>
+<div class="space-y-1">
+<h3 class="text-icon-light font-bold text-sm">The Brand Dxlr (Navy)</h3>
+<div class="flex items-center space-x-2">
+<p class="text-icon-light line-through text-xs opacity-60">LE 1,900.00</p>
+<p class="text-primary font-bold text-sm">LE 1,499.00</p>
+</div>
+<button class="w-full mt-2 py-2 bg-primary text-white hover:bg-surface-dark transition rounded uppercase text-xs font-bold tracking-wider border border-primary">
+                        Quick Add
+                    </button>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="relative rounded-lg overflow-hidden bg-surface-light mb-3">
+<img alt="The Brand Dxlr (Brown)" class="w-full h-auto aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeeXi89zzfoZky2pxIwGotStJag-i_lYq1iWpvMjad45Tkdhwm48qfpkmDbByyG1nZReDgD4BhZF-lb2UaIOox_TaG_NL_e9aoBx-82jjuZsOf9KMo9fdMLrX0Lp0lWQouH6HCigpW0iflwmaOMOmG0k8eDZauijbXjJVK3bxoOOXD7Na07OdtmcuGaFKOBtOVLagEqVkOxv7MhHnqX0v1pto0F1Qy3cTqk75_WA0RYlluxo3vPs9jkMfAlOBZcq2JDn4nV1xrqR1_"/>
+<span class="absolute top-2 right-2 bg-background-light/80 backdrop-blur-sm text-brand-light text-xs font-bold px-2 py-1 rounded">-21%</span>
+</div>
+<div class="space-y-1">
+<h3 class="text-icon-light font-bold text-sm">The Brand Dxlr (Brown)</h3>
+<div class="flex items-center space-x-2">
+<p class="text-icon-light line-through text-xs opacity-60">LE 1,900.00</p>
+<p class="text-primary font-bold text-sm">LE 1,499.00</p>
+</div>
+<button class="w-full mt-2 py-2 bg-primary text-white hover:bg-surface-dark transition rounded uppercase text-xs font-bold tracking-wider border border-primary">
+                        Quick Add
+                    </button>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="relative rounded-lg overflow-hidden bg-surface-light mb-3">
+<img alt="The Brand Dxlr (Black)" class="w-full h-auto aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3h3rYYJRtNXHVANIPaiCamCJAge_O_1xIq4a9XtZ2Xcr5b2LKyrUrxf75gwbGifxj4atFCWkg5xu71FySi_Ye6JKO7RkhbIjDV_DDtsC10a4lwM_ppqp21cYXeBSJjX4iiObAxFeZJc_NYFnSQkD4lhh6MAVH_ExVBXmNZlbAgy5MuLjZjV7kwIFEWDnTP-5ApHNogS0cBMh50gvB9Gx6Fuw7159pa3a-fc4nWYhv-cfvqlfGzx2o9NM4mKaknm6JX9iXAKduR05z"/>
+<span class="absolute top-2 right-2 bg-background-light/80 backdrop-blur-sm text-brand-light text-xs font-bold px-2 py-1 rounded">-21%</span>
+</div>
+<div class="space-y-1">
+<h3 class="text-icon-light font-bold text-sm">The Brand Dxlr (Black)</h3>
+<div class="flex items-center space-x-2">
+<p class="text-icon-light line-through text-xs opacity-60">LE 1,900.00</p>
+<p class="text-primary font-bold text-sm">LE 1,499.00</p>
+</div>
+<button class="w-full mt-2 py-2 bg-primary text-white hover:bg-surface-dark transition rounded uppercase text-xs font-bold tracking-wider border border-primary">
+                        Quick Add
+                    </button>
+</div>
+</div>
+</div>
+<div class="mt-16 px-6 pb-12 space-y-10 text-icon-light">
+<div class="space-y-4">
+<h2 class="text-xl font-medium tracking-wide text-white uppercase">About DXLR</h2>
+<p class="text-sm leading-relaxed text-gray-300">
+                    We are a clothing brand designed for tech enthusiasts and gamers who value simplicity. Our products blend comfort with minimalist design, offering a style that celebrates individuality in the digital age.
+                </p>
+<div class="flex items-center space-x-1 text-sm border-b border-icon-light w-max pb-0.5 cursor-pointer">
+<span>Discover Products</span>
+<span class="material-symbols-outlined text-[16px]">north_east</span>
+</div>
+<div class="flex space-x-4 pt-2">
+<div class="w-8 h-8 border border-icon-light rounded-full flex items-center justify-center cursor-pointer hover:bg-surface-dark">
+<span class="text-xs">fb</span>
+</div>
+<div class="w-8 h-8 border border-icon-light rounded-full flex items-center justify-center cursor-pointer hover:bg-surface-dark">
+<span class="text-xs">ig</span>
+</div>
+<div class="w-8 h-8 border border-icon-light rounded-full flex items-center justify-center cursor-pointer hover:bg-surface-dark">
+<span class="text-xs">yt</span>
+</div>
+<div class="w-8 h-8 border border-icon-light rounded-full flex items-center justify-center cursor-pointer hover:bg-surface-dark">
+<span class="text-xs">tk</span>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<h2 class="text-xl font-medium tracking-wide text-white">Quick Links</h2>
+<ul class="space-y-3 text-sm text-gray-300">
+<li class="cursor-pointer hover:text-primary">About us</li>
+<li class="cursor-pointer hover:text-primary">Contact us</li>
+<li class="cursor-pointer hover:text-primary">FAQs</li>
+<li class="cursor-pointer hover:text-primary">Shipping &amp; Delivery</li>
+<li class="cursor-pointer hover:text-primary">Return &amp; Exchange</li>
+<li class="cursor-pointer hover:text-primary">Privacy Policy</li>
+</ul>
+</div>
+<div class="space-y-4">
+<h2 class="text-xl font-medium tracking-wide text-white">Join For Exclusive Email Offers!</h2>
+<p class="text-sm text-gray-300">Enter your email to receive the latest offers and product updates directly in your inbox.</p>
+<div class="flex">
+<input class="w-full bg-transparent border border-r-0 border-icon-light rounded-l-md px-4 py-2 text-sm text-white focus:ring-0 focus:border-primary placeholder-gray-500" placeholder="Email" type="email"/>
+<button class="bg-surface-dark border border-l-0 border-icon-light text-white px-4 py-2 rounded-r-md hover:bg-primary transition">
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<footer class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-surface-dark border-t border-brand-light z-30">
+<div class="flex justify-around items-center h-16 text-xs text-icon-light">
+<a class="flex flex-col items-center justify-center text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">apps</span>
+<span>Shop</span>
+</a>
+<a class="flex flex-col items-center justify-center hover:text-white transition" href="#">
+<span class="material-symbols-outlined">person_outline</span>
+<span>Account</span>
+</a>
+<a class="flex flex-col items-center justify-center relative hover:text-white transition" href="#">
+<span class="material-symbols-outlined">favorite_border</span>
+<span class="absolute -top-0.5 right-1.5 bg-primary text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold">1</span>
+<span>Wishlist</span>
+</a>
+<a class="flex flex-col items-center justify-center relative hover:text-white transition" href="#">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="absolute -top-0.5 right-1.5 bg-primary text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold">1</span>
+<span>Cart</span>
+</a>
+</div>
+</footer>
+</div>
+
+</body></html>

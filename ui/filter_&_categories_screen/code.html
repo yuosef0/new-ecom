@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Filter &amp; Categories Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "burgundy": "#6F1D2A",
+              "burgundy-dark": "#5A1621",
+              "off-white": "#F3EDE7",
+              "cta-red": "#B12A34",
+              "muted-gray": "#CFC7BF",
+              "charcoal": "#1E1E1E",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "Noto Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }::-webkit-scrollbar {
+        width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #5A1621;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #6F1D2A;
+        border-radius: 2px;
+    }.custom-checkbox {
+        appearance: none;
+        background-color: transparent;
+        margin: 0;
+        font: inherit;
+        color: currentColor;
+        width: 1.25em;
+        height: 1.25em;
+        border: 1px solid #CFC7BF;
+        border-radius: 0.15em;
+        display: grid;
+        place-content: center;
+        flex-shrink: 0;
+    }
+    .custom-checkbox::before {
+        content: "";
+        width: 0.65em;
+        height: 0.65em;
+        transform: scale(0);
+        transition: 120ms transform ease-in-out;
+        box-shadow: inset 1em 1em white;
+        transform-origin: center;
+        clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        background-color: white; 
+    }
+    .custom-checkbox:checked {
+        background-color: #B12A34;
+        border-color: #B12A34;
+    }
+    .custom-checkbox:checked::before {
+        transform: scale(1);
+        box-shadow: none;background-color: white; 
+    }
+</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-burgundy text-off-white font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="flex items-center bg-burgundy-dark p-4 pb-2 justify-between sticky top-0 z-20 border-b border-[#ffffff10]">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-white cursor-pointer" style="font-size: 24px;">menu</span>
+<h2 class="text-white text-sm font-bold tracking-widest uppercase">Filter</h2>
+</div>
+<div class="flex items-center justify-end">
+<span class="material-symbols-outlined text-white cursor-pointer" style="font-size: 24px;">close</span>
+</div>
+</div>
+<main class="flex-grow pb-32">
+<section class="border-b border-[#ffffff10]">
+<div class="flex items-center justify-between px-4 py-4 cursor-pointer group">
+<h3 class="text-off-white text-sm font-bold leading-tight">Availability</h3>
+<span class="material-symbols-outlined text-muted-gray text-lg transition-transform group-hover:-translate-y-0.5">expand_less</span>
+</div>
+<div class="px-4 pb-4 space-y-3">
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="custom-checkbox" type="checkbox"/>
+<span class="text-off-white text-sm font-medium">In stock (3)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="custom-checkbox" type="checkbox"/>
+<span class="text-off-white text-sm font-medium">Out of stock (3)</span>
+</label>
+</div>
+</section>
+<section class="border-b border-[#ffffff10]">
+<div class="flex items-center justify-between px-4 py-4 cursor-pointer group">
+<h3 class="text-off-white text-sm font-bold leading-tight">Categories</h3>
+<span class="material-symbols-outlined text-muted-gray text-lg">expand_less</span>
+</div>
+<div class="flex gap-2 px-4 pb-4 flex-wrap">
+<div class="flex h-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-cta-red px-4 border border-cta-red">
+<p class="text-white text-xs font-bold leading-normal">Track Suits</p>
+</div>
+<div class="flex h-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-muted-gray bg-transparent px-4 hover:border-off-white transition-colors">
+<p class="text-off-white text-xs font-medium leading-normal">Blankets</p>
+</div>
+<div class="flex h-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-muted-gray bg-transparent px-4 hover:border-off-white transition-colors">
+<p class="text-off-white text-xs font-medium leading-normal">Sweatpants</p>
+</div>
+<div class="flex h-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-muted-gray bg-transparent px-4 hover:border-off-white transition-colors">
+<p class="text-off-white text-xs font-medium leading-normal">Sets</p>
+</div>
+<div class="flex h-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-muted-gray bg-transparent px-4 hover:border-off-white transition-colors">
+<p class="text-off-white text-xs font-medium leading-normal">Hoodies</p>
+</div>
+</div>
+</section>
+<section class="border-b border-[#ffffff10]">
+<div class="flex items-center justify-between px-4 py-4 cursor-pointer group">
+<h3 class="text-off-white text-sm font-bold leading-tight">Price</h3>
+<span class="material-symbols-outlined text-muted-gray text-lg">expand_less</span>
+</div>
+<div class="px-4 pb-6">
+<div class="relative w-full h-8 mb-6 flex items-center">
+<div class="w-full h-1 bg-burgundy-dark rounded-full">
+<div class="absolute h-1 bg-cta-red rounded-full left-[10%] right-[30%]"></div>
+<div class="absolute w-4 h-4 bg-cta-red rounded-full top-1/2 -translate-y-1/2 left-[10%] cursor-pointer ring-2 ring-burgundy"></div>
+<div class="absolute w-4 h-4 bg-cta-red rounded-full top-1/2 -translate-y-1/2 right-[30%] cursor-pointer ring-2 ring-burgundy"></div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-off-white text-sm font-medium">Price:</span>
+<div class="flex items-center gap-2 flex-1">
+<div class="flex-1 h-10 border border-muted-gray rounded flex items-center px-3 bg-burgundy-dark">
+<span class="text-muted-gray text-xs mr-1">$</span>
+<input class="w-full bg-transparent border-none p-0 text-off-white text-sm focus:ring-0 text-right" type="text" value="50"/>
+</div>
+<span class="text-off-white">-</span>
+<div class="flex-1 h-10 border border-muted-gray rounded flex items-center px-3 bg-burgundy-dark">
+<span class="text-muted-gray text-xs mr-1">$</span>
+<input class="w-full bg-transparent border-none p-0 text-off-white text-sm focus:ring-0 text-right" type="text" value="350"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="border-b border-[#ffffff10]">
+<div class="flex items-center justify-between px-4 py-4 cursor-pointer group">
+<h3 class="text-off-white text-sm font-bold leading-tight">Color</h3>
+<span class="material-symbols-outlined text-muted-gray text-lg">expand_less</span>
+</div>
+<div class="px-4 pb-4 space-y-3">
+<div class="flex items-center gap-3 cursor-pointer">
+<div class="size-6 rounded-full bg-[#EADDCA] border border-muted-gray"></div>
+<span class="text-off-white text-sm font-medium">Beige (1)</span>
+</div>
+<div class="flex items-center gap-3 cursor-pointer">
+<div class="size-6 rounded-full bg-[#8B4513] border border-muted-gray"></div>
+<span class="text-off-white text-sm font-medium">Brown (1)</span>
+</div>
+<div class="flex items-center gap-3 cursor-pointer">
+<div class="size-6 rounded-full bg-[#000080] border border-muted-gray"></div>
+<span class="text-off-white text-sm font-medium">Navy (1)</span>
+</div>
+<div class="flex items-center gap-3 cursor-pointer">
+<div class="size-6 rounded-full bg-cta-red border border-muted-gray"></div>
+<span class="text-off-white text-sm font-medium">Red (2)</span>
+</div>
+<div class="flex items-center gap-3 cursor-pointer">
+<div class="size-6 rounded-full bg-charcoal border border-muted-gray"></div>
+<span class="text-off-white text-sm font-medium">Black (5)</span>
+</div>
+</div>
+</section>
+<section class="border-b border-[#ffffff10]">
+<div class="flex items-center justify-between px-4 py-4 cursor-pointer group">
+<h3 class="text-off-white text-sm font-bold leading-tight">Size</h3>
+<span class="material-symbols-outlined text-muted-gray text-lg">expand_less</span>
+</div>
+<div class="px-4 pb-4 space-y-3">
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="custom-checkbox" type="checkbox"/>
+<span class="text-off-white text-sm font-medium">Small (S) (3)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input checked="" class="custom-checkbox" type="checkbox"/>
+<span class="text-off-white text-sm font-medium">Medium (M) (3)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="custom-checkbox" type="checkbox"/>
+<span class="text-off-white text-sm font-medium">Large (L) (3)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="custom-checkbox" type="checkbox"/>
+<span class="text-off-white text-sm font-medium">Extra large (XL) (3)</span>
+</label>
+</div>
+</section>
+</main>
+<div class="fixed bottom-0 left-0 right-0 z-20 bg-burgundy-dark/95 backdrop-blur-sm shadow-2xl border-t border-[#ffffff10]">
+<div class="p-4 flex items-center justify-between gap-4">
+<button class="h-12 px-6 rounded bg-transparent border border-cta-red text-white text-sm font-bold uppercase tracking-wider hover:bg-cta-red/10 transition-colors">
+            Reset
+        </button>
+<button class="flex h-12 flex-1 items-center justify-center rounded bg-cta-red text-white text-sm font-bold uppercase tracking-wider hover:bg-[#9a242d] transition-colors shadow-lg shadow-cta-red/20">
+            Apply Filters (3)
+        </button>
+</div>
+<nav class="flex h-16 w-full items-center justify-around bg-burgundy text-white pb-2">
+<div class="flex flex-col items-center gap-1 text-muted-gray opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined" style="font-size: 24px;">store</span>
+<p class="text-[10px] font-medium uppercase tracking-wide">Shop</p>
+</div>
+<div class="flex flex-col items-center gap-1 text-cta-red cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; font-size: 24px;">filter_list</span>
+<p class="text-[10px] font-bold uppercase tracking-wide">Filter</p>
+</div>
+<div class="flex flex-col items-center gap-1 text-muted-gray opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined" style="font-size: 24px;">person</span>
+<p class="text-[10px] font-medium uppercase tracking-wide">Account</p>
+</div>
+<div class="flex flex-col items-center gap-1 text-muted-gray opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined" style="font-size: 24px;">favorite</span>
+<p class="text-[10px] font-medium uppercase tracking-wide">Wishlist</p>
+</div>
+<div class="flex flex-col items-center gap-1 text-muted-gray opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined" style="font-size: 24px;">shopping_bag</span>
+<p class="text-[10px] font-medium uppercase tracking-wide">Cart</p>
+</div>
+</nav>
+</div>
+</div>
+</body></html>

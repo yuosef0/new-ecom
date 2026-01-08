@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Shopping Cart</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<style>
+    .material-icons-outlined {
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#B12A34", // CTA Red
+            "background-light": "#F3EDE7", // Off-White/Cream
+            "background-dark": "#6F1D2A", // Burgundy
+            "depth-dark": "#5A1621", // Dark Burgundy for depth
+            "primary-text-light": "#1E1E1E",
+            "primary-text-dark": "#F3EDE7",
+            "secondary-text-light": "#5A1621",
+            "secondary-text-dark": "#CFC7BF",
+            "border-light": "#CFC7BF",
+            "border-dark": "#5A1621",
+            "card-light": "#FFFFFF",
+            "card-dark": "#5A1621",
+            "green-accent": "#22c55e",
+          },
+          fontFamily: {
+            display: ["Roboto", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "0.5rem",
+          },
+        },
+      },
+    };
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-primary-text-light dark:text-primary-text-dark">
+<div class="flex flex-col min-h-screen">
+<header>
+<div class="bg-primary text-white text-center py-2 text-xs font-semibold tracking-wider">
+        FREE SHIPPING ON All Orders
+      </div>
+<div class="px-4 py-3 flex justify-between items-center">
+<button class="p-2">
+<span class="material-icons-outlined">menu</span>
+</button>
+<h1 class="text-2xl font-bold tracking-tighter text-primary-text-light dark:text-primary-text-dark">DXLR</h1>
+<div class="flex items-center space-x-2">
+<button class="p-2">
+<span class="material-icons-outlined">search</span>
+</button>
+<button class="p-2 relative">
+<span class="material-icons-outlined">shopping_bag</span>
+<span class="absolute top-1 right-1 bg-green-accent text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">1</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-grow px-4 pb-24">
+<h2 class="text-2xl font-bold mb-6 text-primary-text-light dark:text-primary-text-dark">Shopping Cart</h2>
+<div class="flex items-start space-x-4 mb-6">
+<img alt="Model wearing a black track suit" class="w-20 h-24 object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRQi0WoGahMBAxe2OyVl7tNtaRE4bUpNZEG-6CmJksznf3OQCqXwkTPxnZqI0XkLFL8rRLhd9QBEf3d5TitsQTFTeD7KA8UknbrG8KiNLZcQIrLWC2EQDHcLQ636xTO1wIrEXBBHPS3Hvmv4vCAm3_p6x38r912F-wSXUrj3eu7s6E8d5eh-mPDPBA26AL9g0KcqKOoRFCdjUMLstDdwFnoYaFsjXKmSqFqDdNsMAyU0yYr7mwYESZqQ6hvVIDHNJ6mTio_gLRGLdb"/>
+<div class="flex-grow">
+<p class="font-semibold text-primary-text-light dark:text-primary-text-dark">Track Suit (Black)</p>
+<p class="text-sm text-secondary-text-light dark:text-secondary-text-dark">S (40-55)kg</p>
+<button class="text-sm underline text-secondary-text-light dark:text-secondary-text-dark mt-1">Remove</button>
+</div>
+</div>
+<div class="space-y-3 text-sm">
+<div class="flex justify-between items-center border-b border-border-light dark:border-border-dark pb-3">
+<span class="text-secondary-text-light dark:text-secondary-text-dark">Price</span>
+<div class="flex items-baseline space-x-2">
+<span class="line-through text-secondary-text-light dark:text-secondary-text-dark">LE 2,000.00</span>
+<span class="font-bold text-green-accent">LE 1,549.00</span>
+</div>
+</div>
+<div class="flex justify-between items-center border-b border-border-light dark:border-border-dark pb-3">
+<span class="text-secondary-text-light dark:text-secondary-text-dark">Quantity</span>
+<div class="flex items-center border border-border-light dark:border-border-dark rounded">
+<button class="px-2 py-1 text-lg">-</button>
+<span class="px-3 py-1 font-semibold text-primary-text-light dark:text-primary-text-dark">1</span>
+<button class="px-2 py-1 text-lg">+</button>
+</div>
+</div>
+<div class="flex justify-between items-center pb-3">
+<span class="font-semibold text-primary-text-light dark:text-primary-text-dark">Total</span>
+<span class="font-bold text-green-accent">LE 1,549.00</span>
+</div>
+</div>
+<div class="mt-6">
+<label class="font-semibold text-primary-text-light dark:text-primary-text-dark mb-2 block" for="order-note">Add Order Note</label>
+<textarea class="w-full bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-lg p-3 text-sm placeholder-secondary-text-light dark:placeholder-secondary-text-dark focus:ring-primary focus:border-primary" id="order-note" placeholder="How can we help you?" rows="4"></textarea>
+</div>
+<div class="mt-8 bg-card-light dark:bg-card-dark p-4 rounded-lg">
+<div class="flex justify-between items-center mb-2">
+<h3 class="text-lg font-bold text-primary-text-light dark:text-primary-text-dark">Subtotal</h3>
+<p class="text-lg font-bold text-primary-text-light dark:text-primary-text-dark">LE 1,549.00 EGP</p>
+</div>
+<p class="text-xs text-secondary-text-light dark:text-secondary-text-dark mb-4">Tax included. <span class="underline">Shipping</span> calculated at checkout.</p>
+<button class="w-full bg-primary text-white font-bold py-3 rounded-lg">
+          Check out
+        </button>
+</div>
+<h3 class="text-xl font-bold mt-10 mb-4 text-primary-text-light dark:text-primary-text-dark">You may also like</h3>
+<div class="relative">
+<div class="flex space-x-4 overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory">
+<div class="snap-start flex-shrink-0 w-2/3 md:w-1/3">
+<div class="bg-card-light dark:bg-card-dark rounded-lg overflow-hidden relative">
+<span class="absolute top-2 right-2 bg-green-accent text-white text-xs font-semibold px-2 py-1 rounded">-23%</span>
+<img alt="Model in olive track suit" class="w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUJBpDCsbQoW6YiP86lNq1SYiAfLH_iOXseDjeeuX3sD4Z1b3Q5RVqhUb1dOPRdEaIaRL4y5SrZQ6neOMN1rTHhwV3ArlPcTXyIi3nWMC29pPlkrFIonCwEhRj_Od1e9bk3BSFauHEVgrP9wpDR9kG7YxpacMP6t6DLTJBz4uI044RsIV4q8dKnETxuiwmYFYX8e2kRSrzD947OknyT7-DrM23jc_HQtAmE6yl-CMQg8QXjimdf6GKDz-ddDgpB1UH1GqWHX3W8H5R"/>
+<div class="p-3">
+<p class="font-semibold text-primary-text-light dark:text-primary-text-dark">Track Suit (Olive)</p>
+<div class="flex items-baseline space-x-2 mt-1">
+<span class="text-sm line-through text-secondary-text-light dark:text-secondary-text-dark">LE 2,000.00</span>
+<span class="font-bold text-green-accent">LE 1,549.00</span>
+</div>
+<button class="w-full mt-3 bg-primary text-white font-bold py-2 rounded-lg text-sm border border-transparent">QUICK ADD</button>
+</div>
+</div>
+</div>
+<div class="snap-start flex-shrink-0 w-2/3 md:w-1/3">
+<div class="bg-card-light dark:bg-card-dark rounded-lg overflow-hidden relative">
+<span class="absolute top-2 right-2 bg-green-accent text-white text-xs font-semibold px-2 py-1 rounded">-23%</span>
+<img alt="Model in navy track suit" class="w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFWNJgJZEWgA84RsRRpw2HeX3lmqYDf6FvuibyBTQwA_eR7YnOYzL-2lSssaT8JL5OfL76yJxVl-R_SV3aVoSiXKYgdbIV2Fa8TrJ7XJdanoWFwWJmC5GreuP2-RQGj5NKjvMmSzOmegRbti4IbB8JI_Ze-Ub_aYZ6Mqvugw1AphrpCYQPnnjFlaLJdlkNs1Am5xystgLIY2vfEbfqxyALLBh5-oEVNdHNOaENE12xgtylpGhJtB0SK-TBhrPgymymmb1mdxvPSeXe"/>
+<div class="p-3">
+<p class="font-semibold text-primary-text-light dark:text-primary-text-dark">Track Suit (Navy)</p>
+<div class="flex items-baseline space-x-2 mt-1">
+<span class="text-sm line-through text-secondary-text-light dark:text-secondary-text-dark">LE 2,000.00</span>
+<span class="font-bold text-green-accent">LE 1,549.00</span>
+</div>
+<button class="w-full mt-3 bg-primary text-white font-bold py-2 rounded-lg text-sm border border-transparent">QUICK ADD</button>
+</div>
+</div>
+</div>
+<div class="snap-start flex-shrink-0 w-2/3 md:w-1/3">
+<div class="bg-card-light dark:bg-card-dark rounded-lg overflow-hidden">
+<img alt="Model in gray track suit" class="w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4YmpKUzTK9DI_Hg43HvDYBg9nLijXb5UnI1M4sr1I68TDVTMQjRPnECb30rdbbKMBYQZp5S9FWywJTOOgcXGr4YCfhH-tmrz6V7kwxq9uQSFvxOHBeHZzUdb_4UNukPGJshYaycsZoPPm-LSgmkr5diy4vAsU4N0ZGxZquPEBLT4wL-I_7OLANaMAcFzNaKpklBEvcoan-Q-fgHPRoiyLQ_vtJYIC5gg99G5LSjZJfwdUF2IMq6hK_5e7HWFuXxxiq6ulCYXReT2-"/>
+<div class="p-3">
+<p class="font-semibold text-primary-text-light dark:text-primary-text-dark">Track Suit (Gray)</p>
+<div class="flex items-baseline space-x-2 mt-1">
+<span class="font-bold text-green-accent">LE 1,549.00</span>
+</div>
+<button class="w-full mt-3 bg-primary text-white font-bold py-2 rounded-lg text-sm border border-transparent">QUICK ADD</button>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-center mt-4 space-x-2">
+<button class="w-2.5 h-2.5 rounded-full ring-1 ring-offset-2 ring-primary bg-primary ring-offset-background-light dark:ring-offset-background-dark"></button>
+<button class="w-2.5 h-2.5 rounded-full bg-border-light dark:bg-border-dark"></button>
+<button class="w-2.5 h-2.5 rounded-full bg-border-light dark:bg-border-dark"></button>
+</div>
+</div>
+<div class="mt-12 text-center text-secondary-text-light dark:text-secondary-text-dark">
+<h3 class="text-2xl font-bold mb-3 text-primary-text-light dark:text-primary-text-dark">ABOUT DXLR</h3>
+<p class="text-sm leading-relaxed">
+          We are a clothing brand designed for tech enthusiasts and gamers who value simplicity. Our products blend comfort with minimalist design, offering a style that celebrates individuality in the digital age.
+        </p>
+<a class="inline-flex items-center mt-4 text-primary-text-light dark:text-primary-text-dark font-semibold text-sm border-b border-primary-text-light dark:border-primary-text-dark" href="#">
+          Discover Products
+          <span class="material-icons-outlined text-base ml-1">arrow_forward</span>
+</a>
+<div class="flex justify-center space-x-4 mt-6">
+<a class="w-10 h-10 flex items-center justify-center border border-border-light dark:border-border-dark rounded-full" href="#">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M9.198 21.5h4.14c4.053 0 5.85-1.554 5.85-5.85v-4.14c0-4.053-1.554-5.85-5.85-5.85h-4.14c-4.053 0-5.85 1.554-5.85 5.85v4.14c0 4.296 1.797 5.85 5.85 5.85zm-1.8-10.43c0-2.31.968-3.37 3.37-3.37h4.14c2.31 0 3.37.968 3.37 3.37v4.14c0 2.31-.968 3.37-3.37 3.37h-4.14c-2.31 0-3.37-.968-3.37-3.37v-4.14z"></path></svg>
+</a>
+<a class="w-10 h-10 flex items-center justify-center border border-border-light dark:border-border-dark rounded-full" href="#">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.012 3.584-.07 4.85c-.148 3.227-1.669 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.012-3.584.07-4.85c.148-3.227 1.669-4.771 4.919-4.919 1.266-.058 1.644-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.058 1.281-.072 1.689-.072 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.058-1.281.072-1.689.072-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.058-1.689-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44 1.441-.645 1.441-1.44c0-.795-.645-1.44-1.441-1.44z"></path></svg>
+</a>
+<a class="w-10 h-10 flex items-center justify-center border border-border-light dark:border-border-dark rounded-full" href="#">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-3.604-9.42-3.604-13.025 0-3.604 3.604-3.604 9.42 0 13.025 3.604 3.604 9.42 3.604 13.025 0 3.604-3.604 3.604-9.42 0-13.025zm-2.43 11.43c-.49.25-1.03.38-1.57.38-1.03 0-2.12-.41-2.91-1.2-.82-.82-1.2-1.89-1.2-2.91s.38-2.09 1.2-2.91c.79-.79 1.88-1.2 2.91-1.2.54 0 1.08.13 1.57.38.29.14.49.44.49.77v6.71c0 .33-.2.63-.49.77z"></path></svg>
+</a>
+<a class="w-10 h-10 flex items-center justify-center border border-border-light dark:border-border-dark rounded-full" href="#">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M22.984 6.398c-.012-.413-.082-.82-.2-1.218-.218-.72-.585-1.35-1.07-1.848-.485-.486-1.127-.853-1.848-1.07-.398-.117-.805-.187-1.218-.2-1.637-.04-4.88-.04-4.88-.04s-3.243 0-4.88.04c-.413.013-.82.083-1.218.2-.72.217-1.35.584-1.848 1.07-.486.485-.853 1.127-1.07 1.848-.118.398-.188.805-.2 1.218-.04 1.637-.04 4.88-.04 4.88s0 3.243.04 4.88c.012.413.082.82.2 1.218.217.72.584 1.35 1.07 1.848.485.486 1.127.853 1.848 1.07.398.117.805.187 1.218.2 1.637.04 4.88.04 4.88.04s3.243 0 4.88-.04c.413-.013.82-.083 1.218-.2.72-.217 1.35-.584 1.848-1.07.486-.485.853-1.127 1.07-1.848.118-.398.188-.805.2-1.218.04-1.637.04-4.88.04-4.88s0-3.243-.04-4.88zm-13.23 7.848v-6.494l6.233 3.247-6.233 3.247z"></path></svg>
+</a>
+</div>
+</div>
+<div class="mt-12 space-y-4">
+<h3 class="text-xl font-bold text-primary-text-light dark:text-primary-text-dark">Quick Links</h3>
+<a class="block text-secondary-text-light dark:text-secondary-text-dark" href="#">About us</a>
+<a class="block text-secondary-text-light dark:text-secondary-text-dark" href="#">Contact us</a>
+<a class="block text-secondary-text-light dark:text-secondary-text-dark" href="#">FAQs</a>
+<a class="block text-secondary-text-light dark:text-secondary-text-dark" href="#">Shipping &amp; Delivery</a>
+<a class="block text-secondary-text-light dark:text-secondary-text-dark" href="#">Return &amp; Exchange</a>
+<a class="block text-secondary-text-light dark:text-secondary-text-dark" href="#">Privacy Policy</a>
+</div>
+<div class="mt-12">
+<h3 class="text-xl font-bold text-primary-text-light dark:text-primary-text-dark">Join For Exclusive Email Offers!</h3>
+<p class="text-sm mt-1 mb-4 text-secondary-text-light dark:text-secondary-text-dark">Enter your email to receive the latest offers and new products.</p>
+<div class="flex">
+<input class="flex-grow bg-card-light dark:bg-card-dark border border-r-0 border-border-light dark:border-border-dark rounded-l-lg p-3 text-sm focus:ring-primary focus:border-primary" type="email" value="yuosefmontaser656@gmail.com"/>
+<button class="bg-primary text-white font-bold px-4 py-3 rounded-r-lg flex items-center space-x-1">
+<span>Subscribe</span>
+<span class="material-icons-outlined text-base">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="mt-12 border-t border-border-light dark:border-border-dark pt-6 text-center">
+<p class="text-xs text-secondary-text-light dark:text-secondary-text-dark">© 2026 RIGHTS RESERVED TO DXLR</p>
+<div class="flex justify-center space-x-2 mt-4">
+<img alt="Visa card icon" class="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnOfcR7vH0vQUr5PSUHg3sX8nzuDWhF5qVYhywSbVzrOxGPey9VZwBLiy8ZSuebsSrYPmfusngf1s4dF-EW_AUMUgNdAF1Duaqs3-yjjWNX-JwbfXmTGCawK2AN0ShZ5GH0m7_zIsT3_y8dazneDo8I3kF_kBKZH9Hqp5V1TIzmGEFjRexF67U1l0ZaanYxkMMIN-esNFc5MtSh9ryCOtsO2tAwg5Hw5XzeY2KKyRsEhVp0AzxiRsE9qygqBs6-KaXrBnDedl8pVMX"/>
+<img alt="Mastercard icon" class="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdHaAhcVSroxmO1o_quo3nt3ERpMFLuCOdKNkvAaIIfGqX4XpZnfzeXiAChdirdOykDK1D3StxazXnlHvlHHa-nAl8fIeTynlSx1T8T74C9cXO0F82mZFQLrFkQ6nho1zgdwByVpM3Qc71MprygYjhmBuvy7GN2w9Bca8_N5etZXaLZQZElHPBmOQmybm-fKyFq81cZUlf7zWhM3Q1gvdX4ezU3xSHlZVomaO2evcJjkW_rjcKN70mzd3bLMmSgBLhDvfChd8SfG83"/>
+<img alt="AMEX card icon" class="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4pBnib7-CxhqyK6bf605K0R37LZOi95okTl9VH2bZo-1OZIauF47SbLqTUChipv3c-WsKXebo3FfEFI5GxS9q3qNtyhafhbAiJwqLytwhE7_kCqvAB55C26COTUtFpVvrwbah0KndXsnfIqZUlX7wUpSzUMWCMP6d9DKD8zfVrMRuo7vgC1-_xhk4IsSXlxBz5HUTxxwyMRKIG3MhyildrFHJwELIIZ9Z8q7cuW2m8uRJoA5yx9LGZCNLjhj56bHGJEXc1cY9S3rk"/>
+<img alt="Discover card icon" class="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDe1KK2cS1bhYpKc2Bsefr2NeVnITSBSxwvOhS1pOiaj0kr80MwhvqesK8XzFyG-om6Eb0xzeWJsA15SggPs0Ejl1OW5xkmCbrcR8Z5QqPYjVPpMxqng_IUKv5icMuzmTEf4b8BIR0n5cZjUYEqoWFklWndaVOg7SDrpnTMnv9kIb7KpHbLonFmJWMiYU9kOmU-1SnHs13dLkoT4-0vG89qDg5kqfOCFvs5RO_cruK0p-pIKcx0dBQ8fOTsu9ZMcG8vaX03UF9LL_S_"/>
+</div>
+</div>
+</main>
+<footer class="fixed bottom-0 left-0 right-0 bg-card-light dark:bg-depth-dark border-t border-border-light dark:border-border-dark">
+<nav class="flex justify-around items-center h-16">
+<a class="flex flex-col items-center text-secondary-text-light dark:text-secondary-text-dark space-y-1" href="#">
+<span class="material-icons-outlined">grid_view</span>
+<span class="text-xs">Shop</span>
+</a>
+<a class="flex flex-col items-center text-secondary-text-light dark:text-secondary-text-dark space-y-1" href="#">
+<span class="material-icons-outlined">person_outline</span>
+<span class="text-xs">Account</span>
+</a>
+<a class="flex flex-col items-center text-secondary-text-light dark:text-secondary-text-dark space-y-1 relative" href="#">
+<span class="material-icons-outlined">favorite_border</span>
+<span class="text-xs">Wishlist</span>
+<span class="absolute -top-1 right-2 bg-green-accent text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">1</span>
+</a>
+<a class="flex flex-col items-center text-primary-text-light dark:text-primary-text-dark space-y-1 border-t-2 border-primary-text-light dark:border-primary-text-dark pt-1" href="#">
+<span class="material-icons-outlined">shopping_bag</span>
+<span class="text-xs font-bold">Cart</span>
+<span class="absolute -top-1 right-12 bg-green-accent text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">1</span>
+</a>
+</nav>
+</footer>
+</div>
+
+</body></html>

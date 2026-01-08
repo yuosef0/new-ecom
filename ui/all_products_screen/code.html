@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>All Products</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<style type="text/tailwindcss">
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+        :root {
+            --burgundy: #6F1D2A;
+            --dark-burgundy: #5A1621;
+            --off-white-cream: #F3EDE7;
+            --pure-white: #FFFFFF;
+            --charcoal-black: #1E1E1E;
+            --cta-red: #B12A34;
+            --muted-gray: #CFC7BF;
+        }
+        .bg-brand { background-color: var(--burgundy); }
+        .text-brand { color: var(--burgundy); }
+        .bg-hero { background-color: var(--dark-burgundy); }
+        .bg-strip { background-color: var(--off-white-cream); }
+        .bg-card { background-color: var(--off-white-cream); }
+        .text-primary { color: var(--charcoal-black); }
+        .text-secondary { color: var(--pure-white); }
+        .bg-cta { background-color: var(--cta-red); }
+        .border-cta { border-color: var(--cta-red); }
+        .text-icon { color: var(--muted-gray); }
+        .border-light { border-color: var(--muted-gray); }
+    </style>
+<style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .material-icons {
+            font-size: 24px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-brand font-display">
+<div class="flex flex-col h-screen" id="root">
+<header class="bg-brand text-secondary sticky top-0 z-20">
+<div class="bg-hero text-white text-center py-2 text-xs font-bold tracking-wider">
+                FREE SHIPPING ON All Orders
+            </div>
+<div class="flex items-center justify-between p-4">
+<button class="text-secondary">
+<span class="material-icons">menu</span>
+</button>
+<h1 class="text-2xl font-bold tracking-widest text-secondary">DXLR</h1>
+<div class="flex items-center space-x-4">
+<button class="text-secondary">
+<span class="material-icons">search</span>
+</button>
+<div class="relative">
+<button class="text-secondary">
+<span class="material-icons">shopping_bag</span>
+</button>
+<span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-cta text-white text-xs font-bold">0</span>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow overflow-y-auto px-4 pb-24">
+<h2 class="text-4xl font-bold text-center my-4 text-secondary">All Products</h2>
+<div class="flex items-center justify-between mb-6 text-icon">
+<button class="flex items-center space-x-2 px-4 py-2 border rounded-lg border-light text-sm text-secondary">
+<span class="material-icons text-base">filter_list</span>
+<span>FILTER</span>
+</button>
+<div class="flex items-center space-x-3">
+<span class="material-icons">list</span>
+<span class="material-icons text-secondary">grid_view</span>
+</div>
+<button class="flex items-center space-x-1 px-4 py-2 border rounded-lg border-light text-sm text-secondary">
+<span>Sort</span>
+<span class="material-icons text-base">expand_more</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-card rounded-lg overflow-hidden flex flex-col">
+<div class="relative">
+<img alt="Man wearing a black track suit" class="w-full h-auto object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjSZfSdoJAMgCdeSkbLpuTDv7SNKD0KECl6DS0SLfBgS6XD_Clk7YBYsHqkIVQnentIV25yLMke-BWC_JE2BtciEA3xDh7WRaTvTtpqKsqZc8g3xmVI5B-x8B3w89q9tHBEdDFyGGs7e7zU3X6vy6z6ElmzaULfW3b-5vr5-XOUQMfA5LxB7z6RrFM4RiWPiHyNlQegOQfsknNFQW7FI1jAn6o-VDoy8zHKcFxT-pYe9pdMzSAv93i-n8fj3QGR0OLX0TxAoP20Bj2"/>
+<span class="absolute top-2 right-2 bg-brand text-secondary text-xs font-semibold px-2 py-1 rounded-full">-23%</span>
+</div>
+<div class="p-3 flex flex-col flex-grow">
+<h3 class="font-semibold text-sm text-primary">Track Suit (Black)</h3>
+<div class="flex items-baseline space-x-2 mt-1">
+<p class="text-sm line-through text-primary/70">LE 2,000.00</p>
+<p class="font-bold text-primary">LE 1,549.00</p>
+</div>
+<button class="mt-3 w-full bg-cta text-white text-sm font-bold py-2 rounded-lg border border-cta hover:bg-opacity-90">QUICK ADD</button>
+</div>
+</div>
+<div class="bg-card rounded-lg overflow-hidden flex flex-col">
+<div class="relative">
+<img alt="Man wearing an olive green track suit" class="w-full h-auto object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJt13l3A2DP67tW-An8XIS6gT-iGjj1_baBkfxdI2b6leb-WkFzcrkinE9eEFsVp2Q933G-quYO58QIYvULdBT6c-10d96NQxYl3NNgcViti4KBC4uIodIW1G3k9KPln9s2FuZIvQpRwXqIVhsKW_33bdAHugBzslVwV6-xAvWBOlyKoqwPGVsxZddQd3710WPOw5E08W5DSl4q-vnOrbu96BeLGCBnHAGnb85VWa2hByQvTWfw6-PxAKnsCW3xB5sajnEkSzJHTkU"/>
+<span class="absolute top-2 right-2 bg-brand text-secondary text-xs font-semibold px-2 py-1 rounded-full">-23%</span>
+</div>
+<div class="p-3 flex flex-col flex-grow">
+<h3 class="font-semibold text-sm text-primary">Track Suit (Olive)</h3>
+<div class="flex items-baseline space-x-2 mt-1">
+<p class="text-sm line-through text-primary/70">LE 2,000.00</p>
+<p class="font-bold text-primary">LE 1,549.00</p>
+</div>
+<button class="mt-3 w-full bg-cta text-white text-sm font-bold py-2 rounded-lg border border-cta hover:bg-opacity-90">QUICK ADD</button>
+</div>
+</div>
+<div class="bg-card rounded-lg overflow-hidden flex flex-col">
+<div class="relative">
+<img alt="Woman wearing a dark blue track suit with a hijab" class="w-full h-auto object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvEkOUy1uoO9iJ7Vv70nc6MSY219JcGKtiWXt2YLczXkVNlJM03XVaH31OeY_CykF-xiTPH6onjQrmRcDDmYZVCq0InWEpJvLLUvP0x9UFYuoZQLxsvh_EjeWUMS9trZiRIYB0Q6dPhGoPISWq7MUHzFl2QSJM36bM3imUuYCKUaKzm2jrRAFhy0VQB46r6B7RG5QBUr5G5xycRSD9nCk38zq1O3xhCpGEsoShedB9w1DYbOKKEDdi7Y0K0-e089PG1nxF8rd1K-R7"/>
+<div class="absolute inset-0 bg-white/70 flex items-center justify-center">
+<div class="w-20 h-20 rounded-full bg-white flex items-center justify-center">
+<span class="text-primary font-semibold">Sold Out</span>
+</div>
+</div>
+</div>
+<div class="p-3 flex flex-col flex-grow">
+<h3 class="font-semibold text-sm text-primary">Track Suit (Navy)</h3>
+<div class="flex items-baseline space-x-2 mt-1">
+<p class="text-sm line-through text-primary/70">LE 1,800.00</p>
+<p class="font-bold text-primary">LE 1,549.00</p>
+</div>
+<button class="mt-3 w-full bg-border-light text-icon text-sm font-bold py-2 rounded-lg cursor-not-allowed" disabled="">QUICK ADD</button>
+</div>
+</div>
+<div class="bg-card rounded-lg overflow-hidden flex flex-col">
+<div class="relative">
+<img alt="Man wearing a large black hooded cape-like garment" class="w-full h-auto object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMEMTBmDtbxcOlm1zz7SzRWjAcqyebahIvsRT43O40RFOS4whP5Ve6iEhV-L_rNOsOYVuxfDaOKiidSUzdI8hqqlW9PczkXGoEVIq72AX4kJ7MLxIyA8nl_Ee1M0YdThqpbLCy6zU6igq50ZEYYEIcI7EKgV5-8qSK2xM5OE8uPWiJsoUfmjwBADvXi46IvZJgcT0mSJvZSqOo4hXR_gkDTM-h7uG17sop9AG6HaF_sfwNxk9kREjAwoESIPze2ItJY8FnNrvaQnCB"/>
+<span class="absolute top-2 right-2 bg-brand text-secondary text-xs font-semibold px-2 py-1 rounded-full">-21%</span>
+</div>
+<div class="p-3 flex flex-col flex-grow">
+<h3 class="font-semibold text-sm text-primary">Oversized Cloak</h3>
+<div class="flex items-baseline space-x-2 mt-1">
+<p class="text-sm line-through text-primary/70">LE 2,500.00</p>
+<p class="font-bold text-primary">LE 1,975.00</p>
+</div>
+<button class="mt-3 w-full bg-cta text-white text-sm font-bold py-2 rounded-lg border border-cta hover:bg-opacity-90">QUICK ADD</button>
+</div>
+</div>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 bg-hero border-t border-light/20 flex justify-around items-start pt-2 pb-4">
+<a class="flex flex-col items-center text-secondary relative" href="#">
+<div class="absolute -top-2 h-1 w-8 bg-cta rounded-full"></div>
+<span class="material-icons">apps</span>
+<span class="text-xs font-bold mt-1">Shop</span>
+</a>
+<a class="flex flex-col items-center text-icon" href="#">
+<span class="material-icons">filter_alt</span>
+<span class="text-xs mt-1">Filter</span>
+</a>
+<a class="flex flex-col items-center text-icon" href="#">
+<span class="material-icons">person_outline</span>
+<span class="text-xs mt-1">Account</span>
+</a>
+<a class="relative flex flex-col items-center text-icon" href="#">
+<span class="material-icons">favorite_border</span>
+<span class="text-xs mt-1">Wishlist</span>
+<span class="absolute -top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-cta text-white text-xs font-bold">0</span>
+</a>
+<a class="relative flex flex-col items-center text-icon" href="#">
+<span class="material-icons">shopping_bag</span>
+<span class="text-xs mt-1">Cart</span>
+<span class="absolute -top-1 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-cta text-white text-xs font-bold">0</span>
+</a>
+</nav>
+</div>
+</body></html>

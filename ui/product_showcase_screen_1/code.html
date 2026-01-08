@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Product Showcase Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+    :root {
+      --burgundy: #6F1D2A;--dark-burgundy: #5A1621;--off-white-cream: #F3EDE7;--pure-white: #FFFFFF;--charcoal-black: #1E1E1E;--cta-red: #B12A34;--muted-gray: #CFC7BF;}
+    body {
+      background-color: var(--burgundy);
+      font-family: 'Roboto', sans-serif;
+    }
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        font-size: 24px;
+    }
+  </style>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: 'var(--burgundy)',
+            "hero-depth": 'var(--dark-burgundy)',
+            surface: 'var(--off-white-cream)',
+            "text-secondary": 'var(--pure-white)',
+            "text-primary": 'var(--charcoal-black)',
+            "cta-red": 'var(--cta-red)',
+            "icon-border": 'var(--muted-gray)',
+          },
+          fontFamily: {
+            display: ["Roboto", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "0.5rem",
+          },
+        },
+      },
+    };
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-brand font-display">
+<div class="max-w-md mx-auto bg-brand">
+<div class="bg-surface py-2 text-center">
+<p class="text-text-primary font-bold text-xs tracking-wider">FREE SHIPPING ON All Orders</p>
+</div>
+<header class="bg-hero-depth p-4 flex justify-between items-center">
+<span class="material-symbols-outlined text-text-secondary">menu</span>
+<div class="text-3xl font-bold text-surface">DXLR</div>
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-text-secondary">search</span>
+<div class="relative">
+<span class="material-symbols-outlined text-text-secondary">shopping_bag</span>
+<span class="absolute -top-1 -right-2 bg-cta-red text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold">1</span>
+</div>
+</div>
+</header>
+<main>
+<div class="relative">
+<img alt="Male and female models wearing black and olive green tracksuits against a light grey background" class="w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDa01mJO639sFKeF_o348Wy2aKHrSNt6NI9L5mqn3v9lT6bkX32kKoF2xXgO7rCKEZzI4-XTfYQ6Y4_FlK9eiiqGUEMNc4euygTSC65o_QnScrMbIpu1s2Xn-r8kYStJlRYTFhfkuk9yVjqiOtfi5ZqG4fUxvaGRVJo0xwCYfQGqK15ICwHagXurS3c5DhfMmCTeYCOdUF5JAQHzs4LXHn30fihM_-qnLKVaDc7i0NpEmxLoK796Xy7hVjAmmuNn3EgoCQIbNKaPVIV"/>
+<div class="absolute inset-x-0 bottom-6 flex justify-center">
+<button class="bg-cta-red text-white py-2 px-8 rounded-lg font-bold flex items-center space-x-2 shadow-lg text-sm">
+<span>Shop Now</span>
+<span class="material-symbols-outlined" style="font-size: 20px;">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="bg-brand text-text-secondary p-4">
+<h2 class="text-lg font-bold tracking-wider text-center mb-4">SALE ENDS SOON</h2>
+<div class="grid grid-cols-4 gap-2 text-center">
+<div class="border border-icon-border rounded-lg p-2">
+<p class="text-2xl font-bold">0</p>
+<p class="text-xs">Days</p>
+</div>
+<div class="border border-icon-border rounded-lg p-2">
+<p class="text-2xl font-bold">23</p>
+<p class="text-xs">Hours</p>
+</div>
+<div class="border border-icon-border rounded-lg p-2">
+<p class="text-2xl font-bold">24</p>
+<p class="text-xs">Mins</p>
+</div>
+<div class="border border-icon-border rounded-lg p-2">
+<p class="text-2xl font-bold">52</p>
+<p class="text-xs">Secs</p>
+</div>
+</div>
+</div>
+<div class="p-4 space-y-4 bg-brand">
+<div class="relative rounded-lg overflow-hidden">
+<img alt="Models wearing track suits" class="w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyHH4j97N9Ys1baNt0KoykRcLgxaUuCYuhpUfRy-Tfp9wnPKv2zCe-uF5AZmQfrGBHT-_Ao7uPPyAAM6jj8igslZqezIdgEmzsClt381lUe7turX4zBpx1yx5JMQMDdZe4px0rcY5TVL2AxdnRGqkjUU3oCbIpbRlx86tGd7PAuC7aHx8JXG-7gSp7XFf8xGo15XIvcscQnJfczlzVUqf-DaV_NYS0_jJ7E2zQh5TaufttpJV8e7niZcUIzfMN89ucxsH0crkYrC-g"/>
+<div class="absolute inset-0 bg-black bg-opacity-30"></div>
+<div class="absolute inset-0 flex justify-center items-center">
+<button class="bg-surface text-text-primary py-2 px-6 rounded-lg font-bold text-sm">Track Suits</button>
+</div>
+</div>
+<div class="relative rounded-lg overflow-hidden">
+<img alt="Person wrapped in a blanket" class="w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARD3jveMRfo9kWFOlZNsalGAK-DblzztN6IkOlqbYxtvRJP7eAJw3_dTubkTBYvZwIKqRis_U48IqLiEBfmLHUJDV_z5E1KZhFm9bfYUf2ZOdmja4ercg6swC7b2hgrULyaNdaaz3Uv-ipwq6UgWruqRt47LBbc3-VaEAA6s1bgVX7KX9rLb29_jJQjEtmddn-CeoJyPM3UIqw7cwiICf4VnoCdVZYSdmfdgQRufHj--U8KOIKajBw6aRA3aYHIAZwky7COSXQjeWr"/>
+<div class="absolute inset-0 bg-black bg-opacity-30"></div>
+<div class="absolute inset-0 flex justify-center items-center">
+<button class="bg-surface text-text-primary py-2 px-6 rounded-lg font-bold text-sm">Blanket</button>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="relative rounded-lg overflow-hidden">
+<img alt="Close up of sweatpants" class="w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2kPe8GP1qc6oKEK-rvynz7sjzir7O99jxwX2Kmh7wLiCwNh4f7repDCabn85zAOLsCvKJFuT4Tn-jNe-5af7q2zYvI-3FZCrIjQmXAoc1JjAQtfSawXK4FPI3UMvtn-ioxIyV0trmKhWYXlmV8ktVGQwF62HaVDyrvV0rtThEIwAznDVhewGUeTNVQf0SzSVVttgNs_PnOMZVXuKsm0au7NfKwy26JQ8Ozykd2yXLXsOH95Yd2JcaqWO_Kzz219gwA4XpfwSUfLvt"/>
+<div class="absolute inset-0 bg-black bg-opacity-30"></div>
+<div class="absolute inset-0 flex justify-center items-end pb-4">
+<button class="bg-surface text-text-primary py-2 px-6 rounded-lg font-bold text-sm">Sweatpants</button>
+</div>
+</div>
+<div class="relative rounded-lg overflow-hidden">
+<img alt="Model wearing a matching set" class="w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeeXi89zzfoZky2pxIwGotStJag-i_lYq1iWpvMjad45Tkdhwm48qfpkmDbByyG1nZReDgD4BhZF-lb2UaIOox_TaG_NL_e9aoBx-82jjuZsOf9KMo9fdMLrX0Lp0lWQouH6HCigpW0iflwmaOMOmG0k8eDZauijbXjJVK3bxoOOXD7Na07OdtmcuGaFKOBtOVLagEqVkOxv7MhHnqX0v1pto0F1Qy3cTqk75_WA0RYlluxo3vPs9jkMfAlOBZcq2JDn4nV1xrqR1_"/>
+<div class="absolute inset-0 bg-black bg-opacity-30"></div>
+<div class="absolute inset-0 flex justify-center items-end pb-4">
+<button class="bg-surface text-text-primary py-2 px-6 rounded-lg font-bold text-sm">Sets</button>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-brand p-4 pb-24">
+<h2 class="text-2xl font-bold text-center text-text-secondary mb-4">Winter Collection</h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface rounded-lg overflow-hidden">
+<div class="relative">
+<img alt="Track Suit (Black)" class="w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3h3rYYJRtNXHVANIPaiCamCJAge_O_1xIq4a9XtZ2Xcr5b2LKyrUrxf75gwbGifxj4atFCWkg5xu71FySi_Ye6JKO7RkhbIjDV_DDtsC10a4lwM_ppqp21cYXeBSJjX4iiObAxFeZJc_NYFnSQkD4lhh6MAVH_ExVBXmNZlbAgy5MuLjZjV7kwIFEWDnTP-5ApHNogS0cBMh50gvB9Gx6Fuw7159pa3a-fc4nWYhv-cfvqlfGzx2o9NM4mKaknm6JX9iXAKduR05z"/>
+<span class="absolute top-2 left-2 bg-cta-red text-white text-xs font-bold px-2 py-1 rounded">-23%</span>
+</div>
+<div class="p-2">
+<h3 class="text-text-primary font-bold text-sm truncate">Track Suit (Black)</h3>
+<div class="flex items-center space-x-2 mt-1">
+<p class="text-cta-red font-bold text-sm">LE 1,699.00</p>
+<p class="text-icon-border line-through text-xs">LE 2,200.00</p>
+</div>
+</div>
+</div>
+<div class="bg-surface rounded-lg overflow-hidden">
+<div class="relative">
+<img alt="Track Suit (Olive)" class="w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuEUKo-b7kYr37a4mYu602B3Ef99TRGMOS9Wb-CQw1jFFfPnHAaPeIeL_rUoAdjACprNkcdzrBOkNGk95CSkn1fQ-WrtUturxfR6NYHkh1qwQH4NWfzUKliOjzWNOfmnE9kwS4xI8IU3zMjsiPCm5iqYGm-HwGkohqGlBCFjAZXKgRCj0hvIKzdWfYrZhoPlaxpb_LQ_w26PHxBCvcGefK7nbVY4Gtsh9UMjUvZhZF4Hlc_35FCeOMrzCedwOff_VMqN1qkb0H1RGk"/>
+<span class="absolute top-2 left-2 bg-cta-red text-white text-xs font-bold px-2 py-1 rounded">-23%</span>
+</div>
+<div class="p-2">
+<h3 class="text-text-primary font-bold text-sm truncate">Track Suit (Olive)</h3>
+<div class="flex items-center space-x-2 mt-1">
+<p class="text-cta-red font-bold text-sm">LE 1,699.00</p>
+<p class="text-icon-border line-through text-xs">LE 2,200.00</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-hero-depth border-t border-brand">
+<div class="flex justify-around items-center h-16 text-xs text-icon-border">
+<a class="flex flex-col items-center justify-center text-cta-red" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">apps</span>
+<span>Shop</span>
+</a>
+<a class="flex flex-col items-center justify-center" href="#">
+<span class="material-symbols-outlined">person_outline</span>
+<span>Account</span>
+</a>
+<a class="flex flex-col items-center justify-center relative" href="#">
+<span class="material-symbols-outlined">favorite_border</span>
+<span class="absolute -top-0.5 right-1.5 bg-cta-red text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold">1</span>
+<span>Wishlist</span>
+</a>
+<a class="flex flex-col items-center justify-center relative" href="#">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="absolute -top-0.5 right-1.5 bg-cta-red text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold">1</span>
+<span>Cart</span>
+</a>
+</div>
+</footer>
+</div>
+</body></html>
