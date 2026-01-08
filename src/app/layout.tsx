@@ -1,13 +1,5 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
 import "./globals.css";
-
-const roboto = Roboto({
-  weight: ["400", "500", "700"],
-  subsets: ["latin"],
-  variable: "--font-roboto",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "DXLR - Premium Fashion E-Commerce",
@@ -23,11 +15,15 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+          rel="stylesheet"
+        />
+        <link
           href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
           rel="stylesheet"
         />
       </head>
-      <body className={`${roboto.variable} font-sans antialiased bg-brand-burgundy dark:bg-black`}>
+      <body className="font-sans antialiased bg-brand-burgundy dark:bg-black" style={{ fontFamily: 'Roboto, system-ui, sans-serif' }}>
         {children}
       </body>
     </html>
