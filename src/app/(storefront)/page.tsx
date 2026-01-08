@@ -1,35 +1,55 @@
-export default function HomePage() {
-  return (
-    <div className="px-4 pt-6">
-      {/* Hero/Category Scroll Section */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-brand-cream mb-4">
-          Winter Collection
-        </h1>
-        <p className="text-brand-cream/80">
-          Welcome to DXLR - Your premium fashion destination
-        </p>
-      </div>
+import Link from "next/link";
+import { getFeaturedProducts } from "@/lib/queries/products";
+import { ProductGrid } from "@/components/storefront/product/ProductGrid";
+import { Header } from "@/components/storefront/layout/Header";
 
-      {/* Placeholder for products */}
-      <div className="grid grid-cols-2 gap-4">
-        {[1, 2, 3, 4].map((i) => (
-          <div
-            key={i}
-            className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden"
-          >
-            <div className="aspect-square bg-gray-200 dark:bg-gray-700"></div>
-            <div className="p-3">
-              <h3 className="font-semibold text-sm text-gray-900 dark:text-gray-100">
-                Product {i}
-              </h3>
-              <p className="text-green-500 font-bold text-sm mt-1">
-                LE 899.00
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const featuredProducts = await getFeaturedProducts(8);
+
+  return (
+    <>
+      <Header />
+      <div className="px-4 pt-6">
+        {/* Hero Section */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-brand-cream mb-2">
+            Winter Collection
+          </h1>
+          <p className="text-brand-cream/80 text-sm">
+            Discover our latest premium fashion pieces
+          </p>
+        </div>
+
+        {/* Featured Products */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-brand-cream">
+              Featured Products
+            </h2>
+            <Link
+              href="/products"
+              className="text-sm text-brand-primary hover:underline"
+            >
+              View All
+            </Link>
+          </div>
+
+          {featuredProducts.length > 0 ? (
+            <ProductGrid products={featuredProducts} />
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-brand-cream/70 text-sm">
+                No products available yet
+              </p>
+              <p className="text-brand-cream/50 text-xs mt-2">
+                Products will appear here once added to the database
               </p>
             </div>
-          </div>
-        ))}
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

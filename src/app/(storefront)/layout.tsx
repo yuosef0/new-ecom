@@ -1,5 +1,7 @@
 import { BottomNav } from "@/components/storefront/layout/BottomNav";
 import { SideMenu } from "@/components/storefront/layout/SideMenu";
+import { CartOverlay } from "@/components/storefront/cart/CartOverlay";
+import { SearchOverlay } from "@/components/storefront/search/SearchOverlay";
 
 export default function StorefrontLayout({
   children,
@@ -10,6 +12,12 @@ export default function StorefrontLayout({
     <>
       {/* Side Menu Drawer */}
       <SideMenu />
+
+      {/* Cart Overlay */}
+      <CartOverlay />
+
+      {/* Search Overlay */}
+      <SearchOverlay />
 
       {/* Main Content */}
       <div className="mx-auto max-w-sm min-h-screen">
