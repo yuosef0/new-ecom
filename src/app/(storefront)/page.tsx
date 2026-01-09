@@ -1,11 +1,25 @@
 import Link from "next/link";
 import { getFeaturedProducts } from "@/lib/queries/products";
+import { getFeaturedCollections } from "@/lib/queries/collections";
 import { ProductGrid } from "@/components/storefront/product/ProductGrid";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const featuredProducts = await getFeaturedProducts(8);
+  const collections = await getFeaturedCollections();
+
+  // Split collections: first 2 as large cards, rest as scrollable
+  const largeCollections = collections.slice(0, 2);
+  const scrollableCollections = collections.slice(2);
+
+  // Default images for collections if none provided
+  const defaultImages = [
+    "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1615876234886-fd9a39fda97f?w=800&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=400&h=300&fit=crop",
+    "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=300&fit=crop",
+  ];
 
   return (
     <div className="pb-20 sm:pb-24 md:pb-28">
@@ -75,81 +89,54 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* Category Sections */}
-      <div className="py-4 sm:py-6 md:py-8 px-4 sm:px-6 md:px-8 space-y-4 sm:space-y-5 md:space-y-6 bg-brand-burgundy">
-        {/* Track Suits */}
-        <div className="relative rounded-lg overflow-hidden shadow-lg">
-          <img
-            alt="Track Suits Collection"
-            className="w-full h-auto min-h-[180px] sm:min-h-[220px] md:min-h-[280px] object-cover"
-            src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&h=400&fit=crop"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-30"></div>
-          <div className="absolute inset-0 flex justify-center items-center">
-            <Link
-              href="/products?category=track-suits"
-              className="bg-brand-cream text-brand-charcoal py-2 sm:py-2.5 md:py-3 px-6 sm:px-8 md:px-10 rounded-lg font-bold text-sm sm:text-base hover:bg-white transition-all shadow-md"
-            >
-              Track Suits
-            </Link>
-          </div>
-        </div>
-
-        {/* Blankets */}
-        <div className="relative rounded-lg overflow-hidden shadow-lg">
-          <img
-            alt="Blankets Collection"
-            className="w-full h-auto min-h-[180px] sm:min-h-[220px] md:min-h-[280px] object-cover"
-            src="https://images.unsplash.com/photo-1615876234886-fd9a39fda97f?w=800&h=400&fit=crop"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-30"></div>
-          <div className="absolute inset-0 flex justify-center items-center">
-            <Link
-              href="/products?category=blankets"
-              className="bg-brand-cream text-brand-charcoal py-2 sm:py-2.5 md:py-3 px-6 sm:px-8 md:px-10 rounded-lg font-bold text-sm sm:text-base hover:bg-white transition-all shadow-md"
-            >
-              Blanket
-            </Link>
-          </div>
-        </div>
-
-        {/* Sweatpants & Sets Grid - Horizontal Scrollable */}
-        <div className="flex gap-3 sm:gap-4 md:gap-5 overflow-x-auto no-scrollbar pb-2 -mx-4 sm:-mx-6 md:-mx-8 px-4 sm:px-6 md:px-8">
-          <div className="relative rounded-lg overflow-hidden shadow-lg flex-shrink-0 w-[45%] sm:w-[48%] md:w-[30%]">
-            <img
-              alt="Sweatpants Collection"
-              className="w-full h-auto min-h-[140px] sm:min-h-[180px] md:min-h-[220px] object-cover"
-              src="https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=400&h=300&fit=crop"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-30"></div>
-            <div className="absolute inset-0 flex justify-center items-end pb-3 sm:pb-4 md:pb-5">
-              <Link
-                href="/products?category=sweatpants"
-                className="bg-brand-cream text-brand-charcoal py-1.5 sm:py-2 md:py-2.5 px-4 sm:px-6 md:px-8 rounded-lg font-bold text-xs sm:text-sm md:text-base hover:bg-white transition-all shadow-md"
-              >
-                Sweatpants
-              </Link>
+      {/* Collections Sections */}
+      {collections.length > 0 && (
+        <div className="py-4 sm:py-6 md:py-8 px-4 sm:px-6 md:px-8 space-y-4 sm:space-y-5 md:space-y-6 bg-brand-burgundy">
+          {/* First 2 Collections - Large Cards */}
+          {largeCollections.map((collection, index) => (
+            <div key={collection.id} className="relative rounded-lg overflow-hidden shadow-lg">
+              <img
+                alt={collection.name}
+                className="w-full h-auto min-h-[180px] sm:min-h-[220px] md:min-h-[280px] object-cover"
+                src={collection.image_url || defaultImages[index]}
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+              <div className="absolute inset-0 flex justify-center items-center">
+                <Link
+                  href={`/collections/${collection.slug}`}
+                  className="bg-brand-cream text-brand-charcoal py-2 sm:py-2.5 md:py-3 px-6 sm:px-8 md:px-10 rounded-lg font-bold text-sm sm:text-base hover:bg-white transition-all shadow-md"
+                >
+                  {collection.name}
+                </Link>
+              </div>
             </div>
-          </div>
-          <div className="relative rounded-lg overflow-hidden shadow-lg flex-shrink-0 w-[45%] sm:w-[48%] md:w-[30%]">
-            <img
-              alt="Sets Collection"
-              className="w-full h-auto min-h-[140px] sm:min-h-[180px] md:min-h-[220px] object-cover"
-              src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=300&fit=crop"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-30"></div>
-            <div className="absolute inset-0 flex justify-center items-end pb-3 sm:pb-4 md:pb-5">
-              <Link
-                href="/products?category=sets"
-                className="bg-brand-cream text-brand-charcoal py-1.5 sm:py-2 md:py-2.5 px-4 sm:px-6 md:px-8 rounded-lg font-bold text-xs sm:text-sm md:text-base hover:bg-white transition-all shadow-md"
-              >
-                Sets
-              </Link>
+          ))}
+
+          {/* Rest of Collections - Horizontal Scrollable */}
+          {scrollableCollections.length > 0 && (
+            <div className="flex gap-3 sm:gap-4 md:gap-5 overflow-x-auto no-scrollbar pb-2 -mx-4 sm:-mx-6 md:-mx-8 px-4 sm:px-6 md:px-8">
+              {scrollableCollections.map((collection, index) => (
+                <div key={collection.id} className="relative rounded-lg overflow-hidden shadow-lg flex-shrink-0 w-[45%] sm:w-[48%] md:w-[30%]">
+                  <img
+                    alt={collection.name}
+                    className="w-full h-auto min-h-[140px] sm:min-h-[180px] md:min-h-[220px] object-cover"
+                    src={collection.image_url || defaultImages[index + 2] || defaultImages[0]}
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+                  <div className="absolute inset-0 flex justify-center items-end pb-3 sm:pb-4 md:pb-5">
+                    <Link
+                      href={`/collections/${collection.slug}`}
+                      className="bg-brand-cream text-brand-charcoal py-1.5 sm:py-2 md:py-2.5 px-4 sm:px-6 md:px-8 rounded-lg font-bold text-xs sm:text-sm md:text-base hover:bg-white transition-all shadow-md"
+                    >
+                      {collection.name}
+                    </Link>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
-          {/* Additional category cards can be added here and will be scrollable */}
+          )}
         </div>
-      </div>
+      )}
 
       {/* Featured Products Section */}
       <div className="bg-brand-burgundy py-6 sm:py-8 md:py-10 px-4 sm:px-6 md:px-8">
