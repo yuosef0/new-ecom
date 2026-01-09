@@ -1,4 +1,5 @@
 import { Header } from "@/components/storefront/layout/Header";
+import { Footer } from "@/components/storefront/layout/Footer";
 import { BottomNav } from "@/components/storefront/layout/BottomNav";
 import { SideMenu } from "@/components/storefront/layout/SideMenu";
 import { CartOverlay } from "@/components/storefront/cart/CartOverlay";
@@ -21,6 +22,7 @@ export default function StorefrontLayout({
 
         <Header />
         <main>{children}</main>
+        <Footer />
         <BottomNav />
         <SideMenu />
         <CartOverlay />
