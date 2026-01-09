@@ -16,6 +16,8 @@ interface SearchResult {
   base_price: number;
   compare_at_price: number | null;
   images: Array<{ image_url: string; is_primary: boolean }>;
+  category?: { name: string; slug: string };
+  type: 'product' | 'category';
 }
 
 export function SearchOverlay() {
@@ -52,7 +54,8 @@ export function SearchOverlay() {
   const performSearch = async (searchQuery: string) => {
     const supabase = createClient();
 
-    const { data, error } = await supabase
+    // Search products
+    const { data: products } = await supabase
       .from("products")
       .select(
         `
@@ -61,23 +64,62 @@ export function SearchOverlay() {
         slug,
         base_price,
         compare_at_price,
-        images:product_images(image_url, is_primary)
+        images:product_images(image_url, is_primary),
+        category:categories(name, slug)
       `
       )
       .eq("is_active", true)
       .ilike("name", `%${searchQuery}%`)
-      .limit(6);
+      .limit(4);
 
-    if (!error && data) {
-      setResults(data as SearchResult[]);
+    // Search categories
+    const { data: categories } = await supabase
+      .from("categories")
+      .select("id, name, slug")
+      .eq("is_active", true)
+      .ilike("name", `%${searchQuery}%`)
+      .limit(2);
+
+    const results: SearchResult[] = [];
+
+    // Add categories first
+    if (categories) {
+      categories.forEach((cat) => {
+        results.push({
+          id: cat.id,
+          name: cat.name,
+          slug: cat.slug,
+          base_price: 0,
+          compare_at_price: null,
+          images: [],
+          type: 'category',
+        });
+      });
     }
+
+    // Add products
+    if (products) {
+      products.forEach((prod: any) => {
+        results.push({
+          ...prod,
+          type: 'product',
+        });
+      });
+    }
+
+    setResults(results);
   };
 
-  const handleProductClick = (slug: string) => {
+  const handleResultClick = (result: SearchResult) => {
     toggleSearch();
     setQuery("");
     setResults([]);
-    router.push(`/products/${slug}`);
+
+    if (result.type === 'category') {
+      router.push(`/products?category=${result.slug}`);
+    } else {
+      router.push(`/products/${result.slug}`);
+    }
   };
 
   const handleClear = () => {
@@ -178,21 +220,52 @@ export function SearchOverlay() {
                 Found {results.length} {results.length === 1 ? "product" : "products"}
               </p>
               <div className="space-y-3">
-                {results.map((product) => {
+                {results.map((result) => {
+                  if (result.type === 'category') {
+                    return (
+                      <button
+                        key={result.id}
+                        onClick={() => handleResultClick(result)}
+                        className="w-full flex gap-3 bg-brand-primary/20 hover:bg-brand-primary/30 rounded-lg p-3 transition-colors text-left border border-brand-primary/30"
+                      >
+                        {/* Category Icon */}
+                        <div className="w-20 h-20 bg-brand-primary/20 rounded flex-shrink-0 flex items-center justify-center">
+                          <Icon name="category" className="text-3xl text-brand-cream" />
+                        </div>
+
+                        {/* Category Info */}
+                        <div className="flex-1 min-w-0 flex items-center">
+                          <div>
+                            <p className="text-xs text-brand-cream/70 mb-1">Category</p>
+                            <h3 className="text-brand-cream font-bold text-sm">
+                              {result.name}
+                            </h3>
+                          </div>
+                        </div>
+
+                        {/* Arrow Icon */}
+                        <div className="flex items-center">
+                          <Icon name="chevron_right" className="text-brand-cream/50" />
+                        </div>
+                      </button>
+                    );
+                  }
+
+                  // Product result
                   const primaryImage =
-                    product.images.find((img) => img.is_primary) || product.images[0];
-                  const discount = product.compare_at_price
+                    result.images.find((img) => img.is_primary) || result.images[0];
+                  const discount = result.compare_at_price
                     ? Math.round(
-                        ((product.compare_at_price - product.base_price) /
-                          product.compare_at_price) *
+                        ((result.compare_at_price - result.base_price) /
+                          result.compare_at_price) *
                           100
                       )
                     : 0;
 
                   return (
                     <button
-                      key={product.id}
-                      onClick={() => handleProductClick(product.slug)}
+                      key={result.id}
+                      onClick={() => handleResultClick(result)}
                       className="w-full flex gap-3 bg-white/5 hover:bg-white/10 rounded-lg p-3 transition-colors text-left"
                     >
                       {/* Product Image */}
@@ -200,7 +273,7 @@ export function SearchOverlay() {
                         {primaryImage ? (
                           <Image
                             src={primaryImage.image_url}
-                            alt={product.name}
+                            alt={result.name}
                             fill
                             className="object-cover rounded"
                             sizes="80px"
@@ -220,15 +293,15 @@ export function SearchOverlay() {
                       {/* Product Info */}
                       <div className="flex-1 min-w-0">
                         <h3 className="text-brand-cream font-medium text-sm mb-1 line-clamp-2">
-                          {product.name}
+                          {result.name}
                         </h3>
                         <div className="flex items-center gap-2">
                           <span className="text-brand-cream font-bold">
-                            {formatPrice(product.base_price)}
+                            {formatPrice(result.base_price)}
                           </span>
-                          {product.compare_at_price && (
+                          {result.compare_at_price && (
                             <span className="text-brand-cream/50 text-xs line-through">
-                              {formatPrice(product.compare_at_price)}
+                              {formatPrice(result.compare_at_price)}
                             </span>
                           )}
                         </div>
