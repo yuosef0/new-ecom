@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 export function BottomNav() {
   const pathname = usePathname();
-  const { getTotalItems } = useCartStore();
+  const { getTotalItems, openCart } = useCartStore();
   const totalItems = getTotalItems();
 
   const isActive = (path: string) => {
@@ -57,11 +57,9 @@ export function BottomNav() {
         </Link>
 
         {/* Cart */}
-        <Link
-          href="/cart"
-          className={`flex flex-col items-center justify-center relative gap-0.5 sm:gap-1 py-2 px-2 sm:px-3 ${
-            isActive("/cart") ? "text-brand-primary" : "hover:text-brand-cream transition-colors"
-          }`}
+        <button
+          onClick={openCart}
+          className="flex flex-col items-center justify-center relative gap-0.5 sm:gap-1 py-2 px-2 sm:px-3 hover:text-brand-cream transition-colors"
         >
           <span className="material-icons-outlined text-xl sm:text-2xl">shopping_bag</span>
           {totalItems > 0 && (
@@ -70,7 +68,7 @@ export function BottomNav() {
             </span>
           )}
           <span className="text-[10px] sm:text-xs">Cart</span>
-        </Link>
+        </button>
       </div>
     </footer>
   );

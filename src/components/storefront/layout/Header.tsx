@@ -5,7 +5,7 @@ import { useUIStore } from "@/stores/ui";
 import Link from "next/link";
 
 export function Header() {
-  const { getTotalItems } = useCartStore();
+  const { getTotalItems, openCart } = useCartStore();
   const { toggleSearch, toggleMenu } = useUIStore();
   const totalItems = getTotalItems();
 
@@ -40,8 +40,12 @@ export function Header() {
         </button>
 
         {/* Cart */}
-        <Link href="/cart" className="relative p-1">
-          <span className="material-icons-outlined text-brand-cream hover:text-white transition-colors text-2xl sm:text-[28px]">
+        <button
+          onClick={openCart}
+          className="relative p-1 text-brand-cream hover:text-white transition-colors"
+          aria-label="Open cart"
+        >
+          <span className="material-icons-outlined text-2xl sm:text-[28px]">
             shopping_bag
           </span>
           {totalItems > 0 && (
@@ -49,7 +53,7 @@ export function Header() {
               {totalItems}
             </span>
           )}
-        </Link>
+        </button>
       </div>
     </header>
   );
