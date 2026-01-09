@@ -13,7 +13,14 @@ export function SideMenu() {
     {
       id: "winter",
       name: "Winter Collection",
-      items: ["Track Suits", "Sets", "Sweatpants", "Blanket", "Hoodies", "Quarter Zippers"],
+      items: [
+        { name: "Track Suits", slug: "track-suits" },
+        { name: "Sets", slug: "sets" },
+        { name: "Sweatpants", slug: "sweatpants" },
+        { name: "Blankets", slug: "blankets" },
+        { name: "Hoodies", slug: "hoodies-collection" },
+        { name: "Winter Sale", slug: "winter-sale" },
+      ],
     },
   ];
 
@@ -72,9 +79,9 @@ export function SideMenu() {
                 {expandedCategory === category.id && (
                   <ul className="pl-4 space-y-2 pt-2 text-sm font-light">
                     {category.items.map((item) => (
-                      <li key={item}>
-                        <Link href={`/products?category=${item.toLowerCase().replace(/\s+/g, "-")}`} onClick={toggleMenu}>
-                          {item}
+                      <li key={item.slug}>
+                        <Link href={`/collections/${item.slug}`} onClick={toggleMenu}>
+                          {item.name}
                         </Link>
                       </li>
                     ))}
