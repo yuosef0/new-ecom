@@ -71,7 +71,7 @@ export async function getProducts(params?: {
       `
       *,
       product_images(url, alt_text, is_primary, sort_order),
-      categories(name, slug)
+      categories!inner(name, slug)
     `
     )
     .eq("is_active", true);
@@ -97,6 +97,11 @@ export async function getProducts(params?: {
 
   if (error) {
     console.error("Error fetching products:", error);
+    return [];
+  }
+
+  // If no data and we have category filter, return empty array
+  if (!data) {
     return [];
   }
 
