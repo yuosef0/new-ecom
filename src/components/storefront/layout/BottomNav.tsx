@@ -1,45 +1,75 @@
 "use client";
 
-import Link from "next/link";
-import { Icon } from "../ui/Icon";
 import { useCartStore } from "@/stores/cart";
-import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function BottomNav() {
-  const totalItems = useCartStore((state) => state.getTotalItems());
-  const [wishlistCount] = useState(0); // TODO: Connect to wishlist store
+  const pathname = usePathname();
+  const { getTotalItems } = useCartStore();
+  const totalItems = getTotalItems();
+
+  const isActive = (path: string) => {
+    if (path === "/" && pathname === "/") return true;
+    if (path !== "/" && pathname.startsWith(path)) return true;
+    return false;
+  };
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 max-w-sm mx-auto bg-brand-burgundy dark:bg-black border-t border-gray-600/50 dark:border-gray-400/20 z-30">
-      <div className="flex justify-around items-center h-20 text-brand-cream dark:text-brand-cream">
-        <Link href="/" className="flex flex-col items-center space-y-1">
-          <Icon name="widgets" />
-          <span className="text-xs font-medium">Shop</span>
+    <footer className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-brand-dark border-t border-brand-burgundy z-50">
+      <div className="flex justify-around items-center h-16 text-xs text-brand-muted">
+        {/* Shop */}
+        <Link
+          href="/"
+          className={`flex flex-col items-center justify-center ${
+            isActive("/") ? "text-brand-primary" : ""
+          }`}
+        >
+          <span
+            className="material-icons-outlined"
+            style={{ fontVariationSettings: isActive("/") ? "'FILL' 1" : "'FILL' 0" }}
+          >
+            apps
+          </span>
+          <span>Shop</span>
         </Link>
 
-        <Link href="/account" className="flex flex-col items-center space-y-1">
-          <Icon name="person_outline" />
-          <span className="text-xs font-medium">Account</span>
+        {/* Account */}
+        <Link
+          href="/account"
+          className={`flex flex-col items-center justify-center ${
+            isActive("/account") ? "text-brand-primary" : ""
+          }`}
+        >
+          <span className="material-icons-outlined">person_outline</span>
+          <span>Account</span>
         </Link>
 
-        <Link href="/wishlist" className="relative flex flex-col items-center space-y-1">
-          <Icon name="favorite_border" />
-          {wishlistCount > 0 && (
-            <span className="absolute top-[-4px] right-2 bg-green-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-              {wishlistCount}
-            </span>
-          )}
-          <span className="text-xs font-medium">Wishlist</span>
+        {/* Wishlist */}
+        <Link
+          href="/wishlist"
+          className={`flex flex-col items-center justify-center relative ${
+            isActive("/wishlist") ? "text-brand-primary" : ""
+          }`}
+        >
+          <span className="material-icons-outlined">favorite_border</span>
+          <span>Wishlist</span>
         </Link>
 
-        <Link href="/cart" className="relative flex flex-col items-center space-y-1">
-          <Icon name="shopping_cart_checkout" />
+        {/* Cart */}
+        <Link
+          href="/cart"
+          className={`flex flex-col items-center justify-center relative ${
+            isActive("/cart") ? "text-brand-primary" : ""
+          }`}
+        >
+          <span className="material-icons-outlined">shopping_bag</span>
           {totalItems > 0 && (
-            <span className="absolute top-[-4px] right-2 bg-green-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+            <span className="absolute -top-0.5 right-1.5 bg-brand-primary text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold">
               {totalItems}
             </span>
           )}
-          <span className="text-xs font-medium">Cart</span>
+          <span>Cart</span>
         </Link>
       </div>
     </footer>
