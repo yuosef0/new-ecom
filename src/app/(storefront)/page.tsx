@@ -9,13 +9,6 @@ export default async function HomePage() {
 
   return (
     <div className="pb-20 sm:pb-24 md:pb-28">
-      {/* Free Shipping Banner */}
-      <div className="bg-brand-cream py-2 sm:py-3 text-center px-4">
-        <p className="text-brand-charcoal font-bold text-xs sm:text-sm tracking-wider">
-          FREE SHIPPING ON All Orders
-        </p>
-      </div>
-
       {/* Hero Section */}
       <div className="relative">
         <img
