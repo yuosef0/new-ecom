@@ -20,10 +20,10 @@ export function Header() {
         <span className="material-icons-outlined text-2xl sm:text-[28px]">menu</span>
       </button>
 
-      {/* Logo */}
+      {/* Logo - Centered */}
       <Link
         href="/"
-        className="text-2xl sm:text-3xl md:text-4xl font-bold text-brand-cream hover:text-white transition-colors"
+        className="absolute left-1/2 -translate-x-1/2 text-2xl sm:text-3xl md:text-4xl font-bold text-brand-cream hover:text-white transition-colors"
       >
         DXLR
       </Link>
