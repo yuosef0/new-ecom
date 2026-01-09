@@ -1,62 +1,50 @@
 "use client";
 
-import { Icon } from "../ui/Icon";
-import { useUIStore } from "@/stores/ui";
 import { useCartStore } from "@/stores/cart";
+import { useUIStore } from "@/stores/ui";
+import Link from "next/link";
 
 export function Header() {
-  const { toggleMenu, toggleSearch } = useUIStore();
-  const totalItems = useCartStore((state) => state.getTotalItems());
-  const toggleCart = useCartStore((state) => state.toggleCart);
+  const { getTotalItems } = useCartStore();
+  const { toggleSearch, toggleMenu } = useUIStore();
+  const totalItems = getTotalItems();
 
   return (
-    <header className="sticky top-0 z-20 bg-brand-burgundy dark:bg-black border-b border-gray-600/50">
-      <div className="max-w-sm mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Menu Icon */}
+    <header className="bg-brand-dark p-4 flex justify-between items-center sticky top-0 z-50">
+      {/* Menu Icon */}
+      <button
+        onClick={toggleMenu}
+        className="text-brand-cream hover:text-white transition-colors"
+      >
+        <span className="material-icons-outlined">menu</span>
+      </button>
+
+      {/* Logo */}
+      <Link href="/" className="text-3xl font-bold text-brand-cream hover:text-white transition-colors">
+        DXLR
+      </Link>
+
+      {/* Right Icons */}
+      <div className="flex items-center space-x-4">
+        {/* Search */}
         <button
-          onClick={toggleMenu}
-          className="text-brand-cream p-2 -ml-2"
-          aria-label="Open menu"
+          onClick={toggleSearch}
+          className="text-brand-cream hover:text-white transition-colors"
         >
-          <Icon name="menu" className="text-2xl" />
+          <span className="material-icons-outlined">search</span>
         </button>
 
-        {/* Logo */}
-        <h1 className="text-brand-cream text-xl font-bold tracking-wide">DXLR</h1>
-
-        {/* Right Actions */}
-        <div className="flex items-center space-x-1">
-          {/* Search */}
-          <button
-            onClick={toggleSearch}
-            className="text-brand-cream p-2"
-            aria-label="Search"
-          >
-            <Icon name="search" className="text-xl" />
-          </button>
-
-          {/* Wishlist */}
-          <button
-            className="text-brand-cream p-2 relative"
-            aria-label="Wishlist"
-          >
-            <Icon name="favorite_border" className="text-xl" />
-          </button>
-
-          {/* Cart */}
-          <button
-            onClick={toggleCart}
-            className="text-brand-cream p-2 relative"
-            aria-label="Cart"
-          >
-            <Icon name="shopping_cart" className="text-xl" />
-            {totalItems > 0 && (
-              <span className="absolute top-1 right-1 bg-green-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                {totalItems}
-              </span>
-            )}
-          </button>
-        </div>
+        {/* Cart */}
+        <Link href="/cart" className="relative">
+          <span className="material-icons-outlined text-brand-cream hover:text-white transition-colors">
+            shopping_bag
+          </span>
+          {totalItems > 0 && (
+            <span className="absolute -top-1 -right-2 bg-brand-primary text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold">
+              {totalItems}
+            </span>
+          )}
+        </Link>
       </div>
     </header>
   );
