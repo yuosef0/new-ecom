@@ -24,24 +24,24 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="bg-brand-cream rounded-lg overflow-hidden">
+    <div className="bg-brand-cream rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
       <Link href={`/products/${product.slug}`} className="block">
         {/* Product Image */}
         <div className="relative">
           <img
             alt={product.name}
-            className="w-full h-48 object-cover"
+            className="w-full h-40 sm:h-44 md:h-48 lg:h-52 object-cover"
             src={product.primary_image || "https://via.placeholder.com/400x300"}
           />
           {hasDiscount && (
-            <span className="absolute top-2 right-2 bg-brand-primary text-white text-xs font-bold px-2 py-1 rounded">
+            <span className="absolute top-2 right-2 bg-brand-primary text-white text-xs sm:text-sm font-bold px-2 py-1 rounded shadow-sm">
               -{discountPercent}%
             </span>
           )}
           {!product.in_stock && (
             <div className="absolute inset-0 bg-white/70 flex items-center justify-center">
-              <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center">
-                <span className="text-brand-charcoal font-semibold text-sm">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-200 flex items-center justify-center shadow-md">
+                <span className="text-brand-charcoal font-semibold text-xs sm:text-sm">
                   Sold Out
                 </span>
               </div>
@@ -50,17 +50,17 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Product Info */}
-        <div className="p-2">
-          <h3 className="text-brand-charcoal font-bold text-sm truncate">
+        <div className="p-2 sm:p-3">
+          <h3 className="text-brand-charcoal font-bold text-xs sm:text-sm md:text-base truncate">
             {product.name}
           </h3>
           <div className="flex items-center space-x-2 mt-1">
             {hasDiscount && (
-              <p className="text-brand-muted line-through text-xs">
+              <p className="text-brand-muted line-through text-xs sm:text-sm">
                 {formatPrice(product.compare_at_price!)}
               </p>
             )}
-            <p className="text-brand-primary font-bold text-sm">
+            <p className="text-brand-primary font-bold text-sm sm:text-base">
               {formatPrice(product.base_price)}
             </p>
           </div>
@@ -68,18 +68,18 @@ export function ProductCard({ product }: ProductCardProps) {
       </Link>
 
       {/* Quick Add Button */}
-      <div className="px-2 pb-2">
+      <div className="px-2 pb-2 sm:px-3 sm:pb-3">
         {product.in_stock ? (
           <button
             onClick={handleQuickAdd}
-            className="w-full bg-brand-primary text-white text-xs font-bold py-2 rounded-md hover:bg-brand-dark transition-colors"
+            className="w-full bg-brand-primary text-white text-xs sm:text-sm font-bold py-2 sm:py-2.5 rounded-md hover:bg-brand-dark transition-colors"
           >
             QUICK ADD
           </button>
         ) : (
           <Link
             href={`/products/${product.slug}`}
-            className="block w-full bg-brand-primary text-white text-xs font-bold py-2 rounded-md hover:bg-brand-dark transition-colors text-center"
+            className="block w-full bg-brand-primary text-white text-xs sm:text-sm font-bold py-2 sm:py-2.5 rounded-md hover:bg-brand-dark transition-colors text-center"
           >
             VIEW PRODUCT
           </Link>
