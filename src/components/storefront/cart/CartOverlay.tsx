@@ -29,16 +29,19 @@ export function CartOverlay() {
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-40"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity"
         onClick={closeCart}
       />
 
       {/* Drawer */}
-      <div className="fixed inset-y-0 right-0 w-full max-w-sm bg-brand-burgundy text-brand-cream flex flex-col z-50 transform transition-transform duration-300">
+      <div className="fixed inset-y-0 right-0 w-full max-w-md bg-brand-burgundy shadow-2xl flex flex-col z-50 transform transition-transform duration-300 ease-in-out">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-white/10">
-          <h2 className="text-lg font-bold">Your Cart ({items.length})</h2>
-          <button onClick={closeCart} className="p-1">
+        <div className="flex items-center justify-between p-5 border-b border-white/10">
+          <h2 className="text-xl font-semibold text-brand-cream">Shopping cart</h2>
+          <button
+            onClick={closeCart}
+            className="p-1 rounded-full hover:bg-white/10 text-brand-cream transition-colors"
+          >
             <Icon name="close" className="text-2xl" />
           </button>
         </div>
@@ -59,45 +62,55 @@ export function CartOverlay() {
           </div>
         ) : (
           <>
-            <div className="flex-1 overflow-y-auto px-4 divide-y divide-white/10">
+            <div className="flex-1 overflow-y-auto p-5 space-y-6">
               {cartItems.map((item) => (
                 <CartItem
                   key={item.id}
                   item={item}
                   onUpdateQuantity={(qty) => updateQuantity(item.id, qty)}
                   onRemove={() => removeItem(item.id)}
-                  compact
                 />
               ))}
             </div>
 
             {/* Footer */}
-            <div className="border-t border-white/10 p-4 space-y-4">
+            <div className="border-t border-white/10 bg-brand-dark p-5 pb-8 shadow-[0_-5px_15px_rgba(0,0,0,0.25)]">
+              {/* Note Icon */}
+              <div className="flex justify-center mb-4">
+                <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-brand-muted">
+                  <Icon name="edit_note" className="text-xl" />
+                </div>
+              </div>
+
               {/* Subtotal */}
-              <div className="flex justify-between items-center">
-                <span className="text-brand-cream font-medium">Subtotal</span>
-                <span className="text-brand-cream font-bold text-xl">
-                  {formatPrice(subtotal)}
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-lg font-medium text-brand-cream">Subtotal</span>
+                <span className="text-lg font-bold text-brand-cream">
+                  {formatPrice(subtotal)} EGP
                 </span>
               </div>
 
-              {/* Checkout Button */}
-              <Link
-                href="/checkout"
-                onClick={closeCart}
-                className="block w-full py-3 bg-brand-primary text-white font-bold text-center rounded-lg hover:bg-brand-primary/90"
-              >
-                PROCEED TO CHECKOUT
-              </Link>
+              <p className="text-xs text-brand-muted mb-6">
+                Tax included. <a href="#" className="underline hover:text-brand-cream">Shipping</a> calculated at checkout.
+              </p>
 
-              {/* View Cart Link */}
-              <Link
-                href="/cart"
-                onClick={closeCart}
-                className="block text-center text-brand-cream/70 text-sm hover:text-brand-cream"
-              >
-                View Full Cart
-              </Link>
+              {/* Buttons */}
+              <div className="space-y-3">
+                <Link
+                  href="/cart"
+                  onClick={closeCart}
+                  className="w-full py-3.5 px-4 rounded-md border border-brand-cream bg-brand-cream text-brand-charcoal font-medium text-sm hover:bg-opacity-90 transition-all focus:ring-2 focus:ring-offset-2 focus:ring-brand-cream text-center block"
+                >
+                  View cart
+                </Link>
+                <Link
+                  href="/checkout"
+                  onClick={closeCart}
+                  className="w-full py-3.5 px-4 rounded-md bg-brand-primary text-white font-bold text-sm shadow-md hover:bg-red-700 transition-all focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary flex items-center justify-center"
+                >
+                  Check out
+                </Link>
+              </div>
             </div>
           </>
         )}

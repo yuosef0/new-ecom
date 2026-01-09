@@ -1,8 +1,5 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { Icon } from "../ui/Icon";
 import { formatPrice } from "@/lib/utils";
 
 interface CartItemProps {
@@ -33,82 +30,70 @@ export function CartItem({ item, onUpdateQuantity, onRemove, compact = false }: 
   const imageUrl = item.product.images[0]?.url;
 
   return (
-    <div className={`flex gap-3 ${compact ? "py-2" : "py-4"}`}>
+    <div className="flex gap-4 group">
       {/* Product Image */}
-      <Link href={`/products/${item.product.slug}`} className="flex-shrink-0">
-        <div className={`relative ${compact ? "w-16 h-16" : "w-20 h-20"} bg-white dark:bg-gray-800 rounded-lg overflow-hidden`}>
-          {imageUrl ? (
-            <Image
-              src={imageUrl}
-              alt={item.product.name}
-              fill
-              className="object-cover"
-              sizes="80px"
-            />
-          ) : (
-            <div className="w-full h-full bg-gray-200 dark:bg-gray-700" />
-          )}
-        </div>
-      </Link>
+      <div className="w-24 h-32 flex-shrink-0 bg-brand-cream/10 rounded-md overflow-hidden relative">
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={item.product.name}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200" />
+        )}
+      </div>
 
       {/* Product Info */}
-      <div className="flex-1 min-w-0">
-        <Link href={`/products/${item.product.slug}`}>
-          <h3 className={`font-semibold text-brand-cream ${compact ? "text-sm" : "text-base"} line-clamp-1`}>
+      <div className="flex flex-col flex-1">
+        <div className="flex justify-between items-start">
+          <h3 className="text-sm font-medium text-brand-cream pr-2">
             {item.product.name}
           </h3>
-        </Link>
+        </div>
 
         {/* Variant Info */}
-        {item.variant && (item.variant.color_name || item.variant.size_name) && (
-          <p className="text-xs text-brand-cream/70 mt-1">
-            {[item.variant.color_name, item.variant.size_name].filter(Boolean).join(" / ")}
+        {item.variant && (item.variant.size_name) && (
+          <p className="text-xs text-brand-muted mt-1">
+            {item.variant.size_name}
           </p>
         )}
 
         {/* Price */}
-        <p className={`text-green-500 font-bold ${compact ? "text-sm" : "text-base"} mt-1`}>
-          {formatPrice(price)}
-        </p>
+        <div className="mt-2 flex items-baseline gap-2">
+          <span className="text-sm font-semibold text-green-400">
+            {formatPrice(price)}
+          </span>
+        </div>
 
-        {/* Quantity Controls */}
-        <div className="flex items-center gap-3 mt-2">
-          <div className="flex items-center border border-white/20 rounded-md">
+        {/* Quantity Controls & Remove */}
+        <div className="mt-auto flex items-center justify-between pt-2">
+          <div className="flex items-center border border-brand-muted/50 rounded bg-transparent">
             <button
               onClick={() => onUpdateQuantity(Math.max(1, item.quantity - 1))}
-              className="px-2 py-1 text-brand-cream hover:bg-white/10"
-              aria-label="Decrease quantity"
+              className="px-2 py-1 text-brand-cream hover:bg-white/10 transition-colors"
             >
-              <Icon name="remove" className="text-sm" />
+              <span className="text-lg leading-none">-</span>
             </button>
-            <span className="px-3 py-1 text-brand-cream text-sm font-medium">
+            <span className="px-2 py-1 text-sm font-medium text-brand-cream min-w-[20px] text-center">
               {item.quantity}
             </span>
             <button
               onClick={() => onUpdateQuantity(item.quantity + 1)}
-              className="px-2 py-1 text-brand-cream hover:bg-white/10"
-              aria-label="Increase quantity"
+              className="px-2 py-1 text-brand-cream hover:bg-white/10 transition-colors"
             >
-              <Icon name="add" className="text-sm" />
+              <span className="text-lg leading-none">+</span>
             </button>
           </div>
 
-          {!compact && (
-            <span className="text-brand-cream font-semibold">
-              {formatPrice(total)}
-            </span>
-          )}
+          <button
+            onClick={onRemove}
+            className="text-xs text-brand-cream underline underline-offset-2 hover:text-white transition-colors"
+          >
+            Remove
+          </button>
         </div>
       </div>
-
-      {/* Remove Button */}
-      <button
-        onClick={onRemove}
-        className="flex-shrink-0 text-red-400 hover:text-red-300 p-1"
-        aria-label="Remove item"
-      >
-        <Icon name="delete" className="text-xl" />
-      </button>
     </div>
   );
 }
