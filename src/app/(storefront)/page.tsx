@@ -29,6 +29,27 @@ export default async function HomePage() {
         </div>
       </div>
 
+      {/* Animated Shipping Banner */}
+      <div className="bg-brand-primary overflow-hidden py-2 sm:py-3">
+        <div className="animate-marquee whitespace-nowrap">
+          <span className="text-white font-bold text-xs sm:text-sm tracking-wider mx-8">
+            FREE SHIPPING ON All Orders
+          </span>
+          <span className="text-white font-bold text-xs sm:text-sm tracking-wider mx-8">
+            FREE SHIPPING ON All Orders
+          </span>
+          <span className="text-white font-bold text-xs sm:text-sm tracking-wider mx-8">
+            FREE SHIPPING ON All Orders
+          </span>
+          <span className="text-white font-bold text-xs sm:text-sm tracking-wider mx-8">
+            FREE SHIPPING ON All Orders
+          </span>
+          <span className="text-white font-bold text-xs sm:text-sm tracking-wider mx-8">
+            FREE SHIPPING ON All Orders
+          </span>
+        </div>
+      </div>
+
       {/* Countdown Timer */}
       <div className="bg-brand-burgundy text-brand-cream py-4 sm:py-6 px-4 sm:px-6 md:px-8">
         <h2 className="text-base sm:text-lg md:text-xl font-bold tracking-wider text-center mb-3 sm:mb-4">
@@ -92,9 +113,9 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* Sweatpants & Sets Grid */}
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-5">
-          <div className="relative rounded-lg overflow-hidden shadow-lg">
+        {/* Sweatpants & Sets Grid - Horizontal Scrollable */}
+        <div className="flex gap-3 sm:gap-4 md:gap-5 overflow-x-auto no-scrollbar pb-2 -mx-4 sm:-mx-6 md:-mx-8 px-4 sm:px-6 md:px-8">
+          <div className="relative rounded-lg overflow-hidden shadow-lg flex-shrink-0 w-[45%] sm:w-[48%] md:w-[30%]">
             <img
               alt="Sweatpants Collection"
               className="w-full h-auto min-h-[140px] sm:min-h-[180px] md:min-h-[220px] object-cover"
@@ -110,7 +131,7 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="relative rounded-lg overflow-hidden shadow-lg">
+          <div className="relative rounded-lg overflow-hidden shadow-lg flex-shrink-0 w-[45%] sm:w-[48%] md:w-[30%]">
             <img
               alt="Sets Collection"
               className="w-full h-auto min-h-[140px] sm:min-h-[180px] md:min-h-[220px] object-cover"
@@ -126,6 +147,7 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
+          {/* Additional category cards can be added here and will be scrollable */}
         </div>
       </div>
 

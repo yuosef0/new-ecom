@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Header } from "@/components/storefront/layout/Header";
 import { Icon } from "@/components/storefront/ui/Icon";
 import { useCartStore } from "@/stores/cart";
 import { formatPrice } from "@/lib/utils";
@@ -111,9 +110,7 @@ export default function WishlistPage() {
   // Not authenticated state
   if (!isLoading && !isAuthenticated) {
     return (
-      <>
-        <Header />
-        <div className="px-4 pt-6 min-h-[60vh] flex flex-col items-center justify-center">
+      <div className="px-4 sm:px-6 py-6 min-h-[60vh] flex flex-col items-center justify-center pb-24">
           <Icon name="favorite_border" className="text-6xl text-brand-cream/30 mb-4" />
           <h2 className="text-2xl font-bold text-brand-cream mb-2">Sign in to view wishlist</h2>
           <p className="text-brand-cream/70 mb-6 text-center">
@@ -125,29 +122,23 @@ export default function WishlistPage() {
           >
             SIGN IN
           </Link>
-        </div>
-      </>
+      </div>
     );
   }
 
   // Loading state
   if (isLoading) {
     return (
-      <>
-        <Header />
-        <div className="px-4 pt-6 min-h-[60vh] flex items-center justify-center">
-          <div className="text-brand-cream/70">Loading...</div>
-        </div>
-      </>
+      <div className="px-4 sm:px-6 py-6 min-h-[60vh] flex items-center justify-center pb-24">
+        <div className="text-brand-cream/70">Loading...</div>
+      </div>
     );
   }
 
   // Empty wishlist state
   if (wishlistItems.length === 0) {
     return (
-      <>
-        <Header />
-        <div className="px-4 pt-6 min-h-[60vh] flex flex-col items-center justify-center">
+      <div className="px-4 sm:px-6 py-6 min-h-[60vh] flex flex-col items-center justify-center pb-24">
           <Icon name="favorite_border" className="text-6xl text-brand-cream/30 mb-4" />
           <h2 className="text-2xl font-bold text-brand-cream mb-2">Your wishlist is empty</h2>
           <p className="text-brand-cream/70 mb-6 text-center">
@@ -159,16 +150,13 @@ export default function WishlistPage() {
           >
             SHOP NOW
           </Link>
-        </div>
-      </>
+      </div>
     );
   }
 
   // Wishlist with items
   return (
-    <>
-      <Header />
-      <div className="px-4 pt-6 pb-8">
+    <div className="px-4 sm:px-6 py-4 sm:py-6 pb-24">
         {/* Page Header */}
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-brand-cream">My Wishlist</h1>
@@ -275,7 +263,6 @@ export default function WishlistPage() {
         >
           ← Continue Shopping
         </Link>
-      </div>
-    </>
+    </div>
   );
 }
