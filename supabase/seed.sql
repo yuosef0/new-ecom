@@ -7,12 +7,12 @@
 -- CLEANUP EXISTING SAMPLE DATA
 -- ============================================
 -- Delete in reverse order of foreign key dependencies
-DELETE FROM product_variants WHERE product_id LIKE '30000000-%';
-DELETE FROM product_images WHERE product_id LIKE '30000000-%';
-DELETE FROM product_collections WHERE product_id LIKE '30000000-%' OR collection_id LIKE '20000000-%';
-DELETE FROM products WHERE id LIKE '30000000-%';
-DELETE FROM collections WHERE id LIKE '20000000-%';
-DELETE FROM categories WHERE id LIKE '10000000-%';
+DELETE FROM product_variants WHERE product_id::text LIKE '30000000-%';
+DELETE FROM product_images WHERE product_id::text LIKE '30000000-%';
+DELETE FROM product_collections WHERE product_id::text LIKE '30000000-%' OR collection_id::text LIKE '20000000-%';
+DELETE FROM products WHERE id::text LIKE '30000000-%';
+DELETE FROM collections WHERE id::text LIKE '20000000-%';
+DELETE FROM categories WHERE id::text LIKE '10000000-%';
 DELETE FROM promo_codes WHERE code IN ('WELCOME10', 'FLAT100');
 
 -- ============================================
