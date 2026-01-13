@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/stores/cart";
-import { Header } from "@/components/storefront/layout/Header";
 import { CheckoutForm } from "@/components/storefront/checkout/CheckoutForm";
 import { Icon } from "@/components/storefront/ui/Icon";
 import { formatPrice } from "@/lib/utils";
@@ -78,12 +77,10 @@ export default function CheckoutPage() {
   };
 
   return (
-    <>
-      <Header />
-      <div className="px-4 pt-6 pb-8">
-        {/* Page Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-brand-cream mb-2">Checkout</h1>
+    <div className="px-4 pt-6 pb-8">
+      {/* Page Header */}
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-brand-cream mb-2">Checkout</h1>
           <div className="flex items-center gap-2 text-sm">
             <div
               className={`flex items-center gap-1 ${
@@ -248,6 +245,6 @@ export default function CheckoutPage() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
