@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useCartStore } from "@/stores/cart";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -7,7 +8,24 @@ import { usePathname } from "next/navigation";
 export function BottomNav() {
   const pathname = usePathname();
   const { getTotalItems, openCart } = useCartStore();
-  const totalItems = getTotalItems();
+  const [totalItems, setTotalItems] = useState(0);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setTotalItems(getTotalItems());
+  }, [getTotalItems]);
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    // Update total items when cart changes
+    const unsubscribe = useCartStore.subscribe((state) => {
+      setTotalItems(state.getTotalItems());
+    });
+
+    return unsubscribe;
+  }, [mounted]);
 
   const isActive = (path: string) => {
     if (path === "/" && pathname === "/") return true;

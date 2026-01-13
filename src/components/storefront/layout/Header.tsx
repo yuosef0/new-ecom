@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useCartStore } from "@/stores/cart";
 import { useUIStore } from "@/stores/ui";
 import Link from "next/link";
@@ -7,7 +8,24 @@ import Link from "next/link";
 export function Header() {
   const { getTotalItems, openCart } = useCartStore();
   const { toggleSearch, toggleMenu } = useUIStore();
-  const totalItems = getTotalItems();
+  const [totalItems, setTotalItems] = useState(0);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setTotalItems(getTotalItems());
+  }, [getTotalItems]);
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    // Update total items when cart changes
+    const unsubscribe = useCartStore.subscribe((state) => {
+      setTotalItems(state.getTotalItems());
+    });
+
+    return unsubscribe;
+  }, [mounted]);
 
   return (
     <header className="bg-brand-dark px-4 py-3 sm:px-6 sm:py-4 flex justify-between items-center sticky top-0 z-50 shadow-md">

@@ -17,15 +17,29 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
+  const [isProductInWishlist, setIsProductInWishlist] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const { addItem, openCart } = useCartStore();
   const { toggleWishlist, isInWishlist, loadWishlist } = useWishlistStore();
 
-  const isProductInWishlist = isInWishlist(product.id);
+  useEffect(() => {
+    setMounted(true);
+    loadWishlist().then(() => {
+      setIsProductInWishlist(isInWishlist(product.id));
+    });
+  }, [loadWishlist, product.id, isInWishlist]);
 
   useEffect(() => {
-    loadWishlist();
-  }, [loadWishlist]);
+    if (!mounted) return;
+
+    // Update wishlist state when store changes
+    const unsubscribe = useWishlistStore.subscribe((state) => {
+      setIsProductInWishlist(state.isInWishlist(product.id));
+    });
+
+    return unsubscribe;
+  }, [mounted, product.id]);
 
   const discountPercentage = product.compare_at_price
     ? Math.round(
