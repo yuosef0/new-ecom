@@ -66,20 +66,21 @@ export function ProductCard({ product }: ProductCardProps) {
           </p>
         </div>
 
-        {/* Quick Add Button */}
+        {/* Add to Cart Button */}
         {product.in_stock ? (
           <button
             onClick={handleQuickAdd}
-            className="mt-2 w-full bg-brand-primary text-white text-xs font-bold py-2.5 rounded uppercase tracking-wider border border-gray-300 hover:bg-brand-dark transition-colors"
+            className="mt-2 w-full bg-brand-primary hover:bg-red-700 text-white text-xs font-bold py-2.5 rounded uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5"
           >
-            QUICK ADD
+            <span className="material-icons-outlined text-base">shopping_cart</span>
+            <span>ADD TO CART</span>
           </button>
         ) : (
           <Link
             href={`/products/${product.slug}`}
-            className="mt-2 w-full bg-brand-primary text-white text-xs font-bold py-2.5 rounded uppercase tracking-wider border border-gray-300 hover:bg-brand-dark transition-colors text-center block"
+            className="mt-2 w-full bg-gray-500 text-white text-xs font-bold py-2.5 rounded uppercase tracking-wider transition-colors text-center block opacity-60 cursor-not-allowed"
           >
-            VIEW PRODUCT
+            OUT OF STOCK
           </Link>
         )}
       </div>
