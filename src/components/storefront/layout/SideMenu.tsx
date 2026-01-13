@@ -6,7 +6,7 @@ import { useUIStore } from "@/stores/ui";
 import { useState } from "react";
 
 export function SideMenu() {
-  const { menuOpen, toggleMenu } = useUIStore();
+  const { menuOpen, toggleMenu, toggleSearch } = useUIStore();
   const [expandedCategory, setExpandedCategory] = useState<string | null>("winter");
 
   const categories = [
@@ -119,7 +119,7 @@ export function SideMenu() {
               className="bg-brand-primary text-white py-2 px-3 rounded flex items-center justify-center text-sm"
               onClick={() => {
                 toggleMenu();
-                // TODO: Open search overlay
+                toggleSearch();
               }}
             >
               <Icon name="search" className="!text-lg mr-1" />

@@ -19,7 +19,7 @@ interface WishlistProduct {
     base_price: number;
     compare_at_price: number | null;
     in_stock: boolean;
-    images: Array<{ image_url: string; is_primary: boolean }>;
+    images: Array<{ url: string; is_primary: boolean }>;
   };
 }
 
@@ -62,7 +62,7 @@ export default function WishlistPage() {
           base_price,
           compare_at_price,
           in_stock,
-          product_images(image_url, is_primary)
+          product_images(url, is_primary)
         )
       `
       )
@@ -192,7 +192,7 @@ export default function WishlistPage() {
                   <div className="relative aspect-square bg-white/10">
                     {primaryImage ? (
                       <Image
-                        src={primaryImage.image_url}
+                        src={primaryImage.url}
                         alt={item.product.name}
                         fill
                         className="object-cover"

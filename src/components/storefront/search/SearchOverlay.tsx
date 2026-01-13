@@ -15,7 +15,7 @@ interface SearchResult {
   slug: string;
   base_price: number;
   compare_at_price: number | null;
-  images: Array<{ image_url: string; is_primary: boolean }>;
+  images: Array<{ url: string; is_primary: boolean }>;
   category?: { name: string; slug: string };
   type: 'product' | 'category';
 }
@@ -64,7 +64,7 @@ export function SearchOverlay() {
         slug,
         base_price,
         compare_at_price,
-        images:product_images(image_url, is_primary),
+        images:product_images(url, is_primary),
         category:categories(name, slug)
       `
       )
@@ -272,7 +272,7 @@ export function SearchOverlay() {
                       <div className="relative w-20 h-20 bg-white/10 rounded flex-shrink-0">
                         {primaryImage ? (
                           <Image
-                            src={primaryImage.image_url}
+                            src={primaryImage.url}
                             alt={result.name}
                             fill
                             className="object-cover rounded"
