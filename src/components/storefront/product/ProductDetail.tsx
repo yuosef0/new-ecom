@@ -288,6 +288,49 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
           <ProductGrid products={recommendedProducts} />
         </div>
       )}
+
+      {/* Sticky Bottom Cart Bar - Mobile */}
+      <div className="fixed bottom-[60px] left-0 right-0 bg-brand-dark border-t border-brand-gray/20 px-4 py-3 z-40 flex items-center justify-between lg:hidden">
+        {/* Product Thumbnail */}
+        <div className="flex items-center gap-2">
+          <div className="w-10 h-10 rounded-full overflow-hidden border border-brand-white">
+            <img
+              alt={product.name}
+              className="w-full h-full object-cover"
+              src={images[0]?.url || product.primary_image || "https://via.placeholder.com/40"}
+            />
+          </div>
+        </div>
+
+        {/* Quantity & Add to Cart */}
+        <div className="flex gap-2">
+          {/* Quantity Selector */}
+          <div className="flex items-center border border-brand-gray/30 rounded bg-brand-bg/50 h-10">
+            <button
+              onClick={() => setQuantity(Math.max(1, quantity - 1))}
+              className="px-3 text-brand-white hover:bg-brand-white/10 h-full"
+            >
+              -
+            </button>
+            <span className="px-2 text-brand-white text-sm font-bold">{quantity}</span>
+            <button
+              onClick={() => setQuantity(quantity + 1)}
+              className="px-3 text-brand-white hover:bg-brand-white/10 h-full"
+            >
+              +
+            </button>
+          </div>
+
+          {/* Add to Cart Button */}
+          <button
+            onClick={handleAddToCart}
+            disabled={!product.in_stock}
+            className="bg-primary hover:bg-red-700 text-white font-bold px-6 rounded h-10 text-sm uppercase transition disabled:opacity-50"
+          >
+            Add to cart
+          </button>
+        </div>
+      </div>
     </main>
   );
 }
