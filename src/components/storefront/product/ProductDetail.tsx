@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCartStore } from "@/stores/cart";
+import { useWishlistStore } from "@/stores/wishlist";
 import { formatPrice } from "@/lib/utils";
 import { ProductGrid } from "./ProductGrid";
 import type { ProductWithImages } from "@/lib/queries/products";
@@ -18,6 +19,13 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
   const [activeTab, setActiveTab] = useState("description");
 
   const { addItem, openCart } = useCartStore();
+  const { toggleWishlist, isInWishlist, loadWishlist } = useWishlistStore();
+
+  const isProductInWishlist = isInWishlist(product.id);
+
+  useEffect(() => {
+    loadWishlist();
+  }, [loadWishlist]);
 
   const discountPercentage = product.compare_at_price
     ? Math.round(
@@ -45,6 +53,10 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
     addItem(product.id, null, quantity);
     // Redirect to checkout
     window.location.href = "/checkout";
+  };
+
+  const handleWishlistToggle = async () => {
+    await toggleWishlist(product.id);
   };
 
   return (
@@ -187,8 +199,17 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
                 >
                   Add to cart - {formatPrice(product.base_price * quantity)}
                 </button>
-                <button className="bg-transparent border border-brand-gray/30 rounded p-3 text-brand-white hover:bg-brand-white/10">
-                  <span className="material-icons-outlined">favorite_border</span>
+                <button
+                  onClick={handleWishlistToggle}
+                  className={`border rounded p-3 transition ${
+                    isProductInWishlist
+                      ? "bg-red-500 border-red-500 text-white"
+                      : "bg-transparent border-brand-gray/30 text-brand-white hover:bg-brand-white/10"
+                  }`}
+                >
+                  <span className="material-icons-outlined">
+                    {isProductInWishlist ? "favorite" : "favorite_border"}
+                  </span>
                 </button>
               </div>
               <button
