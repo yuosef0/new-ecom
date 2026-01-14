@@ -32,7 +32,7 @@ export default function RegisterPage() {
 
     try {
       const supabase = createClient();
-      const { error } = await supabase.auth.signUp({
+      const { error, data } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -43,13 +43,21 @@ export default function RegisterPage() {
       });
 
       if (error) {
+        console.error('Signup error:', error);
         setError(error.message);
       } else {
-        router.push("/");
-        router.refresh();
+        console.log('Signup successful:', data);
+        // Check if email confirmation is required
+        if (data.user && !data.session) {
+          setError("Please check your email to confirm your account.");
+        } else {
+          router.push("/");
+          router.refresh();
+        }
       }
     } catch (err) {
-      setError("An error occurred. Please try again.");
+      console.error('Signup exception:', err);
+      setError("An error occurred. Please try again. Check console for details.");
     } finally {
       setLoading(false);
     }
