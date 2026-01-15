@@ -1,28 +1,72 @@
 import { StatCard } from "@/components/admin/dashboard/StatCard";
 import Link from "next/link";
 import { formatPrice } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/server";
+import { supabaseAdmin } from "@/lib/supabase/admin";
+import { redirect } from "next/navigation";
 
 async function getAnalytics() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-    const response = await fetch(
-      `${baseUrl}/api/admin/analytics`,
-      {
-        cache: "no-store",
-      }
-    );
+    // Check authentication server-side
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      console.error("Analytics API error:", {
-        status: response.status,
-        statusText: response.statusText,
-        error: errorData,
-      });
-      throw new Error(`Failed to fetch analytics: ${response.status} ${errorData.error || response.statusText}`);
+    if (!user) {
+      redirect("/login");
     }
 
-    return await response.json();
+    // Check if user is admin
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+
+    if (profile?.role !== "admin") {
+      redirect("/");
+    }
+
+    // Get stats using database function
+    const { data: stats, error: statsError } = await supabaseAdmin.rpc(
+      "get_admin_stats"
+    );
+
+    if (statsError) {
+      console.error("Error fetching stats:", statsError);
+      throw new Error(`Failed to fetch stats: ${statsError.message}`);
+    }
+
+    // Get recent orders
+    const { data: recentOrders } = await supabaseAdmin
+      .from("orders")
+      .select("id, order_number, total, status, created_at, shipping_name")
+      .order("created_at", { ascending: false })
+      .limit(10);
+
+    // Get low stock products
+    const { data: allVariants } = await supabaseAdmin
+      .from("product_variants")
+      .select(
+        `
+        id,
+        stock_quantity,
+        low_stock_threshold,
+        products!inner(id, name, slug)
+      `
+      )
+      .gt("stock_quantity", 0);
+
+    const lowStockProducts = (allVariants || [])
+      .filter((v: any) => v.stock_quantity <= v.low_stock_threshold)
+      .slice(0, 10);
+
+    return {
+      stats,
+      recentOrders: recentOrders || [],
+      lowStockProducts: lowStockProducts || [],
+    };
   } catch (error) {
     console.error("Error fetching analytics:", error);
     return {
