@@ -16,6 +16,11 @@ const navigation = [
     icon: "inventory_2",
   },
   {
+    name: "Categories",
+    href: "/admin/categories",
+    icon: "category",
+  },
+  {
     name: "Orders",
     href: "/admin/orders",
     icon: "shopping_bag",
@@ -24,6 +29,11 @@ const navigation = [
     name: "Customers",
     href: "/admin/customers",
     icon: "people",
+  },
+  {
+    name: "Coupons",
+    href: "/admin/coupons",
+    icon: "local_offer",
   },
   {
     name: "Settings",

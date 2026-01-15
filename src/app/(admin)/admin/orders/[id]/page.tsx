@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
+import { OrderStatusUpdate } from "@/components/admin/orders/OrderStatusUpdate";
 
 async function getOrder(orderId: string) {
   const supabase = await createClient();
@@ -154,6 +155,13 @@ export default async function AdminOrderDetailPage({
               </div>
             </div>
           </div>
+
+          {/* Order Status Update */}
+          <OrderStatusUpdate
+            orderId={order.id}
+            currentStatus={order.status}
+            currentPaymentStatus={order.payment_status}
+          />
 
           {/* Shipping Info */}
           <div className="bg-white rounded-lg border border-gray-200 p-6">
