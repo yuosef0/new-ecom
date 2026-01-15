@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { Icon } from "../ui/Icon";
 import { useUIStore } from "@/stores/ui";
+import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
 
 export function SideMenu() {
   const { menuOpen, toggleMenu, toggleSearch } = useUIStore();
+  const { user, profile, loading, signOut, isAuthenticated } = useAuth();
   const [expandedCategory, setExpandedCategory] = useState<string | null>("winter");
 
   const categories = [
@@ -130,14 +132,55 @@ export function SideMenu() {
 
         {/* Bottom Section */}
         <div className="flex-shrink-0 space-y-3">
-          <Link
-            href="/login"
-            className="w-full bg-brand-cream text-brand-burgundy py-2 px-4 rounded flex items-center justify-center text-sm font-medium"
-            onClick={toggleMenu}
-          >
-            <Icon name="person_outline" className="!text-lg mr-1" />
-            <span>Login</span>
-          </Link>
+          {loading ? (
+            <div className="w-full bg-brand-cream/20 text-brand-cream py-2 px-4 rounded flex items-center justify-center text-sm">
+              <span>Loading...</span>
+            </div>
+          ) : isAuthenticated ? (
+            <>
+              {/* User Info */}
+              <div className="bg-brand-cream/10 p-3 rounded">
+                <div className="flex items-center space-x-2 mb-2">
+                  <Icon name="person" className="!text-lg text-brand-cream" />
+                  <span className="text-sm font-medium text-brand-cream">
+                    {profile?.full_name || user?.email?.split("@")[0] || "User"}
+                  </span>
+                </div>
+                <div className="text-xs text-brand-cream/70">{user?.email}</div>
+              </div>
+
+              {/* Account Links */}
+              <div className="grid grid-cols-2 gap-2">
+                <Link
+                  href="/account"
+                  className="bg-brand-cream/20 text-brand-cream py-2 px-3 rounded flex items-center justify-center text-xs"
+                  onClick={toggleMenu}
+                >
+                  <Icon name="settings" className="!text-base mr-1" />
+                  <span>Account</span>
+                </Link>
+                <button
+                  onClick={() => {
+                    signOut();
+                    toggleMenu();
+                  }}
+                  className="bg-brand-cream/20 text-brand-cream py-2 px-3 rounded flex items-center justify-center text-xs"
+                >
+                  <Icon name="logout" className="!text-base mr-1" />
+                  <span>Logout</span>
+                </button>
+              </div>
+            </>
+          ) : (
+            <Link
+              href="/login"
+              className="w-full bg-brand-cream text-brand-burgundy py-2 px-4 rounded flex items-center justify-center text-sm font-medium"
+              onClick={toggleMenu}
+            >
+              <Icon name="person_outline" className="!text-lg mr-1" />
+              <span>Login</span>
+            </Link>
+          )}
 
           <div className="border-t border-white/20"></div>
 

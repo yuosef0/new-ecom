@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
   // Exchange code for session
   if (code) {
     const supabase = await createClient();
-    const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+    const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
 
     if (exchangeError) {
       console.error("Error exchanging code for session:", exchangeError);
@@ -27,8 +27,29 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Check if user profile exists
+    if (data.user) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("id", data.user.id)
+        .single();
+
+      if (!profile) {
+        console.log("Profile not found for user, redirecting to login with error");
+        return NextResponse.redirect(
+          new URL("/login?error=Profile+not+created", origin)
+        );
+      }
+    }
+
     // Successfully authenticated, redirect to home
-    return NextResponse.redirect(new URL("/", origin));
+    const response = NextResponse.redirect(new URL("/", origin));
+
+    // Force refresh to update client-side state
+    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+
+    return response;
   }
 
   // No code provided, redirect to login
