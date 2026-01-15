@@ -1,15 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { ProductImageUpload } from "@/components/admin/products/ProductImageUpload";
+import Link from "next/link";
 
-export default function NewProductPage() {
+export default function EditProductPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
   const [images, setImages] = useState<{ url: string; is_primary: boolean }[]>([]);
+  const [productLoading, setProductLoading] = useState(true);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -20,6 +23,49 @@ export default function NewProductPage() {
     is_active: true,
     is_featured: false,
   });
+
+  useEffect(() => {
+    loadProduct();
+  }, []);
+
+  const loadProduct = async () => {
+    try {
+      const supabase = createClient();
+
+      const { data: product, error: productError } = await supabase
+        .from("products")
+        .select(`
+          *,
+          product_images(url, is_primary)
+        `)
+        .eq("id", params.id)
+        .single();
+
+      if (productError) throw productError;
+
+      setFormData({
+        name: product.name,
+        slug: product.slug,
+        description: product.description || "",
+        base_price: product.base_price.toString(),
+        category_id: product.category_id || "",
+        is_active: product.is_active,
+        is_featured: product.is_featured || false,
+      });
+
+      if (product.product_images) {
+        setImages(product.product_images.map((img: any) => ({
+          url: img.url,
+          is_primary: img.is_primary,
+        })));
+      }
+    } catch (err: any) {
+      console.error("Error loading product:", err);
+      setError(err.message || "Failed to load product");
+    } finally {
+      setProductLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,10 +81,10 @@ export default function NewProductPage() {
     try {
       const supabase = createClient();
 
-      // Insert product
-      const { data: product, error: productError } = await supabase
+      // Update product
+      const { error: productError } = await supabase
         .from("products")
-        .insert({
+        .update({
           name: formData.name,
           slug: formData.slug,
           description: formData.description,
@@ -46,15 +92,21 @@ export default function NewProductPage() {
           category_id: formData.category_id || null,
           is_active: formData.is_active,
           is_featured: formData.is_featured,
+          updated_at: new Date().toISOString(),
         })
-        .select()
-        .single();
+        .eq("id", params.id);
 
       if (productError) throw productError;
 
-      // Insert product images
+      // Delete old images
+      await supabase
+        .from("product_images")
+        .delete()
+        .eq("product_id", params.id);
+
+      // Insert new images
       const imageRecords = images.map(img => ({
-        product_id: product.id,
+        product_id: params.id,
         url: img.url,
         is_primary: img.is_primary,
         alt_text: formData.name,
@@ -66,14 +118,41 @@ export default function NewProductPage() {
 
       if (imagesError) throw imagesError;
 
-      // Redirect to products list
       router.push("/admin/products");
       router.refresh();
     } catch (err: any) {
-      console.error("Error creating product:", err);
-      setError(err.message || "Failed to create product");
+      console.error("Error updating product:", err);
+      setError(err.message || "Failed to update product");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!confirm("Are you sure you want to delete this product? This action cannot be undone.")) {
+      return;
+    }
+
+    setDeleting(true);
+    setError("");
+
+    try {
+      const supabase = createClient();
+
+      // Delete product (images will be deleted via CASCADE)
+      const { error: deleteError } = await supabase
+        .from("products")
+        .delete()
+        .eq("id", params.id);
+
+      if (deleteError) throw deleteError;
+
+      router.push("/admin/products");
+      router.refresh();
+    } catch (err: any) {
+      console.error("Error deleting product:", err);
+      setError(err.message || "Failed to delete product");
+      setDeleting(false);
     }
   };
 
@@ -86,13 +165,39 @@ export default function NewProductPage() {
       .trim();
   };
 
+  if (productLoading) {
+    return (
+      <div className="max-w-4xl space-y-6">
+        <div className="text-center py-12">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary"></div>
+          <p className="mt-4 text-gray-600">Loading product...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-4xl space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Add New Product</h1>
-        <p className="mt-2 text-gray-600">
-          Create a new product for your store
-        </p>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <Link
+            href="/admin/products"
+            className="text-sm text-brand-primary hover:underline mb-2 inline-block"
+          >
+            ← Back to Products
+          </Link>
+          <h1 className="text-3xl font-bold text-gray-900">Edit Product</h1>
+          <p className="mt-2 text-gray-600">Update product information</p>
+        </div>
+        <button
+          onClick={handleDelete}
+          disabled={deleting}
+          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+        >
+          <span className="material-icons-outlined text-lg">delete</span>
+          {deleting ? "Deleting..." : "Delete Product"}
+        </button>
       </div>
 
       {error && (
@@ -151,7 +256,7 @@ export default function NewProductPage() {
           <textarea
             id="description"
             rows={4}
-            value={formData.description || ""}
+            value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
             placeholder="Describe your product..."
@@ -189,9 +294,6 @@ export default function NewProductPage() {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
             placeholder="Category ID"
           />
-          <p className="mt-1 text-xs text-gray-500">
-            Leave empty if no category. You'll be able to select from dropdown once categories management is added.
-          </p>
         </div>
 
         {/* Status Toggles */}
@@ -226,39 +328,25 @@ export default function NewProductPage() {
         {/* Product Images Upload */}
         <ProductImageUpload
           onImagesUploaded={setImages}
+          productId={params.id}
+          existingImages={images}
         />
-
-        {/* Note about variants */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="flex items-start gap-2">
-            <span className="material-icons-outlined text-blue-600 text-lg">info</span>
-            <div className="text-sm text-blue-800">
-              <p className="font-medium mb-1">Note:</p>
-              <p>After creating the product, you'll need to add:</p>
-              <ul className="list-disc list-inside mt-2 space-y-1">
-                <li>Product variants (sizes, colors, etc.) via database</li>
-                <li>Stock quantities for each variant</li>
-              </ul>
-            </div>
-          </div>
-        </div>
 
         {/* Actions */}
         <div className="flex gap-3 pt-4">
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || deleting}
             className="px-6 py-2 bg-brand-primary text-white rounded-lg hover:bg-brand-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Creating..." : "Create Product"}
+            {loading ? "Updating..." : "Update Product"}
           </button>
-          <button
-            type="button"
-            onClick={() => router.back()}
-            className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+          <Link
+            href="/admin/products"
+            className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors inline-block"
           >
             Cancel
-          </button>
+          </Link>
         </div>
       </form>
     </div>
