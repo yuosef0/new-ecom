@@ -32,7 +32,11 @@ export async function GET() {
     if (statsError) {
       console.error("Error fetching stats:", statsError);
       return NextResponse.json(
-        { error: "Failed to fetch stats" },
+        {
+          error: "Failed to fetch stats",
+          details: statsError.message,
+          hint: "Make sure get_admin_stats() function exists in database. Run the SQL script from SETUP_ADMIN_ANALYTICS.md"
+        },
         { status: 500 }
       );
     }

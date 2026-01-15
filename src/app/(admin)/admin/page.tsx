@@ -4,15 +4,22 @@ import { formatPrice } from "@/lib/utils";
 
 async function getAnalytics() {
   try {
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/admin/analytics`,
+      `${baseUrl}/api/admin/analytics`,
       {
         cache: "no-store",
       }
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch analytics");
+      const errorData = await response.json().catch(() => ({}));
+      console.error("Analytics API error:", {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorData,
+      });
+      throw new Error(`Failed to fetch analytics: ${response.status} ${errorData.error || response.statusText}`);
     }
 
     return await response.json();
@@ -30,12 +37,13 @@ async function getAnalytics() {
       },
       recentOrders: [],
       lowStockProducts: [],
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }
 
 export default async function AdminDashboard() {
-  const { stats, recentOrders, lowStockProducts } = await getAnalytics();
+  const { stats, recentOrders, lowStockProducts, error } = await getAnalytics();
 
   return (
     <div className="space-y-6">
@@ -46,6 +54,22 @@ export default async function AdminDashboard() {
           Welcome back! Here's what's happening with your store.
         </p>
       </div>
+
+      {/* Error Alert */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <span className="material-icons-outlined text-red-600 text-xl">error</span>
+            <div>
+              <h3 className="font-semibold text-red-900">Error Loading Analytics</h3>
+              <p className="text-sm text-red-700 mt-1">{error}</p>
+              <p className="text-xs text-red-600 mt-2">
+                Please check the console for more details or refer to SETUP_ADMIN_ANALYTICS.md
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
