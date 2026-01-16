@@ -4,12 +4,42 @@ import Link from "next/link";
 import { Icon } from "../ui/Icon";
 import { useUIStore } from "@/stores/ui";
 import { useAuth } from "@/hooks/useAuth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase/client";
+
+interface Collection {
+  id: string;
+  name: string;
+  slug: string;
+  display_type: "small" | "large";
+}
 
 export function SideMenu() {
   const { menuOpen, toggleMenu, toggleSearch } = useUIStore();
   const { user, profile, loading, signOut, isAuthenticated } = useAuth();
   const [expandedCategory, setExpandedCategory] = useState<string | null>("winter");
+  const [collections, setCollections] = useState<Collection[]>([]);
+
+  useEffect(() => {
+    loadCollections();
+  }, []);
+
+  const loadCollections = async () => {
+    try {
+      const supabase = createClient();
+      const { data } = await supabase
+        .from("collections")
+        .select("id, name, slug, display_type")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false });
+
+      if (data) {
+        setCollections(data);
+      }
+    } catch (err) {
+      console.error("Error loading collections:", err);
+    }
+  };
 
   const categories = [
     {
@@ -89,6 +119,20 @@ export function SideMenu() {
                     ))}
                   </ul>
                 )}
+                <div className="border-t border-white/20 mt-2"></div>
+              </li>
+            ))}
+
+            {/* Dynamic Collections */}
+            {collections.map((collection) => (
+              <li key={collection.id}>
+                <Link
+                  href={`/collections/${collection.slug}`}
+                  className="block py-2"
+                  onClick={toggleMenu}
+                >
+                  {collection.name} {collection.display_type === "large" ? "🟦" : "🟨"}
+                </Link>
                 <div className="border-t border-white/20 mt-2"></div>
               </li>
             ))}
