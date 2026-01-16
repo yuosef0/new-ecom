@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { use, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { ProductImageUpload } from "@/components/admin/products/ProductImageUpload";
 import Link from "next/link";
 
-export default function EditProductPage({ params }: { params: { id: string } }) {
+export default function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -26,7 +27,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
 
   useEffect(() => {
     loadProduct();
-  }, []);
+  }, [id]);
 
   const loadProduct = async () => {
     try {
@@ -38,7 +39,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
           *,
           product_images(url, is_primary)
         `)
-        .eq("id", params.id)
+        .eq("id", id)
         .single();
 
       if (productError) throw productError;
@@ -94,7 +95,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
           is_featured: formData.is_featured,
           updated_at: new Date().toISOString(),
         })
-        .eq("id", params.id);
+        .eq("id", id);
 
       if (productError) throw productError;
 
@@ -102,11 +103,11 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
       await supabase
         .from("product_images")
         .delete()
-        .eq("product_id", params.id);
+        .eq("product_id", id);
 
       // Insert new images
       const imageRecords = images.map(img => ({
-        product_id: params.id,
+        product_id: id,
         url: img.url,
         is_primary: img.is_primary,
         alt_text: formData.name,
@@ -143,7 +144,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
       const { error: deleteError } = await supabase
         .from("products")
         .delete()
-        .eq("id", params.id);
+        .eq("id", id);
 
       if (deleteError) throw deleteError;
 
@@ -328,7 +329,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
         {/* Product Images Upload */}
         <ProductImageUpload
           onImagesUploaded={setImages}
-          productId={params.id}
+          productId={id}
           existingImages={images}
         />
 
