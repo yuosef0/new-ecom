@@ -24,9 +24,9 @@ const navigation = [
         icon: "inventory_2",
       },
       {
-        name: "Categories",
-        href: "/admin/categories",
-        icon: "category",
+        name: "Collections",
+        href: "/admin/collections",
+        icon: "collections",
       },
       {
         name: "Reviews",
