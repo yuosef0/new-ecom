@@ -52,6 +52,11 @@ export function SideMenu() {
         { name: "Blankets", slug: "blankets" },
         { name: "Hoodies", slug: "hoodies-collection" },
         { name: "Winter Sale", slug: "winter-sale" },
+        // إضافة الكوليكشنات الديناميكية من قاعدة البيانات
+        ...collections.map((col) => ({
+          name: `${col.name} ${col.display_type === "large" ? "🟦" : "🟨"}`,
+          slug: col.slug,
+        })),
       ],
     },
   ];
@@ -119,20 +124,6 @@ export function SideMenu() {
                     ))}
                   </ul>
                 )}
-                <div className="border-t border-white/20 mt-2"></div>
-              </li>
-            ))}
-
-            {/* Dynamic Collections */}
-            {collections.map((collection) => (
-              <li key={collection.id}>
-                <Link
-                  href={`/collections/${collection.slug}`}
-                  className="block py-2"
-                  onClick={toggleMenu}
-                >
-                  {collection.name} {collection.display_type === "large" ? "🟦" : "🟨"}
-                </Link>
                 <div className="border-t border-white/20 mt-2"></div>
               </li>
             ))}
