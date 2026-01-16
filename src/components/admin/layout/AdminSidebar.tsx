@@ -6,39 +6,84 @@ import { cn } from "@/lib/utils";
 
 const navigation = [
   {
-    name: "Dashboard",
-    href: "/admin",
-    icon: "dashboard",
+    section: "Main",
+    items: [
+      {
+        name: "Dashboard",
+        href: "/admin",
+        icon: "dashboard",
+      },
+    ],
   },
   {
-    name: "Products",
-    href: "/admin/products",
-    icon: "inventory_2",
+    section: "Catalog",
+    items: [
+      {
+        name: "Products",
+        href: "/admin/products",
+        icon: "inventory_2",
+      },
+      {
+        name: "Categories",
+        href: "/admin/categories",
+        icon: "category",
+      },
+      {
+        name: "Reviews",
+        href: "/admin/reviews",
+        icon: "rate_review",
+      },
+    ],
   },
   {
-    name: "Categories",
-    href: "/admin/categories",
-    icon: "category",
+    section: "Sales",
+    items: [
+      {
+        name: "Orders",
+        href: "/admin/orders",
+        icon: "shopping_bag",
+      },
+      {
+        name: "Customers",
+        href: "/admin/customers",
+        icon: "people",
+      },
+      {
+        name: "Coupons",
+        href: "/admin/coupons",
+        icon: "local_offer",
+      },
+    ],
   },
   {
-    name: "Orders",
-    href: "/admin/orders",
-    icon: "shopping_bag",
+    section: "Content",
+    items: [
+      {
+        name: "Slider",
+        href: "/admin/slider",
+        icon: "image",
+      },
+      {
+        name: "Top Bar Messages",
+        href: "/admin/top-bar-messages",
+        icon: "chat",
+      },
+    ],
   },
   {
-    name: "Customers",
-    href: "/admin/customers",
-    icon: "people",
-  },
-  {
-    name: "Coupons",
-    href: "/admin/coupons",
-    icon: "local_offer",
-  },
-  {
-    name: "Settings",
-    href: "/admin/settings",
-    icon: "settings",
+    section: "Settings",
+    items: [
+      {
+        name: "Theme Settings",
+        href: "/admin/theme-settings",
+        icon: "palette",
+      },
+      {
+        name: "General Settings",
+        href: "/admin/settings",
+        icon: "settings",
+      },
+    ],
   },
 ];
 
@@ -56,30 +101,39 @@ export function AdminSidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-        {navigation.map((item) => {
-          const isActive =
-            pathname === item.href ||
-            (item.href !== "/admin" && pathname.startsWith(item.href));
+      <nav className="flex-1 px-4 py-6 space-y-6 overflow-y-auto">
+        {navigation.map((section) => (
+          <div key={section.section}>
+            <h3 className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+              {section.section}
+            </h3>
+            <div className="space-y-1">
+              {section.items.map((item) => {
+                const isActive =
+                  pathname === item.href ||
+                  (item.href !== "/admin" && pathname.startsWith(item.href));
 
-          return (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
-                isActive
-                  ? "bg-brand-primary text-white"
-                  : "text-gray-700 hover:bg-gray-100"
-              )}
-            >
-              <span className="material-icons-outlined text-xl">
-                {item.icon}
-              </span>
-              {item.name}
-            </Link>
-          );
-        })}
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={cn(
+                      "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
+                      isActive
+                        ? "bg-brand-primary text-white"
+                        : "text-gray-700 hover:bg-gray-100"
+                    )}
+                  >
+                    <span className="material-icons-outlined text-xl">
+                      {item.icon}
+                    </span>
+                    {item.name}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
       {/* Footer */}
