@@ -132,6 +132,37 @@ export default function CollectionsManagementPage() {
       // أي ترتيب آخر (0، 3، 4، ...) → كارد صغير
       const displayType = formData.sort_order === 1 || formData.sort_order === 2 ? "large" : "small";
 
+      // التحقق من وجود كارد بنفس الترتيب
+      const { data: existingCollection } = await supabase
+        .from("collections")
+        .select("id")
+        .eq("sort_order", formData.sort_order)
+        .neq("id", editingId || "00000000-0000-0000-0000-000000000000")
+        .maybeSingle();
+
+      // إذا كان هناك كارد بنفس الترتيب، نحركه لآخر الكاردات
+      if (existingCollection) {
+        // نجد آخر ترتيب متاح
+        const { data: allCollections } = await supabase
+          .from("collections")
+          .select("sort_order")
+          .order("sort_order", { ascending: false });
+
+        const maxOrder = allCollections && allCollections.length > 0
+          ? allCollections[0].sort_order
+          : 0;
+        const newMaxOrder = maxOrder + 1;
+
+        // نحرك الكارد القديم لآخر ترتيب
+        await supabase
+          .from("collections")
+          .update({
+            sort_order: newMaxOrder,
+            display_type: "small" // آخر ترتيب دائماً صغير
+          })
+          .eq("id", existingCollection.id);
+      }
+
       const collectionData = {
         name: formData.name,
         slug: formData.slug || generateSlug(formData.name),
