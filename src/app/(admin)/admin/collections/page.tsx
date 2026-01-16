@@ -339,40 +339,6 @@ export default function CollectionsManagementPage() {
                 />
               </div>
 
-              {/* Display Type */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  حجم الكارد في السايدبار
-                </label>
-                <div className="flex gap-3">
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="display_type"
-                      value="small"
-                      checked={formData.display_type === "small"}
-                      onChange={(e) => setFormData({ ...formData, display_type: "small" })}
-                      className="w-4 h-4 text-brand-primary border-gray-300 focus:ring-brand-primary ml-2"
-                    />
-                    <span className="text-sm text-gray-700">كارد صغير 🟨</span>
-                  </label>
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="display_type"
-                      value="large"
-                      checked={formData.display_type === "large"}
-                      onChange={(e) => setFormData({ ...formData, display_type: "large" })}
-                      className="w-4 h-4 text-brand-primary border-gray-300 focus:ring-brand-primary ml-2"
-                    />
-                    <span className="text-sm text-gray-700">كارد كبير 🟦</span>
-                  </label>
-                </div>
-                <p className="text-xs text-gray-500 mt-1">
-                  كل الكوليكشنات تظهر في السايدبار
-                </p>
-              </div>
-
               {/* Active Toggle */}
               <div className="flex items-center">
                 <input
