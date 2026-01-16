@@ -128,7 +128,9 @@ export default function CollectionsManagementPage() {
       }
 
       // تحديد نوع الكارد تلقائياً بناءً على الترتيب
-      const displayType = formData.sort_order <= 2 ? "large" : "small";
+      // الترتيب 1 و 2 فقط → كارد كبير
+      // أي ترتيب آخر (0، 3، 4، ...) → كارد صغير
+      const displayType = formData.sort_order === 1 || formData.sort_order === 2 ? "large" : "small";
 
       const collectionData = {
         name: formData.name,
