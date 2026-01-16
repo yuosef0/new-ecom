@@ -34,7 +34,6 @@ export default function CollectionsManagementPage() {
     name: "",
     slug: "",
     description: "",
-    display_type: "large" as "small" | "large",
     sort_order: 0,
     is_featured: false,
     is_active: true,
@@ -128,11 +127,14 @@ export default function CollectionsManagementPage() {
         if (uploadedUrl) imageUrl = uploadedUrl;
       }
 
+      // تحديد نوع الكارد تلقائياً بناءً على الترتيب
+      const displayType = formData.sort_order <= 2 ? "large" : "small";
+
       const collectionData = {
         name: formData.name,
         slug: formData.slug || generateSlug(formData.name),
         description: formData.description || null,
-        display_type: formData.display_type,
+        display_type: displayType,
         sort_order: formData.sort_order,
         is_featured: formData.is_featured,
         is_active: formData.is_active,
@@ -170,7 +172,6 @@ export default function CollectionsManagementPage() {
       name: collection.name,
       slug: collection.slug,
       description: collection.description || "",
-      display_type: collection.display_type,
       sort_order: collection.sort_order,
       is_featured: collection.is_featured,
       is_active: collection.is_active,
@@ -217,7 +218,6 @@ export default function CollectionsManagementPage() {
       name: "",
       slug: "",
       description: "",
-      display_type: "large",
       sort_order: 0,
       is_featured: false,
       is_active: true,
@@ -347,39 +347,23 @@ export default function CollectionsManagementPage() {
                 />
               </div>
 
-              {/* Display Type */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  نوع العرض *
-                </label>
-                <div className="space-y-2">
-                  <label className="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input
-                      type="radio"
-                      name="display_type"
-                      value="large"
-                      checked={formData.display_type === "large"}
-                      onChange={(e) => setFormData({ ...formData, display_type: "large" })}
-                      className="w-4 h-4 text-brand-primary"
-                    />
-                    <div className="mr-3">
-                      <p className="text-sm font-medium text-gray-900">كارد كبير</p>
-                      <p className="text-xs text-gray-500">يظهر في القسم الرئيسي</p>
-                    </div>
-                  </label>
-                  <label className="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input
-                      type="radio"
-                      name="display_type"
-                      value="small"
-                      checked={formData.display_type === "small"}
-                      onChange={(e) => setFormData({ ...formData, display_type: "small" })}
-                      className="w-4 h-4 text-brand-primary"
-                    />
-                    <div className="mr-3">
-                      <p className="text-sm font-medium text-gray-900">كارد صغير</p>
-                      <p className="text-xs text-gray-500">يظهر في الاسكرول الجانبي</p>
-                    </div>
+              {/* Show in Homepage Toggle */}
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex items-start">
+                  <input
+                    type="checkbox"
+                    id="is_featured"
+                    checked={formData.is_featured}
+                    onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })}
+                    className="w-4 h-4 text-brand-primary border-gray-300 rounded focus:ring-brand-primary mt-0.5"
+                  />
+                  <label htmlFor="is_featured" className="mr-3 text-sm">
+                    <p className="font-medium text-gray-900">يظهر في الصفحة الرئيسية</p>
+                    <p className="text-xs text-gray-600 mt-1">
+                      إذا تم التفعيل: الترتيب 1 و 2 → كارد كبير، الترتيب 3+ → كارد صغير
+                      <br />
+                      إذا لم يتم التفعيل: يظهر في السايدبار فقط
+                    </p>
                   </label>
                 </div>
               </div>
@@ -401,33 +385,18 @@ export default function CollectionsManagementPage() {
                 <p className="text-xs text-gray-500 mt-1">رقم أصغر = يظهر أولاً</p>
               </div>
 
-              {/* Toggles */}
-              <div className="space-y-3">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="is_featured"
-                    checked={formData.is_featured}
-                    onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })}
-                    className="w-4 h-4 text-brand-primary border-gray-300 rounded focus:ring-brand-primary"
-                  />
-                  <label htmlFor="is_featured" className="mr-2 text-sm text-gray-700">
-                    مميز (يظهر في الصفحة الرئيسية)
-                  </label>
-                </div>
-
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="is_active"
-                    checked={formData.is_active}
-                    onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                    className="w-4 h-4 text-brand-primary border-gray-300 rounded focus:ring-brand-primary"
-                  />
-                  <label htmlFor="is_active" className="mr-2 text-sm text-gray-700">
-                    نشط (يظهر في الموقع)
-                  </label>
-                </div>
+              {/* Active Toggle */}
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="is_active"
+                  checked={formData.is_active}
+                  onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
+                  className="w-4 h-4 text-brand-primary border-gray-300 rounded focus:ring-brand-primary"
+                />
+                <label htmlFor="is_active" className="mr-2 text-sm text-gray-700">
+                  نشط (يظهر في الموقع)
+                </label>
               </div>
 
               {/* Buttons */}
@@ -518,18 +487,22 @@ export default function CollectionsManagementPage() {
                       </p>
                     )}
 
-                    <div className="flex flex-wrap items-center gap-2 mb-3 text-xs text-gray-500">
-                      <span>Slug: {collection.slug}</span>
-                      <span>•</span>
-                      <span>الترتيب: {collection.sort_order}</span>
-                      <span>•</span>
-                      <span className={`px-2 py-0.5 rounded ${
-                        collection.display_type === "large"
-                          ? "bg-purple-100 text-purple-700"
-                          : "bg-blue-100 text-blue-700"
-                      }`}>
-                        {collection.display_type === "large" ? "كارد كبير" : "كارد صغير"}
-                      </span>
+                    <div className="flex flex-wrap items-center gap-2 mb-3 text-xs">
+                      <span className="text-gray-500">الترتيب: {collection.sort_order}</span>
+                      <span className="text-gray-400">•</span>
+                      {collection.is_featured ? (
+                        <span className={`px-2 py-1 rounded font-medium ${
+                          collection.display_type === "large"
+                            ? "bg-purple-100 text-purple-700"
+                            : "bg-blue-100 text-blue-700"
+                        }`}>
+                          📱 صفحة رئيسية - {collection.display_type === "large" ? "كارد كبير" : "كارد صغير"}
+                        </span>
+                      ) : (
+                        <span className="px-2 py-1 rounded font-medium bg-gray-100 text-gray-700">
+                          📂 سايدبار
+                        </span>
+                      )}
                     </div>
 
                     {/* Actions */}
