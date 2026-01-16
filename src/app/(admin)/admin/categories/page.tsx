@@ -10,13 +10,9 @@ interface Category {
   slug: string;
   description: string | null;
   image_url: string | null;
-  parent_id: string | null;
   sort_order: number;
   is_active: boolean;
   created_at: string;
-  parent_category?: {
-    name: string;
-  };
 }
 
 export default function CategoriesManagementPage() {
@@ -34,7 +30,6 @@ export default function CategoriesManagementPage() {
     name: "",
     slug: "",
     description: "",
-    parent_id: "",
     sort_order: 0,
     is_active: true,
   });
@@ -48,12 +43,7 @@ export default function CategoriesManagementPage() {
       const supabase = createClient();
       const { data, error } = await supabase
         .from("categories")
-        .select(`
-          *,
-          parent_category:parent_id (
-            name
-          )
-        `)
+        .select("*")
         .order("sort_order", { ascending: true });
 
       if (error) throw error;
@@ -136,7 +126,6 @@ export default function CategoriesManagementPage() {
         name: formData.name,
         slug: formData.slug || generateSlug(formData.name),
         description: formData.description || null,
-        parent_id: formData.parent_id || null,
         sort_order: formData.sort_order,
         is_active: formData.is_active,
         image_url: imageUrl,
@@ -173,7 +162,6 @@ export default function CategoriesManagementPage() {
       name: category.name,
       slug: category.slug,
       description: category.description || "",
-      parent_id: category.parent_id || "",
       sort_order: category.sort_order,
       is_active: category.is_active,
     });
@@ -183,7 +171,7 @@ export default function CategoriesManagementPage() {
   };
 
   const deleteCategory = async (id: string) => {
-    if (!confirm("هل أنت متأكد من حذف هذه الفئة؟ سيتم تعيين الفئات الفرعية إلى بدون فئة رئيسية.")) {
+    if (!confirm("هل أنت متأكد من حذف هذه الفئة؟")) {
       return;
     }
 
@@ -219,7 +207,6 @@ export default function CategoriesManagementPage() {
       name: "",
       slug: "",
       description: "",
-      parent_id: "",
       sort_order: 0,
       is_active: true,
     });
@@ -348,27 +335,6 @@ export default function CategoriesManagementPage() {
                 />
               </div>
 
-              {/* Parent Category */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  الفئة الرئيسية (اختياري)
-                </label>
-                <select
-                  value={formData.parent_id}
-                  onChange={(e) => setFormData({ ...formData, parent_id: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
-                >
-                  <option value="">بدون فئة رئيسية</option>
-                  {categories
-                    .filter((c) => c.id !== editingId)
-                    .map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.name}
-                      </option>
-                    ))}
-                </select>
-              </div>
-
               {/* Sort Order */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -426,111 +392,102 @@ export default function CategoriesManagementPage() {
           </div>
         </div>
 
-        {/* Categories List */}
+        {/* Categories Grid */}
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-lg border border-gray-200">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900">
-                الفئات ({categories.length})
-              </h2>
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">
+              الفئات ({categories.length})
+            </h2>
+          </div>
+
+          {categories.length === 0 ? (
+            <div className="bg-white rounded-lg border border-gray-200 p-12 text-center text-gray-500">
+              <span className="material-icons-outlined text-5xl text-gray-300 mb-4">
+                category
+              </span>
+              <p>لا توجد فئات</p>
             </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {categories.map((category) => (
+                <div key={category.id} className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow">
+                  {/* Category Image */}
+                  {category.image_url && (
+                    <div className="relative w-full h-40 mb-3 rounded-lg overflow-hidden">
+                      <Image
+                        src={category.image_url}
+                        alt={category.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
 
-            {categories.length === 0 ? (
-              <div className="p-12 text-center text-gray-500">
-                <span className="material-icons-outlined text-5xl text-gray-300 mb-4">
-                  category
-                </span>
-                <p>لا توجد فئات</p>
-              </div>
-            ) : (
-              <div className="divide-y divide-gray-200">
-                {categories.map((category) => (
-                  <div key={category.id} className="p-6 hover:bg-gray-50">
-                    <div className="flex gap-4">
-                      {/* Category Image */}
-                      {category.image_url && (
-                        <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden">
-                          <Image
-                            src={category.image_url}
-                            alt={category.name}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                      )}
+                  {/* Content */}
+                  <div>
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="font-semibold text-gray-900 text-lg">
+                        {category.name}
+                      </h3>
+                      <span
+                        className={`text-xs px-2 py-1 rounded-full flex-shrink-0 ${
+                          category.is_active
+                            ? "bg-green-100 text-green-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {category.is_active ? "نشط" : "غير نشط"}
+                      </span>
+                    </div>
 
-                      {/* Content */}
-                      <div className="flex-1">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <h3 className="font-semibold text-gray-900 text-lg">
-                              {category.name}
-                            </h3>
-                            {category.description && (
-                              <p className="text-sm text-gray-600 mt-1">
-                                {category.description}
-                              </p>
-                            )}
-                            <div className="flex flex-wrap items-center gap-2 mt-2">
-                              <span className="text-xs text-gray-500">
-                                Slug: {category.slug}
-                              </span>
-                              <span className="text-xs text-gray-500">
-                                الترتيب: {category.sort_order}
-                              </span>
-                              {category.parent_category && (
-                                <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">
-                                  الفئة الرئيسية: {category.parent_category.name}
-                                </span>
-                              )}
-                              <span
-                                className={`text-xs px-2 py-1 rounded-full ${
-                                  category.is_active
-                                    ? "bg-green-100 text-green-800"
-                                    : "bg-gray-100 text-gray-800"
-                                }`}
-                              >
-                                {category.is_active ? "نشط" : "غير نشط"}
-                              </span>
-                            </div>
-                          </div>
+                    {category.description && (
+                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                        {category.description}
+                      </p>
+                    )}
 
-                          {/* Actions */}
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => toggleActive(category.id, category.is_active)}
-                              className="p-2 rounded-md hover:bg-gray-200 text-gray-600"
-                              title={category.is_active ? "إلغاء التفعيل" : "تفعيل"}
-                            >
-                              <span className="material-icons-outlined text-lg">
-                                {category.is_active ? "visibility_off" : "visibility"}
-                              </span>
-                            </button>
+                    <div className="flex flex-wrap items-center gap-2 mb-3 text-xs text-gray-500">
+                      <span>Slug: {category.slug}</span>
+                      <span>•</span>
+                      <span>الترتيب: {category.sort_order}</span>
+                    </div>
 
-                            <button
-                              onClick={() => editCategory(category)}
-                              className="p-2 rounded-md hover:bg-gray-200 text-gray-600"
-                              title="تعديل"
-                            >
-                              <span className="material-icons-outlined text-lg">edit</span>
-                            </button>
+                    {/* Actions */}
+                    <div className="flex gap-2 pt-3 border-t border-gray-100">
+                      <button
+                        onClick={() => toggleActive(category.id, category.is_active)}
+                        className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-xs bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                        title={category.is_active ? "إلغاء التفعيل" : "تفعيل"}
+                      >
+                        <span className="material-icons-outlined text-sm">
+                          {category.is_active ? "visibility_off" : "visibility"}
+                        </span>
+                        {category.is_active ? "إخفاء" : "إظهار"}
+                      </button>
 
-                            <button
-                              onClick={() => deleteCategory(category.id)}
-                              className="p-2 rounded-md hover:bg-red-100 text-red-600"
-                              title="حذف"
-                            >
-                              <span className="material-icons-outlined text-lg">delete</span>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+                      <button
+                        onClick={() => editCategory(category)}
+                        className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-xs bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+                        title="تعديل"
+                      >
+                        <span className="material-icons-outlined text-sm">edit</span>
+                        تعديل
+                      </button>
+
+                      <button
+                        onClick={() => deleteCategory(category.id)}
+                        className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-xs bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors"
+                        title="حذف"
+                      >
+                        <span className="material-icons-outlined text-sm">delete</span>
+                        حذف
+                      </button>
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
-          </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
