@@ -34,8 +34,7 @@ export default function CollectionsManagementPage() {
     name: "",
     slug: "",
     description: "",
-    sort_order: 0,
-    is_featured: false,
+    display_type: "small" as "small" | "large",
     is_active: true,
   });
 
@@ -49,7 +48,7 @@ export default function CollectionsManagementPage() {
       const { data, error } = await supabase
         .from("collections")
         .select("*")
-        .order("sort_order", { ascending: true });
+        .order("created_at", { ascending: false });
 
       if (error) throw error;
       setCollections(data || []);
@@ -127,49 +126,11 @@ export default function CollectionsManagementPage() {
         if (uploadedUrl) imageUrl = uploadedUrl;
       }
 
-      // تحديد نوع الكارد تلقائياً بناءً على الترتيب
-      // الترتيب 1 و 2 فقط → كارد كبير
-      // أي ترتيب آخر (0، 3، 4، ...) → كارد صغير
-      const displayType = formData.sort_order === 1 || formData.sort_order === 2 ? "large" : "small";
-
-      // التحقق من وجود كارد بنفس الترتيب
-      const { data: existingCollection } = await supabase
-        .from("collections")
-        .select("id")
-        .eq("sort_order", formData.sort_order)
-        .neq("id", editingId || "00000000-0000-0000-0000-000000000000")
-        .maybeSingle();
-
-      // إذا كان هناك كارد بنفس الترتيب، نحركه لآخر الكاردات
-      if (existingCollection) {
-        // نجد آخر ترتيب متاح
-        const { data: allCollections } = await supabase
-          .from("collections")
-          .select("sort_order")
-          .order("sort_order", { ascending: false });
-
-        const maxOrder = allCollections && allCollections.length > 0
-          ? allCollections[0].sort_order
-          : 0;
-        const newMaxOrder = maxOrder + 1;
-
-        // نحرك الكارد القديم لآخر ترتيب
-        await supabase
-          .from("collections")
-          .update({
-            sort_order: newMaxOrder,
-            display_type: "small" // آخر ترتيب دائماً صغير
-          })
-          .eq("id", existingCollection.id);
-      }
-
       const collectionData = {
         name: formData.name,
         slug: formData.slug || generateSlug(formData.name),
         description: formData.description || null,
-        display_type: displayType,
-        sort_order: formData.sort_order,
-        is_featured: formData.is_featured,
+        display_type: formData.display_type,
         is_active: formData.is_active,
         image_url: imageUrl,
       };
@@ -205,8 +166,7 @@ export default function CollectionsManagementPage() {
       name: collection.name,
       slug: collection.slug,
       description: collection.description || "",
-      sort_order: collection.sort_order,
-      is_featured: collection.is_featured,
+      display_type: collection.display_type,
       is_active: collection.is_active,
     });
     setEditingId(collection.id);
@@ -251,8 +211,7 @@ export default function CollectionsManagementPage() {
       name: "",
       slug: "",
       description: "",
-      sort_order: 0,
-      is_featured: false,
+      display_type: "small",
       is_active: true,
     });
     setEditingId(null);
@@ -380,42 +339,38 @@ export default function CollectionsManagementPage() {
                 />
               </div>
 
-              {/* Show in Homepage Toggle */}
-              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <div className="flex items-start">
-                  <input
-                    type="checkbox"
-                    id="is_featured"
-                    checked={formData.is_featured}
-                    onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })}
-                    className="w-4 h-4 text-brand-primary border-gray-300 rounded focus:ring-brand-primary mt-0.5"
-                  />
-                  <label htmlFor="is_featured" className="mr-3 text-sm">
-                    <p className="font-medium text-gray-900">يظهر في الصفحة الرئيسية</p>
-                    <p className="text-xs text-gray-600 mt-1">
-                      إذا تم التفعيل: الترتيب 1 و 2 → كارد كبير، الترتيب 3+ → كارد صغير
-                      <br />
-                      إذا لم يتم التفعيل: يظهر في السايدبار فقط
-                    </p>
-                  </label>
-                </div>
-              </div>
-
-              {/* Sort Order */}
+              {/* Display Type */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  ترتيب العرض
+                  حجم الكارد في السايدبار
                 </label>
-                <input
-                  type="number"
-                  value={formData.sort_order}
-                  onChange={(e) =>
-                    setFormData({ ...formData, sort_order: parseInt(e.target.value) || 0 })
-                  }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
-                  placeholder="0"
-                />
-                <p className="text-xs text-gray-500 mt-1">رقم أصغر = يظهر أولاً</p>
+                <div className="flex gap-3">
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="display_type"
+                      value="small"
+                      checked={formData.display_type === "small"}
+                      onChange={(e) => setFormData({ ...formData, display_type: "small" })}
+                      className="w-4 h-4 text-brand-primary border-gray-300 focus:ring-brand-primary ml-2"
+                    />
+                    <span className="text-sm text-gray-700">كارد صغير 🟨</span>
+                  </label>
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="display_type"
+                      value="large"
+                      checked={formData.display_type === "large"}
+                      onChange={(e) => setFormData({ ...formData, display_type: "large" })}
+                      className="w-4 h-4 text-brand-primary border-gray-300 focus:ring-brand-primary ml-2"
+                    />
+                    <span className="text-sm text-gray-700">كارد كبير 🟦</span>
+                  </label>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  كل الكوليكشنات تظهر في السايدبار
+                </p>
               </div>
 
               {/* Active Toggle */}
@@ -506,11 +461,6 @@ export default function CollectionsManagementPage() {
                         >
                           {collection.is_active ? "نشط" : "غير نشط"}
                         </span>
-                        {collection.is_featured && (
-                          <span className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800">
-                            ⭐
-                          </span>
-                        )}
                       </div>
                     </div>
 
@@ -520,22 +470,15 @@ export default function CollectionsManagementPage() {
                       </p>
                     )}
 
-                    <div className="flex flex-wrap items-center gap-2 mb-3 text-xs">
-                      <span className="text-gray-500">الترتيب: {collection.sort_order}</span>
-                      <span className="text-gray-400">•</span>
-                      {collection.is_featured ? (
-                        <span className={`px-2 py-1 rounded font-medium ${
-                          collection.display_type === "large"
-                            ? "bg-purple-100 text-purple-700"
-                            : "bg-blue-100 text-blue-700"
-                        }`}>
-                          📱 صفحة رئيسية - {collection.display_type === "large" ? "كارد كبير" : "كارد صغير"}
-                        </span>
-                      ) : (
-                        <span className="px-2 py-1 rounded font-medium bg-gray-100 text-gray-700">
-                          📂 سايدبار
-                        </span>
-                      )}
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className={`text-xs px-3 py-1 rounded-full font-medium ${
+                        collection.display_type === "large"
+                          ? "bg-blue-100 text-blue-700"
+                          : "bg-purple-100 text-purple-700"
+                      }`}>
+                        {collection.display_type === "large" ? "🟦 كارد كبير" : "🟨 كارد صغير"}
+                      </span>
+                      <span className="text-xs text-gray-500">يظهر في السايدبار</span>
                     </div>
 
                     {/* Actions */}
