@@ -255,8 +255,7 @@ BEGIN
   SELECT id INTO color_black FROM colors WHERE name = 'Black' LIMIT 1;
 
   -- Create variants for each product (sizes S, M, L, XL, XXL)
-  FOR product_rec IN
-    SELECT id, name FROM products
+  FOR product_rec IN (SELECT id, name FROM products)
   LOOP
     -- Size S
     INSERT INTO product_variants (product_id, size_id, color_id, sku, stock_quantity, is_active)
