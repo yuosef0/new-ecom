@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getFeaturedProducts } from "@/lib/queries/products";
-import { getFeaturedCollections } from "@/lib/queries/collections";
+import { getFeaturedCollections, getParentCollections, getParentCollectionProducts } from "@/lib/queries/collections";
 import { ProductGrid } from "@/components/storefront/product/ProductGrid";
 
 export const dynamic = "force-dynamic";
@@ -8,6 +8,15 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   const featuredProducts = await getFeaturedProducts(8);
   const collections = await getFeaturedCollections();
+  const parentCollections = await getParentCollections();
+
+  // Get products for each parent collection (limit to 4)
+  const parentCollectionsWithProducts = await Promise.all(
+    parentCollections.map(async (parent) => ({
+      ...parent,
+      products: await getParentCollectionProducts(parent.id, 4),
+    }))
+  );
 
   // Split collections by display_type
   const largeCollections = collections.filter(col => col.display_type === "large");
@@ -131,25 +140,59 @@ export default async function HomePage() {
         </div>
       )}
 
-      {/* Featured Products Section */}
-      <div className="bg-brand-burgundy py-6 sm:py-8 md:py-10 px-4 sm:px-6 md:px-8">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-brand-cream mb-4 sm:mb-6 md:mb-8">
-          Winter Collection
-        </h2>
+      {/* Parent Collections with Products */}
+      {parentCollectionsWithProducts.map((parentCollection) => (
+        <div key={parentCollection.id} className="bg-brand-burgundy py-6 sm:py-8 md:py-10 px-4 sm:px-6 md:px-8">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-brand-cream mb-4 sm:mb-6 md:mb-8">
+            {parentCollection.name}
+          </h2>
 
-        {featuredProducts.length > 0 ? (
-          <ProductGrid products={featuredProducts} />
-        ) : (
-          <div className="text-center py-12 sm:py-16 md:py-20">
-            <p className="text-brand-cream/70 text-sm sm:text-base">
-              No products available yet
-            </p>
-            <p className="text-brand-cream/50 text-xs sm:text-sm mt-2">
-              Products will appear here once added to the database
-            </p>
-          </div>
-        )}
-      </div>
+          {parentCollection.products.length > 0 ? (
+            <>
+              <ProductGrid products={parentCollection.products} />
+              <div className="flex justify-center mt-6 sm:mt-8">
+                <Link
+                  href={`/collections/${parentCollection.slug}`}
+                  className="bg-brand-cream text-brand-charcoal px-8 py-3 rounded-lg font-bold text-sm hover:bg-white transition-colors shadow-md"
+                >
+                  View All {parentCollection.name}
+                </Link>
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-12 sm:py-16 md:py-20">
+              <p className="text-brand-cream/70 text-sm sm:text-base">
+                No products available yet
+              </p>
+              <p className="text-brand-cream/50 text-xs sm:text-sm mt-2">
+                Products will appear here once added to the collection
+              </p>
+            </div>
+          )}
+        </div>
+      ))}
+
+      {/* Fallback Featured Products (if no parent collections) */}
+      {parentCollectionsWithProducts.length === 0 && (
+        <div className="bg-brand-burgundy py-6 sm:py-8 md:py-10 px-4 sm:px-6 md:px-8">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-brand-cream mb-4 sm:mb-6 md:mb-8">
+            Featured Products
+          </h2>
+
+          {featuredProducts.length > 0 ? (
+            <ProductGrid products={featuredProducts} />
+          ) : (
+            <div className="text-center py-12 sm:py-16 md:py-20">
+              <p className="text-brand-cream/70 text-sm sm:text-base">
+                No products available yet
+              </p>
+              <p className="text-brand-cream/50 text-xs sm:text-sm mt-2">
+                Products will appear here once added to the database
+              </p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

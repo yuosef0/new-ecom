@@ -14,6 +14,7 @@ interface Collection {
   sort_order: number;
   is_featured: boolean;
   is_active: boolean;
+  parent_id: string | null;
   start_date: string | null;
   end_date: string | null;
   created_at: string;
@@ -35,6 +36,7 @@ export default function CollectionsManagementPage() {
     slug: "",
     description: "",
     display_type: "small" as "small" | "large",
+    parent_id: "",
     is_featured: true,
     is_active: true,
   });
@@ -132,6 +134,7 @@ export default function CollectionsManagementPage() {
         slug: formData.slug || generateSlug(formData.name),
         description: formData.description || null,
         display_type: formData.display_type,
+        parent_id: formData.parent_id || null,
         is_featured: formData.is_featured,
         is_active: formData.is_active,
         image_url: imageUrl,
@@ -169,6 +172,7 @@ export default function CollectionsManagementPage() {
       slug: collection.slug,
       description: collection.description || "",
       display_type: collection.display_type,
+      parent_id: collection.parent_id || "",
       is_featured: collection.is_featured,
       is_active: collection.is_active,
     });
@@ -230,6 +234,7 @@ export default function CollectionsManagementPage() {
       slug: "",
       description: "",
       display_type: "small",
+      parent_id: "",
       is_featured: true,
       is_active: true,
     });
@@ -371,6 +376,30 @@ export default function CollectionsManagementPage() {
                   <option value="small">كارد صغير (سكرول أفقي)</option>
                   <option value="large">كارد كبير (كامل العرض)</option>
                 </select>
+              </div>
+
+              {/* Parent Collection */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  الكوليكشن الأساسي (اختياري)
+                </label>
+                <select
+                  value={formData.parent_id}
+                  onChange={(e) => setFormData({ ...formData, parent_id: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+                >
+                  <option value="">لا يوجد (كوليكشن رئيسي)</option>
+                  {collections
+                    .filter((c) => c.id !== editingId && !c.parent_id)
+                    .map((collection) => (
+                      <option key={collection.id} value={collection.id}>
+                        {collection.name}
+                      </option>
+                    ))}
+                </select>
+                <p className="text-xs text-gray-500 mt-1">
+                  اختر كوليكشن رئيسي لجعل هذا كوليكشن فرعي تابع له
+                </p>
               </div>
 
               {/* Featured Toggle */}
