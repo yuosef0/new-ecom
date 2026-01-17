@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { getFeaturedProducts } from "@/lib/queries/products";
 import { getFeaturedCollections } from "@/lib/queries/collections";
 import { ProductGrid } from "@/components/storefront/product/ProductGrid";
@@ -91,14 +90,12 @@ export default async function HomePage() {
         <div className="py-4 sm:py-6 md:py-8 px-4 sm:px-6 md:px-8 space-y-4 sm:space-y-5 md:space-y-6 bg-brand-burgundy">
           {/* Large Collections - Full Width Cards */}
           {largeCollections.map((collection) => (
-            <div key={collection.id} className="relative rounded-lg overflow-hidden shadow-lg h-[180px] sm:h-[220px] md:h-[280px] bg-black">
-              <Image
+            <div key={collection.id} className="relative rounded-lg overflow-hidden shadow-lg h-[180px] sm:h-[220px] md:h-[280px] bg-gradient-to-br from-brand-burgundy to-brand-charcoal">
+              <img
                 alt={collection.name}
-                className="object-cover"
+                className="absolute inset-0 w-full h-full object-cover"
                 src={collection.image_url || defaultImage}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-                priority
+                loading="eager"
               />
               <div className="absolute inset-0 bg-black bg-opacity-30"></div>
               <div className="absolute inset-0 flex justify-center items-center">
@@ -116,13 +113,12 @@ export default async function HomePage() {
           {scrollableCollections.length > 0 && (
             <div className="flex gap-3 sm:gap-4 md:gap-5 overflow-x-auto no-scrollbar pb-2 -mx-4 sm:-mx-6 md:-mx-8 px-4 sm:px-6 md:px-8">
               {scrollableCollections.map((collection) => (
-                <div key={collection.id} className="relative rounded-lg overflow-hidden shadow-lg flex-shrink-0 w-[45%] sm:w-[48%] md:w-[30%] h-[140px] sm:h-[180px] md:h-[220px] bg-black">
-                  <Image
+                <div key={collection.id} className="relative rounded-lg overflow-hidden shadow-lg flex-shrink-0 w-[45%] sm:w-[48%] md:w-[30%] h-[140px] sm:h-[180px] md:h-[220px] bg-gradient-to-br from-brand-burgundy to-brand-charcoal">
+                  <img
                     alt={collection.name}
-                    className="object-cover"
+                    className="absolute inset-0 w-full h-full object-cover"
                     src={collection.image_url || defaultImage}
-                    fill
-                    sizes="(max-width: 640px) 45vw, (max-width: 768px) 48vw, 30vw"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-30"></div>
                   <div className="absolute inset-0 flex justify-center items-end pb-3 sm:pb-4 md:pb-5">
