@@ -109,3 +109,93 @@ export async function getCollectionProducts(
     };
   });
 }
+
+/**
+ * Get parent collections (collections without parent_id)
+ */
+export async function getParentCollections(): Promise<Collection[]> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("collections")
+    .select("*")
+    .eq("is_active", true)
+    .is("parent_id", null)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching parent collections:", error);
+    return [];
+  }
+
+  return data;
+}
+
+/**
+ * Get products from a parent collection (includes products from all child collections)
+ */
+export async function getParentCollectionProducts(
+  parentCollectionId: string,
+  limit?: number
+): Promise<ProductWithImages[]> {
+  const supabase = await createClient();
+
+  // Get all child collection IDs
+  const { data: children } = await supabase
+    .from("collections")
+    .select("id")
+    .eq("parent_id", parentCollectionId)
+    .eq("is_active", true);
+
+  if (!children || children.length === 0) {
+    return [];
+  }
+
+  const childIds = children.map((c) => c.id);
+
+  // Get products from all child collections
+  let query = supabase
+    .from("product_collections")
+    .select(
+      `
+      products!inner(
+        *,
+        product_images(url, alt_text, is_primary, sort_order),
+        categories(name, slug)
+      )
+    `
+    )
+    .in("collection_id", childIds)
+    .eq("products.is_active", true);
+
+  if (limit) {
+    query = query.limit(limit);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("Error fetching parent collection products:", error);
+    return [];
+  }
+
+  // Remove duplicates (in case a product is in multiple child collections)
+  const uniqueProducts = new Map();
+  data.forEach((item: any) => {
+    const product = item.products;
+    if (!uniqueProducts.has(product.id)) {
+      uniqueProducts.set(product.id, {
+        ...product,
+        primary_image:
+          product.product_images?.find((img: any) => img.is_primary)?.url ||
+          product.product_images?.[0]?.url ||
+          null,
+        images: product.product_images || [],
+        category: product.categories,
+        in_stock: true,
+      });
+    }
+  });
+
+  return Array.from(uniqueProducts.values());
+}

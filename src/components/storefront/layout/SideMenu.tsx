@@ -12,6 +12,7 @@ interface Collection {
   name: string;
   slug: string;
   display_type: "small" | "large";
+  parent_id: string | null;
 }
 
 export function SideMenu() {
@@ -29,9 +30,9 @@ export function SideMenu() {
       const supabase = createClient();
       const { data } = await supabase
         .from("collections")
-        .select("id, name, slug, display_type")
+        .select("id, name, slug, display_type, parent_id")
         .eq("is_active", true)
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false});
 
       if (data) {
         setCollections(data);
@@ -41,33 +42,21 @@ export function SideMenu() {
     }
   };
 
-  const staticItems = [
-    { name: "Track Suits", slug: "track-suits" },
-    { name: "Sets", slug: "sets" },
-    { name: "Sweatpants", slug: "sweatpants" },
-    { name: "Blankets", slug: "blankets" },
-    { name: "Hoodies", slug: "hoodies-collection" },
-    { name: "Winter Sale", slug: "winter-sale" },
-  ];
+  // Get parent collections (collections without parent_id)
+  const parentCollections = collections.filter((col) => !col.parent_id);
 
-  const staticSlugs = new Set(staticItems.map((item) => item.slug));
-
-  const categories = [
-    {
-      id: "winter",
-      name: "Winter Collection",
-      items: [
-        ...staticItems,
-        // إضافة الكوليكشنات الديناميكية من قاعدة البيانات (تصفية المكررات)
-        ...collections
-          .filter((col) => !staticSlugs.has(col.slug))
-          .map((col) => ({
-            name: col.name,
-            slug: col.slug,
-          })),
-      ],
-    },
-  ];
+  // Build categories dynamically from parent collections
+  const categories = parentCollections.map((parent) => ({
+    id: parent.id,
+    name: parent.name,
+    slug: parent.slug,
+    items: collections
+      .filter((col) => col.parent_id === parent.id)
+      .map((child) => ({
+        name: child.name,
+        slug: child.slug,
+      })),
+  }));
 
   if (!menuOpen) return null;
 
