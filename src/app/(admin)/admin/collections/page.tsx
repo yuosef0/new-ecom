@@ -35,6 +35,7 @@ export default function CollectionsManagementPage() {
     slug: "",
     description: "",
     display_type: "small" as "small" | "large",
+    is_featured: true,
     is_active: true,
   });
 
@@ -131,6 +132,7 @@ export default function CollectionsManagementPage() {
         slug: formData.slug || generateSlug(formData.name),
         description: formData.description || null,
         display_type: formData.display_type,
+        is_featured: formData.is_featured,
         is_active: formData.is_active,
         image_url: imageUrl,
       };
@@ -167,6 +169,7 @@ export default function CollectionsManagementPage() {
       slug: collection.slug,
       description: collection.description || "",
       display_type: collection.display_type,
+      is_featured: collection.is_featured,
       is_active: collection.is_active,
     });
     setEditingId(collection.id);
@@ -206,12 +209,28 @@ export default function CollectionsManagementPage() {
     }
   };
 
+  const toggleFeatured = async (id: string, currentStatus: boolean) => {
+    try {
+      const supabase = createClient();
+      const { error } = await supabase
+        .from("collections")
+        .update({ is_featured: !currentStatus })
+        .eq("id", id);
+
+      if (error) throw error;
+      loadCollections();
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
   const resetForm = () => {
     setFormData({
       name: "",
       slug: "",
       description: "",
       display_type: "small",
+      is_featured: true,
       is_active: true,
     });
     setEditingId(null);
@@ -339,6 +358,35 @@ export default function CollectionsManagementPage() {
                 />
               </div>
 
+              {/* Display Type */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  نوع العرض في الصفحة الرئيسية
+                </label>
+                <select
+                  value={formData.display_type}
+                  onChange={(e) => setFormData({ ...formData, display_type: e.target.value as "small" | "large" })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+                >
+                  <option value="small">كارد صغير (سكرول أفقي)</option>
+                  <option value="large">كارد كبير (كامل العرض)</option>
+                </select>
+              </div>
+
+              {/* Featured Toggle */}
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="is_featured"
+                  checked={formData.is_featured}
+                  onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })}
+                  className="w-4 h-4 text-brand-primary border-gray-300 rounded focus:ring-brand-primary"
+                />
+                <label htmlFor="is_featured" className="mr-2 text-sm text-gray-700">
+                  مميز (يظهر في الكاردات بالصفحة الرئيسية)
+                </label>
+              </div>
+
               {/* Active Toggle */}
               <div className="flex items-center">
                 <input
@@ -349,7 +397,7 @@ export default function CollectionsManagementPage() {
                   className="w-4 h-4 text-brand-primary border-gray-300 rounded focus:ring-brand-primary"
                 />
                 <label htmlFor="is_active" className="mr-2 text-sm text-gray-700">
-                  نشط (يظهر في الموقع)
+                  نشط (يظهر في السايد بار)
                 </label>
               </div>
 
@@ -436,15 +484,19 @@ export default function CollectionsManagementPage() {
                       </p>
                     )}
 
-                    <div className="flex items-center gap-2 mb-3">
+                    <div className="flex items-center gap-2 mb-3 flex-wrap">
+                      {collection.is_featured && (
+                        <span className="text-xs px-3 py-1 rounded-full font-medium bg-yellow-100 text-yellow-800">
+                          ⭐ مميز
+                        </span>
+                      )}
                       <span className={`text-xs px-3 py-1 rounded-full font-medium ${
                         collection.display_type === "large"
                           ? "bg-blue-100 text-blue-700"
                           : "bg-purple-100 text-purple-700"
                       }`}>
-                        {collection.display_type === "large" ? "🟦 كارد كبير" : "🟨 كارد صغير"}
+                        {collection.display_type === "large" ? "كارد كبير" : "كارد صغير"}
                       </span>
-                      <span className="text-xs text-gray-500">يظهر في السايدبار</span>
                     </div>
 
                     {/* Actions */}
@@ -458,6 +510,21 @@ export default function CollectionsManagementPage() {
                           {collection.is_active ? "visibility_off" : "visibility"}
                         </span>
                         {collection.is_active ? "إخفاء" : "إظهار"}
+                      </button>
+
+                      <button
+                        onClick={() => toggleFeatured(collection.id, collection.is_featured)}
+                        className={`flex-1 flex items-center justify-center gap-1 px-3 py-2 text-xs rounded-lg transition-colors ${
+                          collection.is_featured
+                            ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        }`}
+                        title={collection.is_featured ? "إزالة من المميزة" : "جعله مميزاً"}
+                      >
+                        <span className="material-icons-outlined text-sm">
+                          {collection.is_featured ? "star" : "star_border"}
+                        </span>
+                        {collection.is_featured ? "مميز" : "تمييز"}
                       </button>
 
                       <button
