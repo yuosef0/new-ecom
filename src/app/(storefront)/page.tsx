@@ -107,17 +107,17 @@ export default async function HomePage() {
 
           {/* Small Collections */}
           {smallCollections.length > 0 && (
-            <div className="flex gap-1 overflow-x-auto pb-2">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
               {smallCollections.map((collection) => (
                 <Link
                   key={collection.id}
                   href={`/collections/${collection.slug}`}
-                  className="block relative overflow-hidden flex-shrink-0 w-40 group rounded-[5px]"
+                  className="block relative overflow-hidden group rounded-[5px]"
                 >
                   <img
                     src={collection.image_url || 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04'}
                     alt={collection.name}
-                    className="w-full h-auto object-contain max-h-40"
+                    className="w-full h-auto object-contain"
                   />
                   <div className="absolute inset-0 flex items-end justify-center pb-3">
                     <span className="bg-brand-cream text-brand-charcoal px-4 py-1.5 rounded-lg font-bold text-xs hover:bg-white transition-colors">
