@@ -107,7 +107,7 @@ export default async function HomePage() {
 
           {/* Small Collections */}
           {smallCollections.length > 0 && (
-            <div className="flex gap-2.5 overflow-x-auto pb-2">
+            <div className="flex gap-1 overflow-x-auto pb-2">
               {smallCollections.map((collection) => (
                 <Link
                   key={collection.id}
