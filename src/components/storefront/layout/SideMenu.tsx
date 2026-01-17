@@ -53,10 +53,15 @@ export function SideMenu() {
         { name: "Hoodies", slug: "hoodies-collection" },
         { name: "Winter Sale", slug: "winter-sale" },
         // إضافة الكوليكشنات الديناميكية من قاعدة البيانات
-        ...collections.map((col) => ({
-          name: `${col.name} ${col.display_type === "large" ? "🟦" : "🟨"}`,
-          slug: col.slug,
-        })),
+        ...collections
+          .filter((col) =>
+            // استبعاد الكوليكشنات الموجودة بالفعل في القائمة الثابتة
+            !["track-suits", "sets", "sweatpants", "blankets", "hoodies-collection", "winter-sale"].includes(col.slug)
+          )
+          .map((col) => ({
+            name: col.name,
+            slug: col.slug,
+          })),
       ],
     },
   ];
