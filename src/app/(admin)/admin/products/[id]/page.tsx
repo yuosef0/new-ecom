@@ -6,6 +6,12 @@ import { createClient } from "@/lib/supabase/client";
 import { ProductImageUpload } from "@/components/admin/products/ProductImageUpload";
 import Link from "next/link";
 
+interface Collection {
+  id: string;
+  name: string;
+  slug: string;
+}
+
 export default function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
@@ -14,6 +20,8 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   const [error, setError] = useState("");
   const [images, setImages] = useState<{ url: string; is_primary: boolean }[]>([]);
   const [productLoading, setProductLoading] = useState(true);
+  const [collections, setCollections] = useState<Collection[]>([]);
+  const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -27,7 +35,33 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
 
   useEffect(() => {
     loadProduct();
+    loadCollections();
   }, [id]);
+
+  const loadCollections = async () => {
+    const supabase = createClient();
+
+    // Fetch all available collections
+    const { data: allCollections, error: collectionsError } = await supabase
+      .from("collections")
+      .select("id, name, slug")
+      .eq("is_active", true)
+      .order("name");
+
+    if (!collectionsError && allCollections) {
+      setCollections(allCollections);
+    }
+
+    // Fetch product's current collections
+    const { data: productCollections, error: prodCollError } = await supabase
+      .from("product_collections")
+      .select("collection_id")
+      .eq("product_id", id);
+
+    if (!prodCollError && productCollections) {
+      setSelectedCollections(productCollections.map((pc: any) => pc.collection_id));
+    }
+  };
 
   const loadProduct = async () => {
     try {
@@ -118,6 +152,27 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         .insert(imageRecords);
 
       if (imagesError) throw imagesError;
+
+      // Update product-collection relationships
+      // First, delete existing relationships
+      await supabase
+        .from("product_collections")
+        .delete()
+        .eq("product_id", id);
+
+      // Then, insert new relationships
+      if (selectedCollections.length > 0) {
+        const collectionRecords = selectedCollections.map(collectionId => ({
+          product_id: id,
+          collection_id: collectionId,
+        }));
+
+        const { error: collectionsError } = await supabase
+          .from("product_collections")
+          .insert(collectionRecords);
+
+        if (collectionsError) throw collectionsError;
+      }
 
       router.push("/admin/products");
       router.refresh();
@@ -324,6 +379,47 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
               Featured product
             </label>
           </div>
+        </div>
+
+        {/* Collections Selection */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-3">
+            Collections (Optional)
+          </label>
+          <div className="space-y-2 max-h-64 overflow-y-auto border border-gray-300 rounded-lg p-4">
+            {collections.length === 0 ? (
+              <p className="text-sm text-gray-500 italic">No collections available</p>
+            ) : (
+              collections.map((collection) => (
+                <div key={collection.id} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id={`collection-${collection.id}`}
+                    checked={selectedCollections.includes(collection.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedCollections([...selectedCollections, collection.id]);
+                      } else {
+                        setSelectedCollections(
+                          selectedCollections.filter((cid) => cid !== collection.id)
+                        );
+                      }
+                    }}
+                    className="w-4 h-4 text-brand-primary border-gray-300 rounded focus:ring-brand-primary"
+                  />
+                  <label
+                    htmlFor={`collection-${collection.id}`}
+                    className="ml-2 text-sm text-gray-700 cursor-pointer"
+                  >
+                    {collection.name}
+                  </label>
+                </div>
+              ))
+            )}
+          </div>
+          <p className="mt-1 text-xs text-gray-500">
+            Select one or more collections this product belongs to
+          </p>
         </div>
 
         {/* Product Images Upload */}

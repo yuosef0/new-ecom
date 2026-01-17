@@ -1,15 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { ProductImageUpload } from "@/components/admin/products/ProductImageUpload";
+
+interface Collection {
+  id: string;
+  name: string;
+  slug: string;
+}
 
 export default function NewProductPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [images, setImages] = useState<{ url: string; is_primary: boolean }[]>([]);
+  const [collections, setCollections] = useState<Collection[]>([]);
+  const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -20,6 +28,23 @@ export default function NewProductPage() {
     is_active: true,
     is_featured: false,
   });
+
+  // Fetch all collections on component mount
+  useEffect(() => {
+    async function fetchCollections() {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("collections")
+        .select("id, name, slug")
+        .eq("is_active", true)
+        .order("name");
+
+      if (!error && data) {
+        setCollections(data);
+      }
+    }
+    fetchCollections();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,6 +90,20 @@ export default function NewProductPage() {
         .insert(imageRecords);
 
       if (imagesError) throw imagesError;
+
+      // Insert product-collection relationships
+      if (selectedCollections.length > 0) {
+        const collectionRecords = selectedCollections.map(collectionId => ({
+          product_id: product.id,
+          collection_id: collectionId,
+        }));
+
+        const { error: collectionsError } = await supabase
+          .from("product_collections")
+          .insert(collectionRecords);
+
+        if (collectionsError) throw collectionsError;
+      }
 
       // Redirect to products list
       router.push("/admin/products");
@@ -221,6 +260,47 @@ export default function NewProductPage() {
               Featured product
             </label>
           </div>
+        </div>
+
+        {/* Collections Selection */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-3">
+            Collections (Optional)
+          </label>
+          <div className="space-y-2 max-h-64 overflow-y-auto border border-gray-300 rounded-lg p-4">
+            {collections.length === 0 ? (
+              <p className="text-sm text-gray-500 italic">No collections available</p>
+            ) : (
+              collections.map((collection) => (
+                <div key={collection.id} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id={`collection-${collection.id}`}
+                    checked={selectedCollections.includes(collection.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedCollections([...selectedCollections, collection.id]);
+                      } else {
+                        setSelectedCollections(
+                          selectedCollections.filter((id) => id !== collection.id)
+                        );
+                      }
+                    }}
+                    className="w-4 h-4 text-brand-primary border-gray-300 rounded focus:ring-brand-primary"
+                  />
+                  <label
+                    htmlFor={`collection-${collection.id}`}
+                    className="ml-2 text-sm text-gray-700 cursor-pointer"
+                  >
+                    {collection.name}
+                  </label>
+                </div>
+              ))
+            )}
+          </div>
+          <p className="mt-1 text-xs text-gray-500">
+            Select one or more collections this product belongs to
+          </p>
         </div>
 
         {/* Product Images Upload */}
