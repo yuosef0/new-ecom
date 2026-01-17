@@ -41,22 +41,30 @@ export function SideMenu() {
     }
   };
 
+  const staticItems = [
+    { name: "Track Suits", slug: "track-suits" },
+    { name: "Sets", slug: "sets" },
+    { name: "Sweatpants", slug: "sweatpants" },
+    { name: "Blankets", slug: "blankets" },
+    { name: "Hoodies", slug: "hoodies-collection" },
+    { name: "Winter Sale", slug: "winter-sale" },
+  ];
+
+  const staticSlugs = new Set(staticItems.map((item) => item.slug));
+
   const categories = [
     {
       id: "winter",
       name: "Winter Collection",
       items: [
-        { name: "Track Suits", slug: "track-suits" },
-        { name: "Sets", slug: "sets" },
-        { name: "Sweatpants", slug: "sweatpants" },
-        { name: "Blankets", slug: "blankets" },
-        { name: "Hoodies", slug: "hoodies-collection" },
-        { name: "Winter Sale", slug: "winter-sale" },
-        // إضافة الكوليكشنات الديناميكية من قاعدة البيانات
-        ...collections.map((col) => ({
-          name: `${col.name} ${col.display_type === "large" ? "🟦" : "🟨"}`,
-          slug: col.slug,
-        })),
+        ...staticItems,
+        // إضافة الكوليكشنات الديناميكية من قاعدة البيانات (تصفية المكررات)
+        ...collections
+          .filter((col) => !staticSlugs.has(col.slug))
+          .map((col) => ({
+            name: `${col.name} ${col.display_type === "large" ? "🟦" : "🟨"}`,
+            slug: col.slug,
+          })),
       ],
     },
   ];
