@@ -9,13 +9,9 @@ export default async function HomePage() {
   const featuredProducts = await getFeaturedProducts(8);
   const collections = await getFeaturedCollections();
 
-
   // Split collections by display_type
   const largeCollections = collections.filter(col => col.display_type === "large");
-  const scrollableCollections = collections.filter(col => col.display_type === "small");
-
-  // Default fallback image
-  const defaultImage = "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&h=600&fit=crop";
+  const smallCollections = collections.filter(col => col.display_type === "small");
 
   return (
     <div className="pb-20 sm:pb-24 md:pb-28">
@@ -85,51 +81,52 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* Collections Sections */}
+      {/* Collections Section */}
       {collections.length > 0 && (
-        <div className="py-4 sm:py-6 md:py-8 px-4 sm:px-6 md:px-8 space-y-4 sm:space-y-5 md:space-y-6 bg-brand-burgundy">
-          {/* Large Collections - Full Width Cards */}
+        <div className="bg-brand-burgundy py-6 px-4 sm:px-6 md:px-8 space-y-5">
+
+          {/* Large Collections */}
           {largeCollections.map((collection) => (
-            <div key={collection.id} className="relative rounded-lg overflow-hidden shadow-lg h-[180px] sm:h-[220px] md:h-[280px] bg-gradient-to-br from-brand-burgundy to-brand-charcoal">
-              <img
-                alt={collection.name}
-                className="absolute inset-0 w-full h-full object-cover"
-                src={collection.image_url || defaultImage}
-                loading="eager"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-30"></div>
-              <div className="absolute inset-0 flex justify-center items-center">
-                <Link
-                  href={`/collections/${collection.slug}`}
-                  className="bg-brand-cream text-brand-charcoal py-2 sm:py-2.5 md:py-3 px-6 sm:px-8 md:px-10 rounded-lg font-bold text-sm sm:text-base hover:bg-white transition-all shadow-md"
-                >
+            <Link
+              key={collection.id}
+              href={`/collections/${collection.slug}`}
+              className="block relative rounded-lg overflow-hidden h-64 group"
+              style={{
+                backgroundImage: `url(${collection.image_url || 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04'})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
+            >
+              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-all"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="bg-brand-cream text-brand-charcoal px-8 py-3 rounded-lg font-bold text-lg hover:bg-white transition-colors">
                   {collection.name}
-                </Link>
+                </span>
               </div>
-            </div>
+            </Link>
           ))}
 
-          {/* Small Collections - Horizontal Scrollable */}
-          {scrollableCollections.length > 0 && (
-            <div className="flex gap-3 sm:gap-4 md:gap-5 overflow-x-auto no-scrollbar pb-2 -mx-4 sm:-mx-6 md:-mx-8 px-4 sm:px-6 md:px-8">
-              {scrollableCollections.map((collection) => (
-                <div key={collection.id} className="relative rounded-lg overflow-hidden shadow-lg flex-shrink-0 w-[45%] sm:w-[48%] md:w-[30%] h-[140px] sm:h-[180px] md:h-[220px] bg-gradient-to-br from-brand-burgundy to-brand-charcoal">
-                  <img
-                    alt={collection.name}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    src={collection.image_url || defaultImage}
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-30"></div>
-                  <div className="absolute inset-0 flex justify-center items-end pb-3 sm:pb-4 md:pb-5">
-                    <Link
-                      href={`/collections/${collection.slug}`}
-                      className="bg-brand-cream text-brand-charcoal py-1.5 sm:py-2 md:py-2.5 px-4 sm:px-6 md:px-8 rounded-lg font-bold text-xs sm:text-sm md:text-base hover:bg-white transition-all shadow-md"
-                    >
+          {/* Small Collections */}
+          {smallCollections.length > 0 && (
+            <div className="flex gap-4 overflow-x-auto pb-2">
+              {smallCollections.map((collection) => (
+                <Link
+                  key={collection.id}
+                  href={`/collections/${collection.slug}`}
+                  className="block relative rounded-lg overflow-hidden flex-shrink-0 w-48 h-48 group"
+                  style={{
+                    backgroundImage: `url(${collection.image_url || 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04'})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                >
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-all"></div>
+                  <div className="absolute inset-0 flex items-end justify-center pb-4">
+                    <span className="bg-brand-cream text-brand-charcoal px-6 py-2 rounded-lg font-bold text-sm hover:bg-white transition-colors">
                       {collection.name}
-                    </Link>
+                    </span>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}
