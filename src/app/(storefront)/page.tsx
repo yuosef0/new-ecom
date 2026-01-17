@@ -90,12 +90,11 @@ export default async function HomePage() {
             <Link
               key={collection.id}
               href={`/collections/${collection.slug}`}
-              className="block relative rounded-lg overflow-hidden h-64 group bg-brand-charcoal"
+              className="block relative rounded-lg overflow-hidden h-64 group"
               style={{
                 backgroundImage: `url(${collection.image_url || 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04'})`,
-                backgroundSize: 'contain',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat'
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
               }}
             >
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-all"></div>
@@ -114,12 +113,11 @@ export default async function HomePage() {
                 <Link
                   key={collection.id}
                   href={`/collections/${collection.slug}`}
-                  className="block relative rounded-lg overflow-hidden flex-shrink-0 w-48 h-48 group bg-brand-charcoal"
+                  className="block relative rounded-lg overflow-hidden flex-shrink-0 w-48 h-48 group"
                   style={{
                     backgroundImage: `url(${collection.image_url || 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04'})`,
-                    backgroundSize: 'contain',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat'
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
                   }}
                 >
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-all"></div>
