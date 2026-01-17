@@ -12,6 +12,7 @@ export async function getCollections(): Promise<Collection[]> {
     .from("collections")
     .select("*")
     .eq("is_active", true)
+    .order("display_type", { ascending: false })
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -33,6 +34,7 @@ export async function getFeaturedCollections(): Promise<Collection[]> {
     .select("*")
     .eq("is_active", true)
     .eq("is_featured", true)
+    .order("display_type", { ascending: false })
     .order("created_at", { ascending: false });
 
   if (error) {

@@ -9,9 +9,9 @@ export default async function HomePage() {
   const featuredProducts = await getFeaturedProducts(8);
   const collections = await getFeaturedCollections();
 
-  // Split collections: first 2 as large cards, rest as scrollable
-  const largeCollections = collections.slice(0, 2);
-  const scrollableCollections = collections.slice(2);
+  // Split collections by display_type
+  const largeCollections = collections.filter(col => col.display_type === "large");
+  const scrollableCollections = collections.filter(col => col.display_type === "small");
 
   // Default images for collections if none provided
   const defaultImages = [
