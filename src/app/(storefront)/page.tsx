@@ -10,6 +10,20 @@ export default async function HomePage() {
   const featuredProducts = await getFeaturedProducts(8);
   const collections = await getFeaturedCollections();
 
+  // Debug: Log collections to check image_url
+  console.log('=== DEBUG: Collections ===');
+  collections.forEach((col, index) => {
+    console.log(`Collection ${index + 1}:`, {
+      name: col.name,
+      slug: col.slug,
+      image_url: col.image_url,
+      has_image: !!col.image_url,
+      display_type: col.display_type,
+      is_featured: col.is_featured
+    });
+  });
+  console.log('=========================');
+
   // Split collections by display_type
   const largeCollections = collections.filter(col => col.display_type === "large");
   const scrollableCollections = collections.filter(col => col.display_type === "small");
@@ -88,6 +102,16 @@ export default async function HomePage() {
       {/* Collections Sections */}
       {collections.length > 0 && (
         <div className="py-4 sm:py-6 md:py-8 px-4 sm:px-6 md:px-8 space-y-4 sm:space-y-5 md:space-y-6 bg-brand-burgundy">
+          {/* DEBUG INFO - Remove after fixing */}
+          <div className="bg-yellow-100 border-2 border-yellow-500 p-4 rounded-lg text-black text-xs">
+            <h3 className="font-bold mb-2">🐛 DEBUG: Collections Status</h3>
+            {collections.map((col, idx) => (
+              <div key={idx} className="mb-1">
+                <strong>{col.name}:</strong> {col.image_url ? `✅ Has image (${col.image_url.substring(0, 50)}...)` : '❌ No image'}
+              </div>
+            ))}
+          </div>
+
           {/* Large Collections - Full Width Cards */}
           {largeCollections.map((collection) => (
             <div key={collection.id} className="relative rounded-lg overflow-hidden shadow-lg h-[180px] sm:h-[220px] md:h-[280px] bg-black">
