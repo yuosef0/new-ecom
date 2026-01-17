@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getFeaturedProducts } from "@/lib/queries/products";
 import { getFeaturedCollections } from "@/lib/queries/collections";
 import { ProductGrid } from "@/components/storefront/product/ProductGrid";
@@ -13,13 +14,8 @@ export default async function HomePage() {
   const largeCollections = collections.filter(col => col.display_type === "large");
   const scrollableCollections = collections.filter(col => col.display_type === "small");
 
-  // Default images for collections if none provided
-  const defaultImages = [
-    "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1615876234886-fd9a39fda97f?w=800&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=400&h=300&fit=crop",
-    "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=300&fit=crop",
-  ];
+  // Default fallback image
+  const defaultImage = "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&h=600&fit=crop";
 
   return (
     <div className="pb-20 sm:pb-24 md:pb-28">
@@ -92,13 +88,16 @@ export default async function HomePage() {
       {/* Collections Sections */}
       {collections.length > 0 && (
         <div className="py-4 sm:py-6 md:py-8 px-4 sm:px-6 md:px-8 space-y-4 sm:space-y-5 md:space-y-6 bg-brand-burgundy">
-          {/* First 2 Collections - Large Cards */}
-          {largeCollections.map((collection, index) => (
-            <div key={collection.id} className="relative rounded-lg overflow-hidden shadow-lg">
-              <img
+          {/* Large Collections - Full Width Cards */}
+          {largeCollections.map((collection) => (
+            <div key={collection.id} className="relative rounded-lg overflow-hidden shadow-lg h-[180px] sm:h-[220px] md:h-[280px]">
+              <Image
                 alt={collection.name}
-                className="w-full h-auto min-h-[180px] sm:min-h-[220px] md:min-h-[280px] object-cover"
-                src={collection.image_url || defaultImages[index]}
+                className="object-cover"
+                src={collection.image_url || defaultImage}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+                priority
               />
               <div className="absolute inset-0 bg-black bg-opacity-30"></div>
               <div className="absolute inset-0 flex justify-center items-center">
@@ -112,15 +111,17 @@ export default async function HomePage() {
             </div>
           ))}
 
-          {/* Rest of Collections - Horizontal Scrollable */}
+          {/* Small Collections - Horizontal Scrollable */}
           {scrollableCollections.length > 0 && (
             <div className="flex gap-3 sm:gap-4 md:gap-5 overflow-x-auto no-scrollbar pb-2 -mx-4 sm:-mx-6 md:-mx-8 px-4 sm:px-6 md:px-8">
-              {scrollableCollections.map((collection, index) => (
-                <div key={collection.id} className="relative rounded-lg overflow-hidden shadow-lg flex-shrink-0 w-[45%] sm:w-[48%] md:w-[30%]">
-                  <img
+              {scrollableCollections.map((collection) => (
+                <div key={collection.id} className="relative rounded-lg overflow-hidden shadow-lg flex-shrink-0 w-[45%] sm:w-[48%] md:w-[30%] h-[140px] sm:h-[180px] md:h-[220px]">
+                  <Image
                     alt={collection.name}
-                    className="w-full h-auto min-h-[140px] sm:min-h-[180px] md:min-h-[220px] object-cover"
-                    src={collection.image_url || defaultImages[index + 2] || defaultImages[0]}
+                    className="object-cover"
+                    src={collection.image_url || defaultImage}
+                    fill
+                    sizes="(max-width: 640px) 45vw, (max-width: 768px) 48vw, 30vw"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-30"></div>
                   <div className="absolute inset-0 flex justify-center items-end pb-3 sm:pb-4 md:pb-5">
