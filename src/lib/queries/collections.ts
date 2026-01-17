@@ -58,9 +58,9 @@ export async function getCollectionBySlug(
     .select("*")
     .eq("slug", slug)
     .eq("is_active", true)
-    .single();
+    .maybeSingle();
 
-  if (error || !data) {
+  if (error) {
     console.error("Error fetching collection:", error);
     return null;
   }
