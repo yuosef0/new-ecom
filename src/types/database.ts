@@ -28,6 +28,7 @@ export interface Collection {
   image_url: string | null;
   is_featured: boolean;
   is_active: boolean;
+  display_type: "small" | "large";
   start_date: string | null;
   end_date: string | null;
   created_at: string;

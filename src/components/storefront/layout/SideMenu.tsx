@@ -62,7 +62,7 @@ export function SideMenu() {
         ...collections
           .filter((col) => !staticSlugs.has(col.slug))
           .map((col) => ({
-            name: `${col.name} ${col.display_type === "large" ? "🟦" : "🟨"}`,
+            name: col.name,
             slug: col.slug,
           })),
       ],
