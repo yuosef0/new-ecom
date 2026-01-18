@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getFeaturedProducts } from "@/lib/queries/products";
 import { getFeaturedCollections, getParentCollections, getParentCollectionProducts } from "@/lib/queries/collections";
 import { ProductGrid } from "@/components/storefront/product/ProductGrid";
+import { SaleCountdown } from "@/components/storefront/SaleCountdown";
+import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +11,16 @@ export default async function HomePage() {
   const featuredProducts = await getFeaturedProducts(8);
   const collections = await getFeaturedCollections();
   const parentCollections = await getParentCollections();
+
+  // Get sale timer settings
+  const supabase = await createClient();
+  const { data: saleTimerData } = await supabase
+    .from("site_settings")
+    .select("value")
+    .eq("key", "sale_timer")
+    .single();
+
+  const saleTimer = saleTimerData?.value as { is_active: boolean; end_date: string; title: string } | null;
 
   // Get products for each parent collection (limit to 4)
   const parentCollectionsWithProducts = await Promise.all(
@@ -66,29 +78,9 @@ export default async function HomePage() {
       </div>
 
       {/* Countdown Timer */}
-      <div className="bg-brand-burgundy text-brand-cream py-4 sm:py-6 px-4 sm:px-6 md:px-8">
-        <h2 className="text-base sm:text-lg md:text-xl font-bold tracking-wider text-center mb-3 sm:mb-4">
-          SALE ENDS SOON
-        </h2>
-        <div className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 max-w-md mx-auto">
-          <div className="border border-brand-muted rounded-lg p-2 sm:p-3 md:p-4">
-            <p className="text-xl sm:text-2xl md:text-3xl font-bold">0</p>
-            <p className="text-xs sm:text-sm mt-1">Days</p>
-          </div>
-          <div className="border border-brand-muted rounded-lg p-2 sm:p-3 md:p-4">
-            <p className="text-xl sm:text-2xl md:text-3xl font-bold">23</p>
-            <p className="text-xs sm:text-sm mt-1">Hours</p>
-          </div>
-          <div className="border border-brand-muted rounded-lg p-2 sm:p-3 md:p-4">
-            <p className="text-xl sm:text-2xl md:text-3xl font-bold">24</p>
-            <p className="text-xs sm:text-sm mt-1">Mins</p>
-          </div>
-          <div className="border border-brand-muted rounded-lg p-2 sm:p-3 md:p-4">
-            <p className="text-xl sm:text-2xl md:text-3xl font-bold">52</p>
-            <p className="text-xs sm:text-sm mt-1">Secs</p>
-          </div>
-        </div>
-      </div>
+      {saleTimer?.is_active && saleTimer?.end_date && (
+        <SaleCountdown endDate={saleTimer.end_date} title={saleTimer.title} />
+      )}
 
       {/* Collections Section */}
       {collections.length > 0 && (

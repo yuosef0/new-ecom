@@ -1,7 +1,8 @@
-import { getCollectionBySlug, getCollectionProducts } from "@/lib/queries/collections";
+import { getCollectionBySlug, getCollectionProducts, getParentCollectionProducts } from "@/lib/queries/collections";
 import { ProductGrid } from "@/components/storefront/product/ProductGrid";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +18,21 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
     notFound();
   }
 
-  const products = await getCollectionProducts(collection.id);
+  // Check if this is a parent collection (has child collections)
+  const supabase = await createClient();
+  const { data: childCollections } = await supabase
+    .from("collections")
+    .select("id, name, slug")
+    .eq("parent_id", collection.id)
+    .eq("is_active", true);
+
+  // If it's a parent collection, get products from all child collections
+  // Otherwise, get products from this collection directly
+  const products = childCollections && childCollections.length > 0
+    ? await getParentCollectionProducts(collection.id)
+    : await getCollectionProducts(collection.id);
+
+  const hasChildren = childCollections && childCollections.length > 0;
 
   return (
     <div className="px-4 sm:px-6 py-4 sm:py-6 pb-24">
@@ -53,6 +68,24 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
             alt={collection.name}
             className="w-full h-auto max-h-[300px] object-cover"
           />
+        </div>
+      )}
+
+      {/* Child Collections (if parent) */}
+      {hasChildren && childCollections && childCollections.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-brand-cream mb-4">Shop by Category</h2>
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {childCollections.map((child) => (
+              <Link
+                key={child.id}
+                href={`/collections/${child.slug}`}
+                className="flex-shrink-0 px-4 py-2 bg-brand-cream/10 hover:bg-brand-cream/20 text-brand-cream rounded-lg text-sm font-semibold transition-colors border border-brand-muted"
+              >
+                {child.name}
+              </Link>
+            ))}
+          </div>
         </div>
       )}
 
