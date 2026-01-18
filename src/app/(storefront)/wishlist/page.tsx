@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { Icon } from "@/components/storefront/ui/Icon";
 import { useCartStore } from "@/stores/cart";
 import { useWishlistStore } from "@/stores/wishlist";
@@ -25,32 +24,31 @@ interface WishlistProduct {
 }
 
 export default function WishlistPage() {
-  const router = useRouter();
   const { addItem } = useCartStore();
-  const refreshKey = useWishlistStore((state) => state.refreshKey);
+  const { items: wishlistItemIds, removeFromWishlist: removeFromStore } = useWishlistStore();
   const [wishlistItems, setWishlistItems] = useState<WishlistProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    checkAuthAndLoadWishlist();
-  }, [refreshKey]); // Reload when wishlist changes
+    loadWishlist();
+  }, [wishlistItemIds]); // Reload when wishlist items change
 
-  const checkAuthAndLoadWishlist = async () => {
+  const loadWishlist = async () => {
+    setIsLoading(true);
     const supabase = createClient();
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
+    const { data: { user } } = await supabase.auth.getUser();
 
-    if (!session) {
+    if (!user) {
       setIsAuthenticated(false);
       setIsLoading(false);
+      setWishlistItems([]);
       return;
     }
 
     setIsAuthenticated(true);
 
-    // Fetch wishlist items
+    // Fetch full wishlist items with product details
     const { data, error } = await supabase
       .from("wishlist_items")
       .select(
@@ -68,10 +66,10 @@ export default function WishlistPage() {
         )
       `
       )
+      .eq("user_id", user.id)
       .order("created_at", { ascending: false });
 
     if (!error && data) {
-      // Transform data to match interface
       const transformedData: WishlistProduct[] = data
         .filter((item: any) => item.products)
         .map((item: any) => ({
@@ -88,24 +86,19 @@ export default function WishlistPage() {
           },
         }));
       setWishlistItems(transformedData);
+    } else {
+      console.error("Error loading wishlist:", error);
+      setWishlistItems([]);
     }
 
     setIsLoading(false);
   };
 
-  const removeFromWishlist = async (wishlistItemId: string, productId: string) => {
-    const supabase = createClient();
-    const { error } = await supabase
-      .from("wishlist_items")
-      .delete()
-      .eq("id", wishlistItemId);
-
-    if (!error) {
-      setWishlistItems((prev) => prev.filter((item) => item.id !== wishlistItemId));
-      // Also update the store
-      const { removeFromWishlist: removeFromStore } = useWishlistStore.getState();
-      await removeFromStore(productId);
-    }
+  const handleRemove = async (productId: string) => {
+    // Remove from store (which updates database)
+    await removeFromStore(productId);
+    // Optimistically update local state
+    setWishlistItems((prev) => prev.filter((item) => item.product_id !== productId));
   };
 
   const handleAddToCart = (productId: string) => {
@@ -186,7 +179,7 @@ export default function WishlistPage() {
               <div key={item.id} className="bg-white/5 rounded-lg overflow-hidden relative group">
                 {/* Remove Button */}
                 <button
-                  onClick={() => removeFromWishlist(item.id, item.product_id)}
+                  onClick={() => handleRemove(item.product_id)}
                   className="absolute top-2 right-2 z-10 w-8 h-8 bg-brand-burgundy/90 rounded-full flex items-center justify-center hover:bg-brand-burgundy"
                 >
                   <Icon name="close" className="text-brand-cream text-lg" />

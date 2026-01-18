@@ -19,8 +19,8 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
   const [activeTab, setActiveTab] = useState("description");
 
   const { addItem, openCart } = useCartStore();
-  const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
-  const isProductInWishlist = useWishlistStore((state) => state.wishlistProductIds.has(product.id));
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlistStore();
+  const isProductInWishlist = isInWishlist(product.id);
 
   const discountPercentage = product.compare_at_price
     ? Math.round(
@@ -51,7 +51,11 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
   };
 
   const handleWishlistToggle = async () => {
-    await toggleWishlist(product.id);
+    if (isProductInWishlist) {
+      await removeFromWishlist(product.id);
+    } else {
+      await addToWishlist(product.id);
+    }
   };
 
   return (

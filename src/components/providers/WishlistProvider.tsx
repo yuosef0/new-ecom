@@ -2,14 +2,27 @@
 
 import { useEffect } from "react";
 import { useWishlistStore } from "@/stores/wishlist";
+import { createClient } from "@/lib/supabase/client";
 
 export function WishlistProvider({ children }: { children: React.ReactNode }) {
-  const loadWishlist = useWishlistStore((state) => state.loadWishlist);
+  const fetchWishlist = useWishlistStore((state) => state.fetchWishlist);
 
   useEffect(() => {
-    // Load wishlist once on mount
-    loadWishlist();
-  }, []); // Empty dependency array - load only once
+    // Initial fetch
+    fetchWishlist();
+
+    // Listen to auth state changes to refetch when user logs in/out
+    const supabase = createClient();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
+        fetchWishlist();
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [fetchWishlist]);
 
   return <>{children}</>;
 }

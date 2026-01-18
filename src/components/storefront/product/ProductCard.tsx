@@ -12,8 +12,8 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { addItem, openCart } = useCartStore();
-  const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
-  const inWishlist = useWishlistStore((state) => state.wishlistProductIds.has(product.id));
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlistStore();
+  const inWishlist = isInWishlist(product.id);
 
   const hasDiscount = product.compare_at_price && product.compare_at_price > product.base_price;
   const discountPercent = hasDiscount
@@ -28,7 +28,13 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const handleToggleWishlist = async (e: React.MouseEvent) => {
     e.preventDefault();
-    await toggleWishlist(product.id);
+    e.stopPropagation();
+
+    if (inWishlist) {
+      await removeFromWishlist(product.id);
+    } else {
+      await addToWishlist(product.id);
+    }
   };
 
   return (
