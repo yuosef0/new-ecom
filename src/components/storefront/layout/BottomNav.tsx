@@ -63,17 +63,6 @@ export function BottomNav() {
           <span className="text-[10px] sm:text-xs">Account</span>
         </Link>
 
-        {/* Wishlist */}
-        <Link
-          href="/wishlist"
-          className={`flex flex-col items-center justify-center relative gap-0.5 sm:gap-1 py-2 px-2 sm:px-3 ${
-            isActive("/wishlist") ? "text-brand-primary" : "hover:text-brand-cream transition-colors"
-          }`}
-        >
-          <span className="material-icons-outlined text-xl sm:text-2xl">favorite_border</span>
-          <span className="text-[10px] sm:text-xs">Wishlist</span>
-        </Link>
-
         {/* Cart */}
         <button
           onClick={openCart}

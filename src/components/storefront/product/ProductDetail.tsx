@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useCartStore } from "@/stores/cart";
-import { useWishlistStore } from "@/stores/wishlist";
 import { formatPrice } from "@/lib/utils";
 import { ProductGrid } from "./ProductGrid";
 import type { ProductWithImages } from "@/lib/queries/products";
@@ -19,8 +18,6 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
   const [activeTab, setActiveTab] = useState("description");
 
   const { addItem, openCart } = useCartStore();
-  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlistStore();
-  const isProductInWishlist = isInWishlist(product.id);
 
   const discountPercentage = product.compare_at_price
     ? Math.round(
@@ -48,14 +45,6 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
     addItem(product.id, null, quantity);
     // Redirect to checkout
     window.location.href = "/checkout";
-  };
-
-  const handleWishlistToggle = async () => {
-    if (isProductInWishlist) {
-      await removeFromWishlist(product.id);
-    } else {
-      await addToWishlist(product.id);
-    }
   };
 
   return (
@@ -190,27 +179,13 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-3 mb-4">
-              <div className="flex gap-2">
-                <button
-                  onClick={handleAddToCart}
-                  disabled={!product.in_stock}
-                  className="flex-1 bg-primary hover:bg-red-700 text-white font-bold py-3 px-4 rounded transition uppercase text-sm disabled:opacity-50"
-                >
-                  Add to cart - {formatPrice(product.base_price * quantity)}
-                </button>
-                <button
-                  onClick={handleWishlistToggle}
-                  className={`border rounded p-3 transition ${
-                    isProductInWishlist
-                      ? "bg-red-500 border-red-500 text-white"
-                      : "bg-transparent border-brand-gray/30 text-brand-white hover:bg-brand-white/10"
-                  }`}
-                >
-                  <span className="material-icons-outlined">
-                    {isProductInWishlist ? "favorite" : "favorite_border"}
-                  </span>
-                </button>
-              </div>
+              <button
+                onClick={handleAddToCart}
+                disabled={!product.in_stock}
+                className="w-full bg-primary hover:bg-red-700 text-white font-bold py-3 px-4 rounded transition uppercase text-sm disabled:opacity-50"
+              >
+                Add to cart - {formatPrice(product.base_price * quantity)}
+              </button>
               <button
                 onClick={handleBuyNow}
                 disabled={!product.in_stock}

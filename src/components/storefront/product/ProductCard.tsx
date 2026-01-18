@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useCartStore } from "@/stores/cart";
-import { useWishlistStore } from "@/stores/wishlist";
 import { formatPrice } from "@/lib/utils";
 import type { ProductWithImages } from "@/lib/queries/products";
 
@@ -12,8 +11,6 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { addItem, openCart } = useCartStore();
-  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlistStore();
-  const inWishlist = isInWishlist(product.id);
 
   const hasDiscount = product.compare_at_price && product.compare_at_price > product.base_price;
   const discountPercent = hasDiscount
@@ -24,17 +21,6 @@ export function ProductCard({ product }: ProductCardProps) {
     e.preventDefault();
     addItem(product.id, null);
     openCart();
-  };
-
-  const handleToggleWishlist = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (inWishlist) {
-      await removeFromWishlist(product.id);
-    } else {
-      await addToWishlist(product.id);
-    }
   };
 
   return (
@@ -64,17 +50,6 @@ export function ProductCard({ product }: ProductCardProps) {
             )}
           </div>
         </Link>
-
-        {/* Wishlist Button */}
-        <button
-          onClick={handleToggleWishlist}
-          className="absolute top-2 left-2 w-8 h-8 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-md transition-all z-10"
-          aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
-        >
-          <span className={`material-icons-outlined text-xl ${inWishlist ? "text-red-500" : "text-gray-600"}`}>
-            {inWishlist ? "favorite" : "favorite_border"}
-          </span>
-        </button>
       </div>
 
       {/* Product Info */}
