@@ -13,13 +13,12 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { addItem, openCart } = useCartStore();
-  const { toggleWishlist, isInWishlist, loadWishlist } = useWishlistStore();
+  const { toggleWishlist, loadWishlist } = useWishlistStore();
+  const inWishlist = useWishlistStore((state) => state.wishlistProductIds.has(product.id));
 
   useEffect(() => {
     loadWishlist();
   }, [loadWishlist]);
-
-  const inWishlist = isInWishlist(product.id);
 
   const hasDiscount = product.compare_at_price && product.compare_at_price > product.base_price;
   const discountPercent = hasDiscount
