@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/client";
 interface WishlistState {
   wishlistProductIds: Set<string>;
   isLoading: boolean;
+  refreshKey: number;
 
   // Actions
   addToWishlist: (productId: string) => Promise<boolean>;
@@ -16,6 +17,7 @@ interface WishlistState {
 export const useWishlistStore = create<WishlistState>((set, get) => ({
   wishlistProductIds: new Set(),
   isLoading: false,
+  refreshKey: 0,
 
   addToWishlist: async (productId: string) => {
     const supabase = createClient();
@@ -48,7 +50,7 @@ export const useWishlistStore = create<WishlistState>((set, get) => ({
     set((state) => {
       const newSet = new Set(state.wishlistProductIds);
       newSet.add(productId);
-      return { wishlistProductIds: newSet };
+      return { wishlistProductIds: newSet, refreshKey: state.refreshKey + 1 };
     });
 
     return true;
@@ -78,7 +80,7 @@ export const useWishlistStore = create<WishlistState>((set, get) => ({
     set((state) => {
       const newSet = new Set(state.wishlistProductIds);
       newSet.delete(productId);
-      return { wishlistProductIds: newSet };
+      return { wishlistProductIds: newSet, refreshKey: state.refreshKey + 1 };
     });
 
     return true;
@@ -116,7 +118,11 @@ export const useWishlistStore = create<WishlistState>((set, get) => ({
 
     if (!error && data) {
       const productIds = new Set(data.map((item) => item.product_id));
-      set({ wishlistProductIds: productIds, isLoading: false });
+      set((state) => ({
+        wishlistProductIds: productIds,
+        isLoading: false,
+        refreshKey: state.refreshKey + 1
+      }));
     } else {
       set({ isLoading: false });
     }

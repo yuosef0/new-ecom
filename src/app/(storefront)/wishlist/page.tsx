@@ -27,14 +27,14 @@ interface WishlistProduct {
 export default function WishlistPage() {
   const router = useRouter();
   const { addItem } = useCartStore();
-  const { wishlistProductIds } = useWishlistStore();
+  const refreshKey = useWishlistStore((state) => state.refreshKey);
   const [wishlistItems, setWishlistItems] = useState<WishlistProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     checkAuthAndLoadWishlist();
-  }, [wishlistProductIds]); // Reload when wishlist changes
+  }, [refreshKey]); // Reload when wishlist changes
 
   const checkAuthAndLoadWishlist = async () => {
     const supabase = createClient();
