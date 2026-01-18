@@ -5,7 +5,6 @@ import { useCartStore } from "@/stores/cart";
 import { useWishlistStore } from "@/stores/wishlist";
 import { formatPrice } from "@/lib/utils";
 import type { ProductWithImages } from "@/lib/queries/products";
-import { useEffect } from "react";
 
 interface ProductCardProps {
   product: ProductWithImages;
@@ -13,12 +12,8 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { addItem, openCart } = useCartStore();
-  const { toggleWishlist, loadWishlist } = useWishlistStore();
+  const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
   const inWishlist = useWishlistStore((state) => state.wishlistProductIds.has(product.id));
-
-  useEffect(() => {
-    loadWishlist();
-  }, [loadWishlist]);
 
   const hasDiscount = product.compare_at_price && product.compare_at_price > product.base_price;
   const discountPercent = hasDiscount
