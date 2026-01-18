@@ -140,17 +140,9 @@ export function SideMenu() {
           </ul>
 
           {/* Quick Actions */}
-          <div className="grid grid-cols-2 gap-2 pt-6">
-            <Link
-              href="/wishlist"
-              className="bg-brand-primary text-white py-2 px-3 rounded flex items-center justify-center text-sm"
-              onClick={toggleMenu}
-            >
-              <Icon name="favorite_border" className="!text-lg mr-1" />
-              <span>Wishlist</span>
-            </Link>
+          <div className="pt-6">
             <button
-              className="bg-brand-primary text-white py-2 px-3 rounded flex items-center justify-center text-sm"
+              className="w-full bg-brand-primary text-white py-2 px-3 rounded flex items-center justify-center text-sm"
               onClick={() => {
                 toggleMenu();
                 toggleSearch();
