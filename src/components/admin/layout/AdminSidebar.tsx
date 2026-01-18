@@ -74,6 +74,16 @@ const navigation = [
     section: "Settings",
     items: [
       {
+        name: "Sale Timer",
+        href: "/admin/sale-timer",
+        icon: "schedule",
+      },
+      {
+        name: "Social Media",
+        href: "/admin/social-media",
+        icon: "share",
+      },
+      {
         name: "Theme Settings",
         href: "/admin/theme-settings",
         icon: "palette",
