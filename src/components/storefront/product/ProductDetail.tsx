@@ -5,10 +5,10 @@ import { useCartStore } from "@/stores/cart";
 import { useWishlistStore } from "@/stores/wishlist";
 import { formatPrice } from "@/lib/utils";
 import { ProductGrid } from "./ProductGrid";
-import type { ProductWithImages } from "@/lib/queries/products";
+import type { ProductWithImages, ProductDetailWithVariants } from "@/lib/queries/products";
 
 interface ProductDetailProps {
-  product: ProductWithImages;
+  product: ProductDetailWithVariants;
   recommendedProducts: ProductWithImages[];
 }
 
