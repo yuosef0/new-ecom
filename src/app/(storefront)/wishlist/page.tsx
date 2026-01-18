@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Icon } from "@/components/storefront/ui/Icon";
 import { useCartStore } from "@/stores/cart";
+import { useWishlistStore } from "@/stores/wishlist";
 import { formatPrice } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 
@@ -26,13 +27,14 @@ interface WishlistProduct {
 export default function WishlistPage() {
   const router = useRouter();
   const { addItem } = useCartStore();
+  const { wishlistProductIds } = useWishlistStore();
   const [wishlistItems, setWishlistItems] = useState<WishlistProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     checkAuthAndLoadWishlist();
-  }, []);
+  }, [wishlistProductIds]); // Reload when wishlist changes
 
   const checkAuthAndLoadWishlist = async () => {
     const supabase = createClient();
@@ -91,7 +93,7 @@ export default function WishlistPage() {
     setIsLoading(false);
   };
 
-  const removeFromWishlist = async (wishlistItemId: string) => {
+  const removeFromWishlist = async (wishlistItemId: string, productId: string) => {
     const supabase = createClient();
     const { error } = await supabase
       .from("wishlist_items")
@@ -100,6 +102,9 @@ export default function WishlistPage() {
 
     if (!error) {
       setWishlistItems((prev) => prev.filter((item) => item.id !== wishlistItemId));
+      // Also update the store
+      const { removeFromWishlist: removeFromStore } = useWishlistStore.getState();
+      await removeFromStore(productId);
     }
   };
 
@@ -181,7 +186,7 @@ export default function WishlistPage() {
               <div key={item.id} className="bg-white/5 rounded-lg overflow-hidden relative group">
                 {/* Remove Button */}
                 <button
-                  onClick={() => removeFromWishlist(item.id)}
+                  onClick={() => removeFromWishlist(item.id, item.product_id)}
                   className="absolute top-2 right-2 z-10 w-8 h-8 bg-brand-burgundy/90 rounded-full flex items-center justify-center hover:bg-brand-burgundy"
                 >
                   <Icon name="close" className="text-brand-cream text-lg" />
