@@ -55,7 +55,7 @@ export default function WishlistPage() {
         `
         id,
         product_id,
-        products!wishlist_items_product_id_fkey(
+        products(
           id,
           name,
           slug,
@@ -69,9 +69,20 @@ export default function WishlistPage() {
       .eq("user_id", user.id)
       .order("created_at", { ascending: false });
 
-    if (!error && data) {
+    if (error) {
+      console.error("Error loading wishlist:", error);
+      console.error("Error details:", JSON.stringify(error, null, 2));
+      setWishlistItems([]);
+    } else if (data) {
+      console.log("Wishlist data loaded:", data.length, "items");
       const transformedData: WishlistProduct[] = data
-        .filter((item: any) => item.products)
+        .filter((item: any) => {
+          if (!item.products) {
+            console.warn("Item has no product data:", item);
+            return false;
+          }
+          return true;
+        })
         .map((item: any) => ({
           id: item.id,
           product_id: item.product_id,
@@ -87,7 +98,7 @@ export default function WishlistPage() {
         }));
       setWishlistItems(transformedData);
     } else {
-      console.error("Error loading wishlist:", error);
+      console.log("No data and no error - wishlist might be empty");
       setWishlistItems([]);
     }
 
