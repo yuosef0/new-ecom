@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
-import AdminLayout from "@/components/admin/AdminLayout";
 
 interface SocialMediaLinks {
   facebook: string;
@@ -71,17 +70,14 @@ export default function SocialMediaPage() {
 
   if (loading) {
     return (
-      <AdminLayout>
-        <div className="p-8">
-          <div className="text-center">Loading...</div>
-        </div>
-      </AdminLayout>
+      <div className="p-8">
+        <div className="text-center">Loading...</div>
+      </div>
     );
   }
 
   return (
-    <AdminLayout>
-      <div className="p-4 sm:p-6 md:p-8">
+    <div className="p-4 sm:p-6 md:p-8">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">
             Social Media Links
@@ -219,6 +215,5 @@ export default function SocialMediaPage() {
           </div>
         </div>
       </div>
-    </AdminLayout>
   );
 }
