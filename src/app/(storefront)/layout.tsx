@@ -4,21 +4,27 @@ import { BottomNav } from "@/components/storefront/layout/BottomNav";
 import { SideMenu } from "@/components/storefront/layout/SideMenu";
 import { CartOverlay } from "@/components/storefront/cart/CartOverlay";
 import { SearchOverlay } from "@/components/storefront/search/SearchOverlay";
+import { TopBarMessages } from "@/components/storefront/TopBarMessages";
+import { createClient } from "@/lib/supabase/server";
 
-export default function StorefrontLayout({
+export default async function StorefrontLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Fetch top bar messages
+  const supabase = await createClient();
+  const { data: messages } = await supabase
+    .from("top_bar_messages")
+    .select("*")
+    .eq("is_active", true)
+    .order("display_order", { ascending: true });
+
   return (
     <div className="min-h-screen bg-brand-burgundy">
       <div className="max-w-md mx-auto relative">
-        {/* Free Shipping Banner */}
-        <div className="bg-brand-cream py-2 sm:py-3 text-center px-4">
-          <p className="text-brand-charcoal font-bold text-xs sm:text-sm tracking-wider">
-            FREE SHIPPING ON All Orders
-          </p>
-        </div>
+        {/* Top Bar Messages with Rotation */}
+        <TopBarMessages messages={messages || []} />
 
         <Header />
         <main>{children}</main>

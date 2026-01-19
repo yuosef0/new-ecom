@@ -3,6 +3,8 @@ import { getFeaturedProducts } from "@/lib/queries/products";
 import { getFeaturedCollections, getParentCollections, getParentCollectionProducts } from "@/lib/queries/collections";
 import { ProductGrid } from "@/components/storefront/product/ProductGrid";
 import { SaleCountdown } from "@/components/storefront/SaleCountdown";
+import { HeroSection } from "@/components/storefront/HeroSection";
+import { MarqueeBanner } from "@/components/storefront/MarqueeBanner";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -12,8 +14,10 @@ export default async function HomePage() {
   const collections = await getFeaturedCollections();
   const parentCollections = await getParentCollections();
 
-  // Get sale timer settings
+  // Get site settings
   const supabase = await createClient();
+
+  // Get sale timer settings
   const { data: saleTimerData } = await supabase
     .from("site_settings")
     .select("value")
@@ -21,6 +25,32 @@ export default async function HomePage() {
     .single();
 
   const saleTimer = saleTimerData?.value as { is_active: boolean; end_date: string; title: string } | null;
+
+  // Get hero image settings
+  const { data: heroData } = await supabase
+    .from("site_settings")
+    .select("value")
+    .eq("key", "hero_image")
+    .single();
+
+  const heroSettings = heroData?.value as { image_url: string; title: string; button_text: string; button_link: string } | {
+    image_url: string;
+    title: string;
+    button_text: string;
+    button_link: string;
+  };
+
+  // Get marquee banner settings
+  const { data: marqueeData } = await supabase
+    .from("site_settings")
+    .select("value")
+    .eq("key", "marquee_text")
+    .single();
+
+  const marqueeSettings = marqueeData?.value as { text: string; is_active: boolean } | {
+    text: string;
+    is_active: boolean;
+  };
 
   // Get products for each parent collection (limit to 4)
   const parentCollectionsWithProducts = await Promise.all(
@@ -36,46 +66,11 @@ export default async function HomePage() {
 
   return (
     <div className="pb-20 sm:pb-24 md:pb-28">
-      {/* Hero Section */}
-      <div className="relative">
-        <img
-          alt="Winter Collection Hero"
-          className="w-full h-auto min-h-[240px] sm:min-h-[300px] md:min-h-[400px] object-cover"
-          src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&h=600&fit=crop"
-        />
-        <div className="absolute inset-x-0 bottom-4 sm:bottom-6 md:bottom-8 flex justify-center px-4">
-          <Link
-            href="/products"
-            className="bg-brand-primary text-white py-2 sm:py-2.5 md:py-3 px-6 sm:px-8 md:px-10 rounded-lg font-bold flex items-center space-x-2 shadow-lg text-sm sm:text-base hover:bg-brand-primary/90 transition-all"
-          >
-            <span>Shop Now</span>
-            <span className="material-icons-outlined" style={{ fontSize: '20px' }}>
-              arrow_forward
-            </span>
-          </Link>
-        </div>
-      </div>
+      {/* Hero Section - Dynamic */}
+      <HeroSection settings={heroSettings} />
 
-      {/* Animated Shipping Banner */}
-      <div className="bg-brand-primary overflow-hidden py-2 sm:py-3">
-        <div className="animate-marquee whitespace-nowrap">
-          <span className="text-white font-bold text-xs sm:text-sm tracking-wider mx-8">
-            FREE SHIPPING ON All Orders
-          </span>
-          <span className="text-white font-bold text-xs sm:text-sm tracking-wider mx-8">
-            FREE SHIPPING ON All Orders
-          </span>
-          <span className="text-white font-bold text-xs sm:text-sm tracking-wider mx-8">
-            FREE SHIPPING ON All Orders
-          </span>
-          <span className="text-white font-bold text-xs sm:text-sm tracking-wider mx-8">
-            FREE SHIPPING ON All Orders
-          </span>
-          <span className="text-white font-bold text-xs sm:text-sm tracking-wider mx-8">
-            FREE SHIPPING ON All Orders
-          </span>
-        </div>
-      </div>
+      {/* Animated Shipping Banner - Dynamic */}
+      <MarqueeBanner settings={marqueeSettings} />
 
       {/* Countdown Timer */}
       {saleTimer?.is_active && saleTimer?.end_date && (
