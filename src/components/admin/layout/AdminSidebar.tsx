@@ -59,6 +59,16 @@ const navigation = [
     section: "Content",
     items: [
       {
+        name: "Hero Image",
+        href: "/admin/hero-image",
+        icon: "wallpaper",
+      },
+      {
+        name: "Marquee Banner",
+        href: "/admin/marquee-banner",
+        icon: "view_carousel",
+      },
+      {
         name: "Slider",
         href: "/admin/slider",
         icon: "image",
