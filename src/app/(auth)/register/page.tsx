@@ -38,7 +38,9 @@ export default function RegisterPage() {
 
     try {
       const supabase = createClient();
-      const { error, data } = await supabase.auth.signUp({
+
+      // Step 1: Sign up the user
+      const { error: signUpError, data } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -49,18 +51,38 @@ export default function RegisterPage() {
         },
       });
 
-      if (error) {
-        console.error('Signup error:', error);
-        setError(error.message);
-      } else {
-        console.log('Signup successful:', data);
-        // Check if email confirmation is required
-        if (data.user && !data.session) {
-          setError("Please check your email to confirm your account.");
-        } else {
-          router.push("/");
-          router.refresh();
+      if (signUpError) {
+        console.error('Signup error:', signUpError);
+        setError(signUpError.message);
+        return;
+      }
+
+      // Step 2: Create profile manually if user was created
+      if (data.user) {
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .upsert({
+            id: data.user.id,
+            email: email,
+            full_name: fullName || null,
+            phone: phone,
+            role: 'customer',
+          }, {
+            onConflict: 'id'
+          });
+
+        if (profileError) {
+          console.error('Profile creation error:', profileError);
+          // Continue anyway - the trigger might have created it
         }
+      }
+
+      // Step 3: Check if email confirmation is required
+      if (data.user && !data.session) {
+        setError("Please check your email to confirm your account.");
+      } else {
+        router.push("/");
+        router.refresh();
       }
     } catch (err) {
       console.error('Signup exception:', err);
