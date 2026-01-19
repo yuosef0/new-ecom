@@ -39,11 +39,10 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Get order counts for each customer (only delivered orders)
+    // Get order counts for each customer (all orders)
     const { data: orderCounts, error: ordersError } = await supabaseAdmin
       .from("orders")
-      .select("user_id")
-      .eq("status", "delivered");
+      .select("user_id");
 
     if (ordersError) {
       console.error("Error fetching orders:", ordersError);
