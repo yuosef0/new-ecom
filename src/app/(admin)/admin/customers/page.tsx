@@ -16,6 +16,7 @@ export default function AdminCustomersPage() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -41,14 +42,18 @@ export default function AdminCustomersPage() {
     setFilteredCustomers(filtered);
   }, [searchQuery, customers]);
 
-  const loadCustomers = async () => {
+  const loadCustomers = async (isRefresh = false) => {
     try {
+      if (isRefresh) {
+        setRefreshing(true);
+      }
+
       const supabase = createClient();
 
       // Get all customers
       const { data: profiles, error: profilesError } = await supabase
         .from("profiles")
-        .select("id, email, full_name, phone, created_at")
+        .select("id, email, full_name, phone, created_at, role")
         .eq("role", "customer")
         .order("created_at", { ascending: false });
 
@@ -89,7 +94,12 @@ export default function AdminCustomersPage() {
       console.error("Error loading customers:", error);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
+  };
+
+  const handleRefresh = () => {
+    loadCustomers(true);
   };
 
   if (loading) {
@@ -109,11 +119,23 @@ export default function AdminCustomersPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Customers</h1>
-        <p className="mt-2 text-gray-600">
-          View and manage your customers ({customers.length} total)
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Customers</h1>
+          <p className="mt-2 text-gray-600">
+            View and manage your customers ({customers.length} total)
+          </p>
+        </div>
+        <button
+          onClick={handleRefresh}
+          disabled={refreshing}
+          className="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg hover:bg-brand-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          <span className={`material-icons-outlined text-xl ${refreshing ? 'animate-spin' : ''}`}>
+            refresh
+          </span>
+          <span className="font-medium">{refreshing ? 'Refreshing...' : 'Refresh'}</span>
+        </button>
       </div>
 
       {/* Search Bar */}
