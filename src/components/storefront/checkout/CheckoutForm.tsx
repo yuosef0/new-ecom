@@ -51,6 +51,23 @@ export function CheckoutForm({ onSubmit, isLoading = false }: CheckoutFormProps)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {/* Email */}
+      <div>
+        <label htmlFor="email" className="block text-sm font-medium text-brand-cream mb-1">
+          Email *
+        </label>
+        <input
+          {...register("email")}
+          type="email"
+          id="email"
+          className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-brand-cream placeholder:text-brand-cream/40 focus:outline-none focus:border-brand-primary"
+          placeholder="your.email@example.com"
+        />
+        {errors.email && (
+          <p className="text-red-400 text-xs mt-1">{errors.email.message}</p>
+        )}
+      </div>
+
       {/* Full Name */}
       <div>
         <label htmlFor="full_name" className="block text-sm font-medium text-brand-cream mb-1">
