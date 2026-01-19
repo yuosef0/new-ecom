@@ -70,7 +70,7 @@ export default async function AdminProductsPage() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full admin-table">
+            <table className="w-full">
               <thead className="bg-gray-800 border-b border-gray-700">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">
