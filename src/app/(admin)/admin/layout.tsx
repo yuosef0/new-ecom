@@ -31,19 +31,54 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <AdminSidebar />
-      <div className="lg:pl-64">
-        <AdminHeader
-          user={{
-            email: user.email!,
-            full_name: profile.full_name || undefined,
-          }}
-        />
-        <main className="pt-16">
-          <div className="p-6">{children}</div>
-        </main>
+    <>
+      <style jsx global>{`
+        /* Admin input field improvements */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        input[type="password"],
+        input[type="search"],
+        input[type="url"],
+        input[type="date"],
+        input[type="time"],
+        textarea,
+        select {
+          color: #111827 !important;
+          font-weight: 600 !important;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+          color: #6B7280 !important;
+          font-weight: 400 !important;
+        }
+
+        select option {
+          color: #111827 !important;
+          background: white !important;
+        }
+
+        label {
+          color: #111827 !important;
+          font-weight: 600 !important;
+        }
+      `}</style>
+      <div className="min-h-screen bg-gray-50">
+        <AdminSidebar />
+        <div className="lg:pl-64">
+          <AdminHeader
+            user={{
+              email: user.email!,
+              full_name: profile.full_name || undefined,
+            }}
+          />
+          <main className="pt-16">
+            <div className="p-6">{children}</div>
+          </main>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
