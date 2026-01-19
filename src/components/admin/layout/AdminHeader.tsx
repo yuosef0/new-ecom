@@ -41,7 +41,7 @@ export function AdminHeader({ user }: AdminHeaderProps) {
             <input
               type="search"
               placeholder="Search products, orders, customers..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 bg-white border-2 border-gray-400 text-gray-900 font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary placeholder:text-gray-500 placeholder:font-normal"
             />
           </div>
         </div>
@@ -60,29 +60,29 @@ export function AdminHeader({ user }: AdminHeaderProps) {
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
             >
-              <div className="w-8 h-8 bg-brand-primary rounded-full flex items-center justify-center text-white text-sm font-medium">
+              <div className="w-8 h-8 bg-brand-primary rounded-full flex items-center justify-center text-white text-sm font-bold">
                 {user.full_name?.[0]?.toUpperCase() || user.email[0].toUpperCase()}
               </div>
-              <span className="hidden md:block text-sm font-medium text-gray-700">
+              <span className="hidden md:block text-sm font-semibold text-gray-900">
                 {user.full_name || user.email.split("@")[0]}
               </span>
-              <span className="material-icons-outlined text-gray-400 text-sm">
+              <span className="material-icons-outlined text-gray-700 text-sm">
                 {dropdownOpen ? "expand_less" : "expand_more"}
               </span>
             </button>
 
             {/* Dropdown */}
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2">
-                <div className="px-4 py-2 border-b border-gray-200">
-                  <p className="text-sm font-medium text-gray-900">
+              <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-2xl border-2 border-gray-300 py-2 z-50">
+                <div className="px-4 py-2 border-b border-gray-300">
+                  <p className="text-sm font-semibold text-gray-900">
                     {user.full_name || "Admin"}
                   </p>
-                  <p className="text-xs text-gray-500">{user.email}</p>
+                  <p className="text-xs text-gray-700">{user.email}</p>
                 </div>
                 <button
                   onClick={() => router.push("/admin/settings")}
-                  className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  className="w-full flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-100"
                 >
                   <span className="material-icons-outlined text-lg">settings</span>
                   Settings
@@ -90,7 +90,7 @@ export function AdminHeader({ user }: AdminHeaderProps) {
                 <button
                   onClick={handleSignOut}
                   disabled={loading}
-                  className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 disabled:opacity-50"
+                  className="w-full flex items-center gap-2 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50 disabled:opacity-50"
                 >
                   <span className="material-icons-outlined text-lg">logout</span>
                   {loading ? "Signing out..." : "Sign Out"}
