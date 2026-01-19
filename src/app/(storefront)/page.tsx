@@ -33,11 +33,11 @@ export default async function HomePage() {
     .eq("key", "hero_image")
     .single();
 
-  const heroSettings = heroData?.value as { image_url: string; title: string; button_text: string; button_link: string } | {
-    image_url: string;
-    title: string;
-    button_text: string;
-    button_link: string;
+  const heroSettings = (heroData?.value as { image_url: string; title: string; button_text: string; button_link: string }) || {
+    image_url: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&h=600&fit=crop",
+    title: "Winter Collection",
+    button_text: "Shop Now",
+    button_link: "/products",
   };
 
   // Get marquee banner settings
@@ -47,9 +47,9 @@ export default async function HomePage() {
     .eq("key", "marquee_text")
     .single();
 
-  const marqueeSettings = marqueeData?.value as { text: string; is_active: boolean } | {
-    text: string;
-    is_active: boolean;
+  const marqueeSettings = (marqueeData?.value as { text: string; is_active: boolean }) || {
+    text: "FREE SHIPPING ON All Orders",
+    is_active: true,
   };
 
   // Get products for each parent collection (limit to 4)
