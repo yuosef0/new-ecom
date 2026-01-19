@@ -9,6 +9,7 @@ export default function RegisterPage() {
   const router = useRouter();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,6 +18,11 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (!phone.trim()) {
+      setError("Phone number is required");
+      return;
+    }
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
@@ -38,6 +44,7 @@ export default function RegisterPage() {
         options: {
           data: {
             full_name: fullName,
+            phone: phone,
           },
         },
       });
@@ -109,6 +116,24 @@ export default function RegisterPage() {
             required
             className="w-full px-4 py-2 border border-brand-muted rounded-md focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent"
             placeholder="your@email.com"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="phone"
+            className="block text-sm font-medium text-brand-charcoal mb-1"
+          >
+            Phone Number <span className="text-red-500">*</span>
+          </label>
+          <input
+            id="phone"
+            type="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+            className="w-full px-4 py-2 border border-brand-muted rounded-md focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+            placeholder="01234567890"
           />
         </div>
 
