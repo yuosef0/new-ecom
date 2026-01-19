@@ -27,11 +27,11 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Check if user profile exists
+    // Check if user profile exists and has phone number
     if (data.user) {
       const { data: profile } = await supabase
         .from("profiles")
-        .select("id")
+        .select("id, phone")
         .eq("id", data.user.id)
         .single();
 
@@ -41,9 +41,17 @@ export async function GET(request: NextRequest) {
           new URL("/login?error=Profile+not+created", origin)
         );
       }
+
+      // If phone number is missing, redirect to complete profile
+      if (!profile.phone) {
+        console.log("Phone number missing, redirecting to complete-profile");
+        const response = NextResponse.redirect(new URL("/complete-profile", origin));
+        response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        return response;
+      }
     }
 
-    // Successfully authenticated, redirect to home
+    // Successfully authenticated with complete profile, redirect to home
     const response = NextResponse.redirect(new URL("/", origin));
 
     // Force refresh to update client-side state
