@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { AdminSidebar } from "@/components/admin/layout/AdminSidebar";
 import { AdminHeader } from "@/components/admin/layout/AdminHeader";
+import { AdminStyles } from "@/components/admin/AdminStyles";
 
 export default async function AdminLayout({
   children,
@@ -32,39 +33,7 @@ export default async function AdminLayout({
 
   return (
     <>
-      <style jsx global>{`
-        /* Admin input field improvements */
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="number"],
-        input[type="password"],
-        input[type="search"],
-        input[type="url"],
-        input[type="date"],
-        input[type="time"],
-        textarea,
-        select {
-          color: #111827 !important;
-          font-weight: 600 !important;
-        }
-
-        input::placeholder,
-        textarea::placeholder {
-          color: #6B7280 !important;
-          font-weight: 400 !important;
-        }
-
-        select option {
-          color: #111827 !important;
-          background: white !important;
-        }
-
-        label {
-          color: #111827 !important;
-          font-weight: 600 !important;
-        }
-      `}</style>
+      <AdminStyles />
       <div className="min-h-screen bg-gray-50">
         <AdminSidebar />
         <div className="lg:pl-64">
