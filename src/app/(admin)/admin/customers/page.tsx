@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { createClient } from "@/lib/supabase/client";
 
 interface Customer {
   id: string;
@@ -48,48 +47,21 @@ export default function AdminCustomersPage() {
         setRefreshing(true);
       }
 
-      const supabase = createClient();
-
-      // Get all customers
-      const { data: profiles, error: profilesError } = await supabase
-        .from("profiles")
-        .select("id, email, full_name, phone, created_at, role")
-        .eq("role", "customer")
-        .order("created_at", { ascending: false });
-
-      if (profilesError) {
-        console.error("Error fetching customers:", profilesError);
-        setLoading(false);
-        return;
-      }
-
-      // Get order counts for each customer
-      const { data: orderCounts, error: ordersError } = await supabase
-        .from("orders")
-        .select("user_id");
-
-      if (ordersError) {
-        console.error("Error fetching orders:", ordersError);
-      }
-
-      // Count orders per customer
-      const orderCountMap: { [key: string]: number } = {};
-      orderCounts?.forEach((order) => {
-        orderCountMap[order.user_id] = (orderCountMap[order.user_id] || 0) + 1;
+      // Call API route to get all customers (uses supabaseAdmin to bypass RLS)
+      const response = await fetch('/api/admin/customers', {
+        cache: 'no-store',
       });
 
-      // Combine data
-      const customersWithOrders: Customer[] = (profiles || []).map((profile) => ({
-        id: profile.id,
-        email: profile.email,
-        full_name: profile.full_name,
-        phone: profile.phone,
-        created_at: profile.created_at,
-        total_orders: orderCountMap[profile.id] || 0,
-      }));
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Failed to fetch customers:', errorText);
+        throw new Error('Failed to fetch customers');
+      }
 
-      setCustomers(customersWithOrders);
-      setFilteredCustomers(customersWithOrders);
+      const { customers: customersData } = await response.json();
+
+      setCustomers(customersData);
+      setFilteredCustomers(customersData);
     } catch (error) {
       console.error("Error loading customers:", error);
     } finally {
