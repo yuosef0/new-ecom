@@ -22,7 +22,7 @@ const checkoutSchema = z.object({
     postal_code: z.string().max(10).optional(),
   }),
   shipping_method: z.enum(["standard", "express"]),
-  payment_method: z.enum(["card", "wallet"]),
+  payment_method: z.enum(["card", "wallet", "cod"]),
   promo_code: z.string().max(50).optional(),
   notes: z.string().max(500).optional(),
   items: z
@@ -184,7 +184,16 @@ export async function POST(request: NextRequest) {
       await supabaseAdmin.rpc("increment_promo_usage", { p_code: promo_code.toUpperCase() });
     }
 
-    // Initialize Paymob payment
+    // For Cash on Delivery, no payment processing needed
+    if (payment_method === "cod") {
+      return NextResponse.json({
+        order_id: order.id,
+        order_number: order.order_number,
+        payment_method: "cod",
+      });
+    }
+
+    // Initialize Paymob payment for card/wallet
     const nameParts = shipping.full_name.split(" ");
     const firstName = nameParts[0] || shipping.full_name;
     const lastName = nameParts.slice(1).join(" ") || firstName;

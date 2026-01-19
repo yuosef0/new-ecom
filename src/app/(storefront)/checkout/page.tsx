@@ -54,24 +54,56 @@ export default function CheckoutPage() {
     setIsProcessing(true);
 
     try {
-      // TODO: Create order via API route
-      // const response = await fetch("/api/checkout", {
-      //   method: "POST",
-      //   body: JSON.stringify({
-      //     shipping: shippingData,
-      //     payment_method: paymentMethod,
-      //     items: items,
-      //   }),
-      // });
+      // Create order via API route
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: shippingData.email,
+          shipping: {
+            full_name: shippingData.full_name,
+            phone: shippingData.phone,
+            address_line_1: shippingData.address_line_1,
+            address_line_2: shippingData.address_line_2,
+            city: shippingData.city,
+            governorate: shippingData.governorate,
+            postal_code: shippingData.postal_code,
+          },
+          shipping_method: "standard",
+          payment_method: paymentMethod,
+          items: items.map((item) => ({
+            productId: item.productId,
+            variantId: item.variantId,
+            quantity: item.quantity,
+          })),
+        }),
+      });
 
-      // Mock success - wait 2 seconds
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const data = await response.json();
 
-      // Clear cart and redirect to confirmation
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create order");
+      }
+
+      // Clear cart
       clearCart();
-      router.push("/checkout/confirmation?order=ORD-123456");
+
+      // If COD, redirect to confirmation
+      if (paymentMethod === "cod") {
+        router.push(`/checkout/confirmation?order=${data.order_number}`);
+      } else {
+        // For card/wallet, redirect to payment URL
+        if (data.payment_url) {
+          window.location.href = data.payment_url;
+        } else {
+          router.push(`/checkout/confirmation?order=${data.order_number}`);
+        }
+      }
     } catch (error) {
       console.error("Order failed:", error);
+      alert(error instanceof Error ? error.message : "Failed to create order. Please try again.");
       setIsProcessing(false);
     }
   };

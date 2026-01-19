@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const shippingSchema = z.object({
+  email: z.string().email("Valid email required"),
   full_name: z.string().min(2, "Name is required"),
   phone: z.string().min(10, "Valid phone number required"),
   address_line_1: z.string().min(5, "Address is required"),
