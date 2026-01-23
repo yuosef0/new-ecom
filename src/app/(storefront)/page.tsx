@@ -93,7 +93,7 @@ export default async function HomePage() {
                 alt={collection.name}
                 className="w-full h-auto object-contain max-h-96"
               />
-              <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute inset-0 flex items-end justify-center pb-6">
                 <span className="bg-brand-cream text-brand-charcoal px-8 py-3 rounded-lg font-bold text-lg hover:bg-white transition-colors">
                   {collection.name}
                 </span>
