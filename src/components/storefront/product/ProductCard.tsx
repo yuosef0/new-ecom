@@ -56,13 +56,10 @@ export function ProductCard({ product }: ProductCardProps) {
             {/* Wishlist Button */}
             <button
               onClick={handleWishlistToggle}
-              className={`absolute top-2 left-2 p-2 rounded-full backdrop-blur-sm transition-all duration-200 ${inWishlist
-                  ? 'bg-red-500 hover:bg-red-600 scale-110'
-                  : 'bg-white/80 hover:bg-white'
-                }`}
+              className="absolute top-2 left-2 p-1 transition-all duration-200 hover:scale-110"
               aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
             >
-              <span className={`material-icons-outlined text-lg ${inWishlist ? 'text-white' : 'text-gray-600'
+              <span className={`material-icons text-2xl drop-shadow-lg ${inWishlist ? 'text-red-500' : 'text-white'
                 }`}>
                 {inWishlist ? 'favorite' : 'favorite_border'}
               </span>
