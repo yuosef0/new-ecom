@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { useCartStore } from "@/stores/cart";
 import { formatPrice } from "@/lib/utils";
 import type { ProductWithImages, ProductDetailWithVariants } from "@/lib/queries/products";
@@ -17,13 +18,14 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
     const [isAnimating, setIsAnimating] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
     const { addItem, openCart } = useCartStore();
+    const router = useRouter();
 
     // Get variants if they exist
     const variants = 'variants' in product && product.variants ? product.variants : [];
-    
+
     // Get unique sizes from variants
     const availableSizes = Array.from(new Set(variants.filter((v) => v.size).map((v) => v.size!.name)));
-    
+
     // Determine if we need size selection
     const requiresSize = availableSizes.length > 0;
 
@@ -55,34 +57,36 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
         };
     }, [isOpen, onClose]);
 
-    const getSelectedVariantId = useCallback(() => {
-        if (!requiresSize) return product.id; // Or default variant if structured differently
-        if (!selectedSize) return null;
-        const variant = variants.find(v => v.size?.name === selectedSize);
-        return variant ? variant.id : null;
-    }, [requiresSize, selectedSize, variants, product.id]);
-
     const handleAddToCart = () => {
         if (requiresSize && !selectedSize) return;
 
-        const variantId = getSelectedVariantId();
-        // Fallback to product ID if no variant logic matches (for simple products)
-        const idToAdd = variantId || product.id; 
+        if (requiresSize) {
+            const variant = variants.find(v => v.size?.name === selectedSize);
+            if (variant) {
+                addItem(product.id, variant.id, quantity);
+            }
+        } else {
+            addItem(product.id, null, quantity);
+        }
 
-        addItem(idToAdd, null, quantity);
         openCart();
         onClose();
     };
 
     const handleBuyNow = () => {
         if (requiresSize && !selectedSize) return;
-        
-        const variantId = getSelectedVariantId();
-        const idToAdd = variantId || product.id;
 
-        addItem(idToAdd, null, quantity);
+        if (requiresSize) {
+            const variant = variants.find(v => v.size?.name === selectedSize);
+            if (variant) {
+                addItem(product.id, variant.id, quantity);
+            }
+        } else {
+            addItem(product.id, null, quantity);
+        }
+
         onClose();
-        window.location.href = "/checkout";
+        router.push("/checkout");
     };
 
     if (!isVisible) return null;
@@ -101,8 +105,8 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
             />
 
             {/* Modal */}
-            <div 
-                className={`relative bg-[#1a2b2e] rounded-lg shadow-2xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto transform transition-all duration-300 ${isAnimating ? "scale-100 translate-y-0" : "scale-95 translate-y-4"}`}
+            <div
+                className={`relative bg-[#1a2b2e] rounded-lg shadow-2xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto transform transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isAnimating ? "scale-100 translate-y-0 opacity-100" : "scale-90 translate-y-8 opacity-0"}`}
             >
                 {/* Close Button */}
                 <button
@@ -168,7 +172,7 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                                 ))}
                             </div>
                             {/* Error Message if try to add without size */}
-                             {!selectedSize && (
+                            {!selectedSize && (
                                 <p className="text-red-400 text-xs mt-2 hidden group-invalid:block">
                                     Please select a size
                                 </p>
@@ -211,11 +215,10 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                         <button
                             onClick={handleAddToCart}
                             disabled={!product.in_stock || (requiresSize && !selectedSize)}
-                            className={`w-full font-bold py-3 px-4 rounded transition-all uppercase text-sm flex items-center justify-center gap-2 transform active:scale-95 ${
-                                !product.in_stock || (requiresSize && !selectedSize)
-                                ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50"
-                                : "bg-pink-600 hover:bg-pink-700 text-white shadow-lg hover:shadow-pink-500/30"
-                            }`}
+                            className={`w-full font-bold py-3 px-4 rounded transition-all uppercase text-sm flex items-center justify-center gap-2 transform active:scale-95 ${!product.in_stock || (requiresSize && !selectedSize)
+                                    ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50"
+                                    : "bg-pink-600 hover:bg-pink-700 text-white shadow-lg hover:shadow-pink-500/30"
+                                }`}
                         >
                             <span className="material-icons-outlined">shopping_cart</span>
                             Add to cart - {formatPrice(product.base_price * quantity)}
@@ -223,11 +226,10 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                         <button
                             onClick={handleBuyNow}
                             disabled={!product.in_stock || (requiresSize && !selectedSize)}
-                            className={`w-full font-bold py-3 px-4 rounded transition-all uppercase text-sm transform active:scale-95 ${
-                                !product.in_stock || (requiresSize && !selectedSize)
-                                ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50 border border-gray-500"
-                                : "bg-lime-500 hover:bg-lime-600 text-[#1a2b2e] shadow-lg hover:shadow-lime-500/30"
-                            }`}
+                            className={`w-full font-bold py-3 px-4 rounded transition-all uppercase text-sm transform active:scale-95 ${!product.in_stock || (requiresSize && !selectedSize)
+                                    ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50 border border-gray-500"
+                                    : "bg-lime-500 hover:bg-lime-600 text-[#1a2b2e] shadow-lg hover:shadow-lime-500/30"
+                                }`}
                         >
                             BUY IT NOW
                         </button>

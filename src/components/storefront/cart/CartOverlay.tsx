@@ -1,27 +1,92 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useCartStore } from "@/stores/cart";
 import { Icon } from "../ui/Icon";
 import { CartItem } from "./CartItem";
 import { formatPrice } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/client";
 
 export function CartOverlay() {
   const { isOpen, closeCart, items, updateQuantity, removeItem } = useCartStore();
+  const [enrichedItems, setEnrichedItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  // Mock cart items (in production, fetch real product data)
-  const cartItems = items.map((item) => ({
-    ...item,
-    product: {
-      name: "Sample Product",
-      slug: "sample-product",
-      base_price: 899,
-      images: [],
-    },
-    variant: null,
-  }));
+  // Fetch product details for items in cart
+  useEffect(() => {
+    if (items.length === 0) {
+      setEnrichedItems([]);
+      return;
+    }
 
-  const subtotal = cartItems.reduce((sum, item) => sum + item.product.base_price * item.quantity, 0);
+    const fetchProductDetails = async () => {
+      setLoading(true);
+      const supabase = createClient();
+
+      try {
+        // Fetch all products
+        const productIds = items.map(item => item.productId);
+        const { data: products } = await supabase
+          .from("products")
+          .select("id, name, slug, base_price, product_images(url, is_primary)")
+          .in("id", productIds);
+
+        // Fetch variants if needed
+        const variantIds = items
+          .filter(item => item.variantId)
+          .map(item => item.variantId);
+
+        let variants: any[] = [];
+        if (variantIds.length > 0) {
+          const { data: variantsData } = await supabase
+            .from("product_variants")
+            .select("id, price_adjustment, sizes(name), colors(name)")
+            .in("id", variantIds);
+          variants = variantsData || [];
+        }
+
+        if (products) {
+          const enriched = items.map(item => {
+            const product = products.find(p => p.id === item.productId);
+            const variant = item.variantId ? variants.find(v => v.id === item.variantId) : null;
+
+            if (!product) return null;
+
+            return {
+              ...item,
+              product: {
+                name: product.name,
+                slug: product.slug,
+                base_price: product.base_price,
+                images: product.product_images?.map((img: any) => ({ url: img.url, alt_text: "" })) || []
+              },
+              variant: variant ? {
+                size_name: variant.sizes?.name || null,
+                color_name: variant.colors?.name || null,
+                price_adjustment: variant.price_adjustment || 0
+              } : null
+            };
+          }).filter(Boolean);
+
+          setEnrichedItems(enriched);
+        }
+      } catch (err) {
+        console.error("Error loading cart details:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (isOpen) {
+      fetchProductDetails();
+    }
+  }, [items, isOpen]);
+
+  const subtotal = enrichedItems.reduce((sum, item) => {
+    const price = item.product.base_price + (item.variant?.price_adjustment || 0);
+    return sum + (price * item.quantity);
+  }, 0);
 
   if (!isOpen) return null;
 
@@ -63,14 +128,21 @@ export function CartOverlay() {
         ) : (
           <>
             <div className="flex-1 overflow-y-auto p-5 space-y-6">
-              {cartItems.map((item) => (
-                <CartItem
-                  key={item.id}
-                  item={item}
-                  onUpdateQuantity={(qty) => updateQuantity(item.id, qty)}
-                  onRemove={() => removeItem(item.id)}
-                />
-              ))}
+              {loading ? (
+                <div className="text-center py-10">
+                  <div className="animate-spin h-8 w-8 border-4 border-brand-primary border-t-transparent rounded-full mx-auto mb-4"></div>
+                  <p className="text-brand-cream/50">Loading cart...</p>
+                </div>
+              ) : (
+                enrichedItems.map((item) => (
+                  <CartItem
+                    key={item.id}
+                    item={item}
+                    onUpdateQuantity={(qty) => updateQuantity(item.id, qty)}
+                    onRemove={() => removeItem(item.id)}
+                  />
+                ))
+              )}
             </div>
 
             {/* Footer */}

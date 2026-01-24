@@ -6,18 +6,17 @@ export interface ProductWithImages extends Product {
   images?: Array<{ url: string; alt_text: string | null }>;
   category?: { name: string; slug: string } | null;
   in_stock?: boolean;
-}
-
-export interface ProductDetailWithVariants extends ProductWithImages {
   variants?: Array<{
     id: string;
-    sku: string | null;
-    price_adjustment: number;
-    stock_quantity: number;
-    size: { id: string; name: string } | null;
-    color: { id: string; name: string; hex_code: string } | null;
+    sku?: string | null;
+    price_adjustment?: number;
+    stock_quantity?: number;
+    size?: { id: string; name: string } | null;
+    color?: { id: string; name: string; hex_code: string } | null;
   }>;
 }
+
+export interface ProductDetailWithVariants extends ProductWithImages { }
 
 /**
  * Get featured products for homepage
@@ -31,7 +30,8 @@ export async function getFeaturedProducts(limit: number = 8): Promise<ProductWit
       `
       *,
       product_images!inner(url, alt_text, is_primary),
-      categories(name, slug)
+      categories(name, slug),
+      product_variants(id, stock_quantity, sizes(id, name))
     `
     )
     .eq("is_active", true)
@@ -49,6 +49,11 @@ export async function getFeaturedProducts(limit: number = 8): Promise<ProductWit
     primary_image: product.product_images?.find((img: any) => img.is_primary)?.url || product.product_images?.[0]?.url || null,
     images: product.product_images || [],
     category: product.categories,
+    variants: product.product_variants?.map((v: any) => ({
+      id: v.id,
+      stock_quantity: v.stock_quantity,
+      size: v.sizes
+    })) || [],
     in_stock: true, // TODO: Calculate from variants
   }));
 }
@@ -71,7 +76,8 @@ export async function getProducts(params?: {
       `
       *,
       product_images(url, alt_text, is_primary, sort_order),
-      categories!inner(name, slug)
+      categories!inner(name, slug),
+      product_variants(id, stock_quantity, sizes(id, name))
     `
     )
     .eq("is_active", true);
@@ -110,6 +116,11 @@ export async function getProducts(params?: {
     primary_image: product.product_images?.find((img: any) => img.is_primary)?.url || product.product_images?.[0]?.url || null,
     images: product.product_images || [],
     category: product.categories,
+    variants: product.product_variants?.map((v: any) => ({
+      id: v.id,
+      stock_quantity: v.stock_quantity,
+      size: v.sizes
+    })) || [],
     in_stock: true,
   }));
 }
