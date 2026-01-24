@@ -65,6 +65,10 @@ export async function getProducts(params?: {
   categorySlug?: string;
   collectionSlug?: string;
   search?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  categories?: string[];
+  sortBy?: 'newest' | 'price-asc' | 'price-desc' | 'name';
   limit?: number;
   offset?: number;
 }): Promise<ProductWithImages[]> {
@@ -82,9 +86,22 @@ export async function getProducts(params?: {
     )
     .eq("is_active", true);
 
-  // Filter by category
+  // Filter by category (single)
   if (params?.categorySlug) {
     query = query.eq("categories.slug", params.categorySlug);
+  }
+
+  // Filter by categories (multiple)
+  if (params?.categories && params.categories.length > 0) {
+    query = query.in("categories.slug", params.categories);
+  }
+
+  // Filter by price range
+  if (params?.minPrice !== undefined && params?.minPrice !== null) {
+    query = query.gte("base_price", params.minPrice);
+  }
+  if (params?.maxPrice !== undefined && params?.maxPrice !== null) {
+    query = query.lte("base_price", params.maxPrice);
   }
 
   // Search
@@ -92,12 +109,28 @@ export async function getProducts(params?: {
     query = query.ilike("name", `%${params.search}%`);
   }
 
+  // Sorting
+  const sortBy = params?.sortBy || 'newest';
+  switch (sortBy) {
+    case 'price-asc':
+      query = query.order("base_price", { ascending: true });
+      break;
+    case 'price-desc':
+      query = query.order("base_price", { ascending: false });
+      break;
+    case 'name':
+      query = query.order("name", { ascending: true });
+      break;
+    case 'newest':
+    default:
+      query = query.order("created_at", { ascending: false });
+      break;
+  }
+
   // Pagination
   const limit = params?.limit || 20;
   const offset = params?.offset || 0;
   query = query.range(offset, offset + limit - 1);
-
-  query = query.order("created_at", { ascending: false });
 
   const { data, error } = await query;
 
