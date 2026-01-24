@@ -4,10 +4,10 @@ import { useState, useEffect } from "react";
 import { useCartStore } from "@/stores/cart";
 import { formatPrice } from "@/lib/utils";
 import { ProductGrid } from "./ProductGrid";
-import type { ProductWithImages } from "@/lib/queries/products";
+import type { ProductWithImages, ProductDetailWithVariants } from "@/lib/queries/products";
 
 interface ProductDetailProps {
-  product: ProductWithImages;
+  product: ProductDetailWithVariants;
   recommendedProducts: ProductWithImages[];
 }
 
@@ -21,15 +21,15 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
 
   const discountPercentage = product.compare_at_price
     ? Math.round(
-        ((product.compare_at_price - product.base_price) / product.compare_at_price) * 100
-      )
+      ((product.compare_at_price - product.base_price) / product.compare_at_price) * 100
+    )
     : null;
 
   const images = product.images && product.images.length > 0
     ? product.images
     : product.primary_image
-    ? [{ url: product.primary_image, alt_text: product.name }]
-    : [];
+      ? [{ url: product.primary_image, alt_text: product.name }]
+      : [];
 
   // Get unique sizes from variants
   const availableSizes = product.variants
@@ -72,11 +72,10 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
                   <div
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`w-1/5 min-w-[60px] aspect-[3/4] rounded overflow-hidden cursor-pointer ${
-                      selectedImage === index
-                        ? "border-2 border-brand-white"
-                        : "border border-transparent opacity-70"
-                    }`}
+                    className={`w-1/5 min-w-[60px] aspect-[3/4] rounded overflow-hidden cursor-pointer ${selectedImage === index
+                      ? "border-2 border-brand-white"
+                      : "border border-transparent opacity-70"
+                      }`}
                   >
                     <img
                       alt={`Thumb ${index + 1}`}
@@ -136,11 +135,10 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`py-2 px-3 text-sm font-bold text-center rounded ${
-                        selectedSize === size
-                          ? "bg-primary text-white border border-primary"
-                          : "bg-transparent text-brand-gray border border-brand-gray/30 hover:border-brand-gray"
-                      }`}
+                      className={`py-2 px-3 text-sm font-bold text-center rounded ${selectedSize === size
+                        ? "bg-primary text-white border border-primary"
+                        : "bg-transparent text-brand-gray border border-brand-gray/30 hover:border-brand-gray"
+                        }`}
                     >
                       {size}
                     </button>
@@ -203,21 +201,19 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
         <div className="flex border-b border-brand-gray/20 gap-6 text-sm font-bold text-brand-gray">
           <button
             onClick={() => setActiveTab("description")}
-            className={`pb-2 ${
-              activeTab === "description"
-                ? "border-b-2 border-brand-white text-brand-white"
-                : "hover:text-brand-white transition"
-            }`}
+            className={`pb-2 ${activeTab === "description"
+              ? "border-b-2 border-brand-white text-brand-white"
+              : "hover:text-brand-white transition"
+              }`}
           >
             Description
           </button>
           <button
             onClick={() => setActiveTab("details")}
-            className={`pb-2 ${
-              activeTab === "details"
-                ? "border-b-2 border-brand-white text-brand-white"
-                : "hover:text-brand-white transition"
-            }`}
+            className={`pb-2 ${activeTab === "details"
+              ? "border-b-2 border-brand-white text-brand-white"
+              : "hover:text-brand-white transition"
+              }`}
           >
             Details
           </button>
@@ -248,49 +244,6 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
           <ProductGrid products={recommendedProducts} />
         </div>
       )}
-
-      {/* Sticky Bottom Cart Bar - Mobile */}
-      <div className="fixed bottom-[60px] left-0 right-0 bg-brand-dark border-t border-brand-gray/20 px-4 py-3 z-40 flex items-center justify-between lg:hidden">
-        {/* Product Thumbnail */}
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-full overflow-hidden border border-brand-white">
-            <img
-              alt={product.name}
-              className="w-full h-full object-cover"
-              src={images[0]?.url || product.primary_image || "https://via.placeholder.com/40"}
-            />
-          </div>
-        </div>
-
-        {/* Quantity & Add to Cart */}
-        <div className="flex gap-2">
-          {/* Quantity Selector */}
-          <div className="flex items-center border border-brand-gray/30 rounded bg-brand-bg/50 h-10">
-            <button
-              onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              className="px-3 text-brand-white hover:bg-brand-white/10 h-full"
-            >
-              -
-            </button>
-            <span className="px-2 text-brand-white text-sm font-bold">{quantity}</span>
-            <button
-              onClick={() => setQuantity(quantity + 1)}
-              className="px-3 text-brand-white hover:bg-brand-white/10 h-full"
-            >
-              +
-            </button>
-          </div>
-
-          {/* Add to Cart Button */}
-          <button
-            onClick={handleAddToCart}
-            disabled={!product.in_stock}
-            className="bg-primary hover:bg-red-700 text-white font-bold px-6 rounded h-10 text-sm uppercase transition disabled:opacity-50"
-          >
-            Add to cart
-          </button>
-        </div>
-      </div>
     </main>
   );
 }

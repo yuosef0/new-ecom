@@ -1,15 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useCartStore } from "@/stores/cart";
 import { formatPrice } from "@/lib/utils";
 import type { ProductWithImages } from "@/lib/queries/products";
+import { ProductQuickAddModal } from "./ProductQuickAddModal";
 
 interface ProductCardProps {
   product: ProductWithImages;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { addItem, openCart } = useCartStore();
 
   const hasDiscount = product.compare_at_price && product.compare_at_price > product.base_price;
@@ -19,8 +22,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
-    addItem(product.id, null);
-    openCart();
+    setIsModalOpen(true);
   };
 
   return (
@@ -86,6 +88,13 @@ export function ProductCard({ product }: ProductCardProps) {
           </Link>
         )}
       </div>
+
+      {/* Quick Add Modal */}
+      <ProductQuickAddModal
+        product={product}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }
