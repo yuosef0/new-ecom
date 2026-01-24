@@ -34,7 +34,7 @@ async function getCustomerOrders() {
       created_at,
       shipping_name,
       shipping_phone,
-      shipping_address_line_1,
+      shipping_address,
       shipping_city
     `)
         .eq("user_id", user.id)
@@ -111,14 +111,14 @@ export default async function OrdersPage() {
                                             <p className="text-xs text-brand-cream/60 mb-1">Order Status</p>
                                             <span
                                                 className={`inline-block px-3 py-1 text-xs font-semibold rounded-full ${order.status === "delivered"
-                                                        ? "bg-green-500/20 text-green-400"
-                                                        : order.status === "confirmed"
-                                                            ? "bg-blue-500/20 text-blue-400"
-                                                            : order.status === "pending"
-                                                                ? "bg-yellow-500/20 text-yellow-400"
-                                                                : order.status === "cancelled"
-                                                                    ? "bg-red-500/20 text-red-400"
-                                                                    : "bg-gray-500/20 text-gray-400"
+                                                    ? "bg-green-500/20 text-green-400"
+                                                    : order.status === "confirmed"
+                                                        ? "bg-blue-500/20 text-blue-400"
+                                                        : order.status === "pending"
+                                                            ? "bg-yellow-500/20 text-yellow-400"
+                                                            : order.status === "cancelled"
+                                                                ? "bg-red-500/20 text-red-400"
+                                                                : "bg-gray-500/20 text-gray-400"
                                                     }`}
                                             >
                                                 {order.status.toUpperCase()}
@@ -130,10 +130,10 @@ export default async function OrdersPage() {
                                             <p className="text-xs text-brand-cream/60 mb-1">Payment Status</p>
                                             <span
                                                 className={`inline-block px-3 py-1 text-xs font-semibold rounded-full ${order.payment_status === "paid"
-                                                        ? "bg-green-500/20 text-green-400"
-                                                        : order.payment_status === "failed"
-                                                            ? "bg-red-500/20 text-red-400"
-                                                            : "bg-gray-500/20 text-gray-400"
+                                                    ? "bg-green-500/20 text-green-400"
+                                                    : order.payment_status === "failed"
+                                                        ? "bg-red-500/20 text-red-400"
+                                                        : "bg-gray-500/20 text-gray-400"
                                                     }`}
                                             >
                                                 {order.payment_status.toUpperCase()}
@@ -156,7 +156,7 @@ export default async function OrdersPage() {
                                             <strong>{order.shipping_name}</strong>
                                         </p>
                                         <p className="text-sm text-brand-cream/80">
-                                            {order.shipping_address_line_1}
+                                            {order.shipping_address}
                                         </p>
                                         <p className="text-sm text-brand-cream/80">
                                             {order.shipping_city}
