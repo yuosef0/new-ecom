@@ -59,9 +59,9 @@ export function ProductCard({ product }: ProductCardProps) {
               className="absolute top-2 left-2 p-1 transition-all duration-200 hover:scale-110"
               aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
             >
-              <span className={`material-icons text-2xl drop-shadow-lg ${inWishlist ? 'text-red-500' : 'text-white'
+              <span className={`material-icons${inWishlist ? '' : '-outlined'} text-2xl drop-shadow-lg ${inWishlist ? 'text-red-500' : 'text-white'
                 }`}>
-                {inWishlist ? 'favorite' : 'favorite_border'}
+                favorite
               </span>
             </button>
 
