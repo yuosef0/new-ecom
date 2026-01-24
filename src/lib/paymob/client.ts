@@ -151,7 +151,8 @@ export async function initializePaymobPayment(params: {
     integration_id: parseInt(process.env.PAYMOB_INTEGRATION_ID!),
   });
 
-  // Construct iframe URL
+  // Construct iframe URL with callback
+  const callbackUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/paymob/callback`;
   const iframeUrl = `https://accept.paymob.com/api/acceptance/iframes/${process.env.PAYMOB_IFRAME_ID}?payment_token=${paymentToken}`;
 
   return {

@@ -33,13 +33,13 @@ export default function CheckoutPage() {
       base_price: 899,
       images: [],
     },
-    variant: null,
+    variant: null as { price_adjustment: number } | null,
   }));
 
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.product.base_price * item.quantity,
-    0
-  );
+  const subtotal = cartItems.reduce((sum, item) => {
+    const price = item.product.base_price + (item.variant?.price_adjustment || 0);
+    return sum + price * item.quantity;
+  }, 0);
   const shipping = 50;
   const total = subtotal + shipping;
 
@@ -115,9 +115,8 @@ export default function CheckoutPage() {
         <h1 className="text-2xl font-bold text-brand-cream mb-2">Checkout</h1>
         <div className="flex items-center gap-2 text-sm">
           <div
-            className={`flex items-center gap-1 ${
-              step === "shipping" ? "text-brand-primary" : "text-brand-cream"
-            }`}
+            className={`flex items-center gap-1 ${step === "shipping" ? "text-brand-primary" : "text-brand-cream"
+              }`}
           >
             <span className="w-6 h-6 rounded-full bg-brand-primary text-white flex items-center justify-center text-xs font-bold">
               1
@@ -126,14 +125,12 @@ export default function CheckoutPage() {
           </div>
           <Icon name="chevron_right" className="text-brand-cream/50" />
           <div
-            className={`flex items-center gap-1 ${
-              step === "payment" ? "text-brand-primary" : "text-brand-cream/50"
-            }`}
+            className={`flex items-center gap-1 ${step === "payment" ? "text-brand-primary" : "text-brand-cream/50"
+              }`}
           >
             <span
-              className={`w-6 h-6 rounded-full ${
-                step === "payment" ? "bg-brand-primary text-white" : "bg-white/10 text-brand-cream/50"
-              } flex items-center justify-center text-xs font-bold`}
+              className={`w-6 h-6 rounded-full ${step === "payment" ? "bg-brand-primary text-white" : "bg-white/10 text-brand-cream/50"
+                } flex items-center justify-center text-xs font-bold`}
             >
               2
             </span>

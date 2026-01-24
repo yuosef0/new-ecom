@@ -69,3 +69,35 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhY
 - Restart the dev server
 - Check browser console for errors
 - Check server terminal for API errors
+-------------------------------------------------------------
+## 1. Account Setup & Verification
+
+- Sign up at Paymob Portal
+- Complete KYC verification (business documents, ID)
+- Access your dashboard and review Getting Started Guide
+- Verify test mode is enabled for development
+
+## 2. Choose & Configure Integration
+
+- Read API Basics to understand authentication
+- Generate API keys from Dashboard Settings
+- Review Unified Intention API for payment flow
+- Use Node.js SDK/examples
+
+## 3. Payment Methods Configuration
+
+- Enable Card Payments
+
+## 4. Advanced Features & Customization
+
+- Basic payment flow is ready
+- Add advanced features as needed
+
+## 6. Go Live Checklist
+
+- Switch from TEST to LIVE mode in dashboard
+- Replace test API keys with production keys
+- Verify production webhook URLs
+- Monitor first transactions closely
+- Review FAQs
+- Contact support@paymob.com if needed
