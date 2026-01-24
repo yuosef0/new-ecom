@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useCartStore } from "@/stores/cart";
+import { useWishlistStore } from "@/stores/wishlist";
 import { formatPrice } from "@/lib/utils";
 import type { ProductWithImages } from "@/lib/queries/products";
 import { ProductQuickAddModal } from "./ProductQuickAddModal";
@@ -14,6 +15,9 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { addItem, openCart } = useCartStore();
+  const { toggleWishlist, isInWishlist } = useWishlistStore();
+
+  const inWishlist = isInWishlist(product.id);
 
   const hasDiscount = product.compare_at_price && product.compare_at_price > product.base_price;
   const discountPercent = hasDiscount
@@ -23,6 +27,18 @@ export function ProductCard({ product }: ProductCardProps) {
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsModalOpen(true);
+  };
+
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist({
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      base_price: product.base_price,
+      images: product.images || [],
+    });
   };
 
   return (
@@ -36,6 +52,22 @@ export function ProductCard({ product }: ProductCardProps) {
               className="w-full h-48 object-cover"
               src={product.primary_image || "https://via.placeholder.com/400x300"}
             />
+
+            {/* Wishlist Button */}
+            <button
+              onClick={handleWishlistToggle}
+              className={`absolute top-2 left-2 p-2 rounded-full backdrop-blur-sm transition-all duration-200 ${inWishlist
+                  ? 'bg-red-500 hover:bg-red-600 scale-110'
+                  : 'bg-white/80 hover:bg-white'
+                }`}
+              aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              <span className={`material-icons-outlined text-lg ${inWishlist ? 'text-white' : 'text-gray-600'
+                }`}>
+                {inWishlist ? 'favorite' : 'favorite_border'}
+              </span>
+            </button>
+
             {hasDiscount && (
               <span className="absolute top-2 right-2 bg-green-200 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">
                 -{discountPercent}%
