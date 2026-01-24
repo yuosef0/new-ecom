@@ -5,6 +5,7 @@ import { SideMenu } from "@/components/storefront/layout/SideMenu";
 import { CartOverlay } from "@/components/storefront/cart/CartOverlay";
 import { SearchOverlay } from "@/components/storefront/search/SearchOverlay";
 import { TopBarMessages } from "@/components/storefront/TopBarMessages";
+import { ScrollToTopButton } from "@/components/storefront/ui/ScrollToTopButton";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function StorefrontLayout({
@@ -33,6 +34,7 @@ export default async function StorefrontLayout({
         <SideMenu />
         <CartOverlay />
         <SearchOverlay />
+        <ScrollToTopButton />
       </div>
     </div>
   );

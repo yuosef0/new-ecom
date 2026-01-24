@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useCartStore } from "@/stores/cart";
 import { formatPrice } from "@/lib/utils";
 import type { ProductWithImages, ProductDetailWithVariants } from "@/lib/queries/products";
@@ -14,22 +14,33 @@ interface ProductQuickAddModalProps {
 export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickAddModalProps) {
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [quantity, setQuantity] = useState(1);
+    const [isAnimating, setIsAnimating] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
     const { addItem, openCart } = useCartStore();
 
+    // Get variants if they exist
+    const variants = 'variants' in product && product.variants ? product.variants : [];
+    
     // Get unique sizes from variants
-    const availableSizes = 'variants' in product && product.variants
-        ? Array.from(new Set(product.variants.filter((v) => v.size).map((v) => v.size!.name)))
-        : [];
+    const availableSizes = Array.from(new Set(variants.filter((v) => v.size).map((v) => v.size!.name)));
+    
+    // Determine if we need size selection
+    const requiresSize = availableSizes.length > 0;
 
     // Reset state when modal opens
     useEffect(() => {
         if (isOpen) {
+            setIsVisible(true);
+            setTimeout(() => setIsAnimating(true), 10); // Slight delay to trigger transition
             setSelectedSize(null);
             setQuantity(1);
+        } else {
+            setIsAnimating(false);
+            setTimeout(() => setIsVisible(false), 300); // Wait for transition to finish
         }
     }, [isOpen]);
 
-    // Close modal on escape key
+    // Close on escape
     useEffect(() => {
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose();
@@ -44,19 +55,37 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
         };
     }, [isOpen, onClose]);
 
+    const getSelectedVariantId = useCallback(() => {
+        if (!requiresSize) return product.id; // Or default variant if structured differently
+        if (!selectedSize) return null;
+        const variant = variants.find(v => v.size?.name === selectedSize);
+        return variant ? variant.id : null;
+    }, [requiresSize, selectedSize, variants, product.id]);
+
     const handleAddToCart = () => {
-        addItem(product.id, null, quantity);
+        if (requiresSize && !selectedSize) return;
+
+        const variantId = getSelectedVariantId();
+        // Fallback to product ID if no variant logic matches (for simple products)
+        const idToAdd = variantId || product.id; 
+
+        addItem(idToAdd, null, quantity);
         openCart();
         onClose();
     };
 
     const handleBuyNow = () => {
-        addItem(product.id, null, quantity);
+        if (requiresSize && !selectedSize) return;
+        
+        const variantId = getSelectedVariantId();
+        const idToAdd = variantId || product.id;
+
+        addItem(idToAdd, null, quantity);
         onClose();
         window.location.href = "/checkout";
     };
 
-    if (!isOpen) return null;
+    if (!isVisible) return null;
 
     const hasDiscount = product.compare_at_price && product.compare_at_price > product.base_price;
     const discountPercent = hasDiscount
@@ -64,7 +93,7 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
         : 0;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ${isAnimating ? "opacity-100" : "opacity-0"}`}>
             {/* Backdrop */}
             <div
                 className="absolute inset-0 bg-black/70 backdrop-blur-sm"
@@ -72,7 +101,9 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
             />
 
             {/* Modal */}
-            <div className="relative bg-[#1a2b2e] rounded-lg shadow-2xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div 
+                className={`relative bg-[#1a2b2e] rounded-lg shadow-2xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto transform transition-all duration-300 ${isAnimating ? "scale-100 translate-y-0" : "scale-95 translate-y-4"}`}
+            >
                 {/* Close Button */}
                 <button
                     onClick={onClose}
@@ -115,22 +146,19 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                     </div>
 
                     {/* Size Selection */}
-                    {availableSizes.length > 0 && (
+                    {requiresSize && (
                         <div className="mb-5">
                             <div className="flex items-center justify-between mb-3">
                                 <p className="text-white text-sm font-semibold">
                                     Size: <span className="text-pink-500">{selectedSize || "Select a size"}</span>
                                 </p>
-                                <button className="text-pink-500 text-xs font-semibold hover:underline">
-                                    Find your size
-                                </button>
                             </div>
                             <div className="grid grid-cols-4 gap-2">
                                 {availableSizes.map((size) => (
                                     <button
                                         key={size}
                                         onClick={() => setSelectedSize(size)}
-                                        className={`py-2 px-3 text-sm font-bold text-center rounded transition-all ${selectedSize === size
+                                        className={`py-2 px-3 text-sm font-bold text-center rounded transition-all transform hover:scale-105 ${selectedSize === size
                                             ? "bg-pink-600 text-white border-2 border-pink-500"
                                             : "bg-transparent text-gray-300 border border-gray-600 hover:border-gray-400"
                                             }`}
@@ -139,6 +167,12 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                                     </button>
                                 ))}
                             </div>
+                            {/* Error Message if try to add without size */}
+                             {!selectedSize && (
+                                <p className="text-red-400 text-xs mt-2 hidden group-invalid:block">
+                                    Please select a size
+                                </p>
+                            )}
                         </div>
                     )}
 
@@ -176,16 +210,24 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                     <div className="space-y-3">
                         <button
                             onClick={handleAddToCart}
-                            disabled={!product.in_stock}
-                            className="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-4 rounded transition-colors uppercase text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            disabled={!product.in_stock || (requiresSize && !selectedSize)}
+                            className={`w-full font-bold py-3 px-4 rounded transition-all uppercase text-sm flex items-center justify-center gap-2 transform active:scale-95 ${
+                                !product.in_stock || (requiresSize && !selectedSize)
+                                ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50"
+                                : "bg-pink-600 hover:bg-pink-700 text-white shadow-lg hover:shadow-pink-500/30"
+                            }`}
                         >
-                            <span className="material-icons-outlined">favorite_border</span>
+                            <span className="material-icons-outlined">shopping_cart</span>
                             Add to cart - {formatPrice(product.base_price * quantity)}
                         </button>
                         <button
                             onClick={handleBuyNow}
-                            disabled={!product.in_stock}
-                            className="w-full bg-lime-500 hover:bg-lime-600 text-[#1a2b2e] font-bold py-3 px-4 rounded transition-colors uppercase text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled={!product.in_stock || (requiresSize && !selectedSize)}
+                            className={`w-full font-bold py-3 px-4 rounded transition-all uppercase text-sm transform active:scale-95 ${
+                                !product.in_stock || (requiresSize && !selectedSize)
+                                ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50 border border-gray-500"
+                                : "bg-lime-500 hover:bg-lime-600 text-[#1a2b2e] shadow-lg hover:shadow-lime-500/30"
+                            }`}
                         >
                             BUY IT NOW
                         </button>
