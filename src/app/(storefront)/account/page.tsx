@@ -79,9 +79,9 @@ export default async function AccountPage() {
                         </p>
                     </Link>
 
-                    {/* Support / Contact (Placeholder) */}
+                    {/* Support / Contact */}
                     <Link
-                        href="/#contact" // Assuming a contact section on home or separate page
+                        href="/support"
                         className="group bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors flex flex-col items-center text-center sm:items-start sm:text-left"
                     >
                         <div className="w-12 h-12 rounded-lg bg-yellow-500/20 flex items-center justify-center text-yellow-400 mb-4 group-hover:scale-110 transition-transform">
