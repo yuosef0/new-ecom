@@ -83,7 +83,8 @@ export async function getCollectionProducts(
       products!inner(
         *,
         product_images(url, alt_text, is_primary, sort_order),
-        categories(name, slug)
+        categories(name, slug),
+        product_variants(id, stock_quantity, sizes(id, name))
       )
     `
     )
@@ -105,6 +106,11 @@ export async function getCollectionProducts(
         null,
       images: product.product_images || [],
       category: product.categories,
+      variants: product.product_variants?.map((v: any) => ({
+        id: v.id,
+        stock_quantity: v.stock_quantity,
+        size: v.sizes
+      })) || [],
       in_stock: true,
     };
   });
@@ -161,7 +167,8 @@ export async function getParentCollectionProducts(
       products!inner(
         *,
         product_images(url, alt_text, is_primary, sort_order),
-        categories(name, slug)
+        categories(name, slug),
+        product_variants(id, stock_quantity, sizes(id, name))
       )
     `
     )
@@ -192,6 +199,11 @@ export async function getParentCollectionProducts(
           null,
         images: product.product_images || [],
         category: product.categories,
+        variants: product.product_variants?.map((v: any) => ({
+          id: v.id,
+          stock_quantity: v.stock_quantity,
+          size: v.sizes
+        })) || [],
         in_stock: true,
       });
     }

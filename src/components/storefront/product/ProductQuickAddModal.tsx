@@ -216,8 +216,8 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                             onClick={handleAddToCart}
                             disabled={!product.in_stock || (requiresSize && !selectedSize)}
                             className={`w-full font-bold py-3 px-4 rounded transition-all uppercase text-sm flex items-center justify-center gap-2 transform active:scale-95 ${!product.in_stock || (requiresSize && !selectedSize)
-                                    ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50"
-                                    : "bg-pink-600 hover:bg-pink-700 text-white shadow-lg hover:shadow-pink-500/30"
+                                ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50"
+                                : "bg-pink-600 hover:bg-pink-700 text-white shadow-lg hover:shadow-pink-500/30"
                                 }`}
                         >
                             <span className="material-icons-outlined">shopping_cart</span>
@@ -227,8 +227,8 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                             onClick={handleBuyNow}
                             disabled={!product.in_stock || (requiresSize && !selectedSize)}
                             className={`w-full font-bold py-3 px-4 rounded transition-all uppercase text-sm transform active:scale-95 ${!product.in_stock || (requiresSize && !selectedSize)
-                                    ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50 border border-gray-500"
-                                    : "bg-lime-500 hover:bg-lime-600 text-[#1a2b2e] shadow-lg hover:shadow-lime-500/30"
+                                ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50 border border-gray-500"
+                                : "bg-lime-500 hover:bg-lime-600 text-[#1a2b2e] shadow-lg hover:shadow-lime-500/30"
                                 }`}
                         >
                             BUY IT NOW
