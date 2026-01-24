@@ -7,6 +7,7 @@ import { CheckoutForm } from "@/components/storefront/checkout/CheckoutForm";
 import { Icon } from "@/components/storefront/ui/Icon";
 import { formatPrice } from "@/lib/utils";
 import type { ShippingFormData } from "@/lib/validations/checkout";
+import { createClient } from "@/lib/supabase/client";
 
 type CheckoutStep = "shipping" | "payment" | "review";
 
@@ -17,6 +18,8 @@ export default function CheckoutPage() {
   const [shippingData, setShippingData] = useState<ShippingFormData | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<"card" | "cod">("card");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [enrichedItems, setEnrichedItems] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Redirect if cart is empty
   useEffect(() => {
@@ -25,19 +28,76 @@ export default function CheckoutPage() {
     }
   }, [items.length, isProcessing, router]);
 
-  // Mock cart items with product data
-  const cartItems = items.map((item) => ({
-    ...item,
-    product: {
-      name: "Sample Product",
-      slug: "sample-product",
-      base_price: 899,
-      images: [],
-    },
-    variant: null as { price_adjustment: number } | null,
-  }));
+  // Fetch product details
+  useEffect(() => {
+    if (items.length === 0) {
+      setEnrichedItems([]);
+      setIsLoading(false);
+      return;
+    }
 
-  const subtotal = cartItems.reduce((sum, item) => {
+    const fetchProductDetails = async () => {
+      setIsLoading(true);
+      const supabase = createClient();
+
+      try {
+        // Fetch all products
+        const productIds = items.map(item => item.productId);
+        const { data: products } = await supabase
+          .from("products")
+          .select("id, name, slug, base_price, product_images(url, is_primary)")
+          .in("id", productIds);
+
+        // Fetch variants if needed
+        const variantIds = items
+          .filter(item => item.variantId)
+          .map(item => item.variantId);
+
+        let variants: any[] = [];
+        if (variantIds.length > 0) {
+          const { data: variantsData } = await supabase
+            .from("product_variants")
+            .select("id, price_adjustment, sizes(name), colors(name)")
+            .in("id", variantIds);
+          variants = variantsData || [];
+        }
+
+        if (products) {
+          const enriched = items.map(item => {
+            const product = products.find(p => p.id === item.productId);
+            const variant = item.variantId ? variants.find(v => v.id === item.variantId) : null;
+
+            if (!product) return null;
+
+            return {
+              ...item,
+              product: {
+                name: product.name,
+                slug: product.slug,
+                base_price: product.base_price,
+                images: product.product_images?.map((img: any) => ({ url: img.url, alt_text: "" })) || []
+              },
+              variant: variant ? {
+                size_name: variant.sizes?.name || null,
+                color_name: variant.colors?.name || null,
+                price_adjustment: variant.price_adjustment || 0
+              } : null
+            };
+          }).filter(Boolean);
+
+          setEnrichedItems(enriched);
+        }
+      } catch (err) {
+        console.error("Error loading cart details:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProductDetails();
+  }, [items]);
+
+  const subtotal = enrichedItems.reduce((sum, item) => {
     const price = item.product.base_price + (item.variant?.price_adjustment || 0);
     return sum + price * item.quantity;
   }, 0);
@@ -109,6 +169,15 @@ export default function CheckoutPage() {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-[50vh] flex flex-col items-center justify-center">
+        <div className="animate-spin h-8 w-8 border-4 border-brand-primary border-t-transparent rounded-full mb-4"></div>
+        <p className="text-brand-cream/50">Loading checkout...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="px-4 pt-6 pb-8">
       {/* Page Header */}
@@ -145,6 +214,34 @@ export default function CheckoutPage() {
         <div>
           <h2 className="text-lg font-bold text-brand-cream mb-4">Shipping Information</h2>
           <CheckoutForm onSubmit={handleShippingSubmit} />
+
+          {/* Order Summary Preview */}
+          <div className="mt-8 bg-white/5 border border-white/10 rounded-lg p-4">
+            <h3 className="font-bold text-brand-cream mb-4">Order Summary</h3>
+            <div className="space-y-3 mb-4 border-b border-white/10 pb-4">
+              {enrichedItems.map((item) => (
+                <div key={item.id} className="flex justify-between text-sm">
+                  <div className="flex flex-col">
+                    <span className="text-brand-cream/80">
+                      {item.product.name} x {item.quantity}
+                    </span>
+                    {item.variant?.size_name && (
+                      <span className="text-brand-cream/50 text-xs">
+                        Size: {item.variant.size_name}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-brand-cream font-medium">
+                    {formatPrice((item.product.base_price + (item.variant?.price_adjustment || 0)) * item.quantity)}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-between text-brand-cream font-bold">
+              <span>Total</span>
+              <span>{formatPrice(total)}</span>
+            </div>
+          </div>
         </div>
       )}
 
@@ -227,13 +324,20 @@ export default function CheckoutPage() {
 
             {/* Items */}
             <div className="space-y-3 mb-4 border-b border-white/10 pb-4">
-              {cartItems.map((item) => (
+              {enrichedItems.map((item) => (
                 <div key={item.id} className="flex justify-between text-sm">
-                  <span className="text-brand-cream/80">
-                    {item.product.name} x {item.quantity}
-                  </span>
+                  <div className="flex flex-col">
+                    <span className="text-brand-cream/80">
+                      {item.product.name} x {item.quantity}
+                    </span>
+                    {item.variant?.size_name && (
+                      <span className="text-brand-cream/50 text-xs">
+                        Size: {item.variant.size_name}
+                      </span>
+                    )}
+                  </div>
                   <span className="text-brand-cream font-medium">
-                    {formatPrice(item.product.base_price * item.quantity)}
+                    {formatPrice((item.product.base_price + (item.variant?.price_adjustment || 0)) * item.quantity)}
                   </span>
                 </div>
               ))}
