@@ -5,6 +5,9 @@ import { createClient } from "@/lib/supabase/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { redirect } from "next/navigation";
 
+// Force dynamic rendering since we use cookies for auth
+export const dynamic = 'force-dynamic';
+
 async function getAnalytics() {
   try {
     // Check authentication server-side
@@ -256,15 +259,14 @@ export default async function AdminDashboard() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
-                        className={`px-2 py-1 text-xs font-medium rounded-full ${
-                          order.status === "delivered"
+                        className={`px-2 py-1 text-xs font-medium rounded-full ${order.status === "delivered"
                             ? "bg-green-100 text-green-800"
                             : order.status === "pending"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : order.status === "cancelled"
-                            ? "bg-red-100 text-red-800"
-                            : "bg-blue-100 text-blue-800"
-                        }`}
+                              ? "bg-yellow-100 text-yellow-800"
+                              : order.status === "cancelled"
+                                ? "bg-red-100 text-red-800"
+                                : "bg-blue-100 text-blue-800"
+                          }`}
                       >
                         {order.status}
                       </span>

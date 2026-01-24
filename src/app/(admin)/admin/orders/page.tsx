@@ -2,6 +2,9 @@ import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { formatPrice } from "@/lib/utils";
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 async function getOrders() {
   const supabase = await createClient();
 
@@ -95,28 +98,26 @@ export default async function AdminOrdersPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
-                        className={`px-2 py-1 text-xs font-medium rounded-full ${
-                          order.status === "delivered"
+                        className={`px-2 py-1 text-xs font-medium rounded-full ${order.status === "delivered"
                             ? "bg-green-100 text-green-800"
                             : order.status === "pending"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : order.status === "cancelled"
-                            ? "bg-red-100 text-red-800"
-                            : "bg-blue-100 text-blue-800"
-                        }`}
+                              ? "bg-yellow-100 text-yellow-800"
+                              : order.status === "cancelled"
+                                ? "bg-red-100 text-red-800"
+                                : "bg-blue-100 text-blue-800"
+                          }`}
                       >
                         {order.status}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
-                        className={`px-2 py-1 text-xs font-medium rounded-full ${
-                          order.payment_status === "paid"
+                        className={`px-2 py-1 text-xs font-medium rounded-full ${order.payment_status === "paid"
                             ? "bg-green-100 text-green-800"
                             : order.payment_status === "failed"
-                            ? "bg-red-100 text-red-800"
-                            : "bg-gray-100 text-gray-800"
-                        }`}
+                              ? "bg-red-100 text-red-800"
+                              : "bg-gray-100 text-gray-800"
+                          }`}
                       >
                         {order.payment_status}
                       </span>
