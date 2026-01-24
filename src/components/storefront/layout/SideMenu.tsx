@@ -126,15 +126,22 @@ export function SideMenu() {
             ))}
 
             <li>
-              <Link href="/#about" className="block py-2" onClick={toggleMenu}>
+              <Link href="/about" className="block py-2" onClick={toggleMenu}>
                 About us
               </Link>
             </li>
             <li className="border-t border-white/20"></li>
 
             <li>
-              <Link href="/#contact" className="block py-2" onClick={toggleMenu}>
+              <Link href="/contact" className="block py-2" onClick={toggleMenu}>
                 Contact us
+              </Link>
+            </li>
+            <li className="border-t border-white/20"></li>
+
+            <li>
+              <Link href="/support" className="block py-2" onClick={toggleMenu}>
+                Help & Support
               </Link>
             </li>
           </ul>
