@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/stores/cart";
 import { formatPrice } from "@/lib/utils";
@@ -13,8 +13,7 @@ interface ProductQuickAddModalProps {
 }
 
 export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickAddModalProps) {
-    const [selectedSize, setSelectedSize] = useState<string | null>(null);
-    const [quantity, setQuantity] = useState(1);
+    const [sizeQuantities, setSizeQuantities] = useState<Record<string, number>>({});
     const [isAnimating, setIsAnimating] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
     const { addItem, openCart } = useCartStore();
@@ -33,12 +32,11 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
     useEffect(() => {
         if (isOpen) {
             setIsVisible(true);
-            setTimeout(() => setIsAnimating(true), 10); // Slight delay to trigger transition
-            setSelectedSize(null);
-            setQuantity(1);
+            setTimeout(() => setIsAnimating(true), 10);
+            setSizeQuantities({});
         } else {
             setIsAnimating(false);
-            setTimeout(() => setIsVisible(false), 300); // Wait for transition to finish
+            setTimeout(() => setIsVisible(false), 300);
         }
     }, [isOpen]);
 
@@ -57,16 +55,40 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
         };
     }, [isOpen, onClose]);
 
+    const updateSizeQuantity = (size: string, quantity: number) => {
+        setSizeQuantities(prev => {
+            const newQuantities = { ...prev };
+            if (quantity <= 0) {
+                delete newQuantities[size];
+            } else {
+                newQuantities[size] = quantity;
+            }
+            return newQuantities;
+        });
+    };
+
+    const getTotalItems = () => {
+        return Object.values(sizeQuantities).reduce((sum, qty) => sum + qty, 0);
+    };
+
+    const getTotalPrice = () => {
+        return getTotalItems() * product.base_price;
+    };
+
     const handleAddToCart = () => {
-        if (requiresSize && !selectedSize) return;
+        if (requiresSize && getTotalItems() === 0) return;
 
         if (requiresSize) {
-            const variant = variants.find(v => v.size?.name === selectedSize);
-            if (variant) {
-                addItem(product.id, variant.id, quantity);
-            }
+            Object.entries(sizeQuantities).forEach(([sizeName, qty]) => {
+                if (qty > 0) {
+                    const variant = variants.find(v => v.size?.name === sizeName);
+                    if (variant) {
+                        addItem(product.id, variant.id, qty);
+                    }
+                }
+            });
         } else {
-            addItem(product.id, null, quantity);
+            addItem(product.id, null, 1);
         }
 
         openCart();
@@ -74,15 +96,19 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
     };
 
     const handleBuyNow = () => {
-        if (requiresSize && !selectedSize) return;
+        if (requiresSize && getTotalItems() === 0) return;
 
         if (requiresSize) {
-            const variant = variants.find(v => v.size?.name === selectedSize);
-            if (variant) {
-                addItem(product.id, variant.id, quantity);
-            }
+            Object.entries(sizeQuantities).forEach(([sizeName, qty]) => {
+                if (qty > 0) {
+                    const variant = variants.find(v => v.size?.name === sizeName);
+                    if (variant) {
+                        addItem(product.id, variant.id, qty);
+                    }
+                }
+            });
         } else {
-            addItem(product.id, null, quantity);
+            addItem(product.id, null, 1);
         }
 
         onClose();
@@ -95,6 +121,9 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
     const discountPercent = hasDiscount
         ? Math.round(((product.compare_at_price! - product.base_price) / product.compare_at_price!) * 100)
         : 0;
+
+    const totalItems = getTotalItems();
+    const hasSelection = totalItems > 0;
 
     return (
         <div className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ${isAnimating ? "opacity-100" : "opacity-0"}`}>
@@ -149,86 +178,97 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                         )}
                     </div>
 
-                    {/* Size Selection */}
+                    {/* Size Selection with Quantities */}
                     {requiresSize && (
                         <div className="mb-5">
                             <div className="flex items-center justify-between mb-3">
                                 <p className="text-white text-sm font-semibold">
-                                    Size: <span className="text-pink-500">{selectedSize || "Select a size"}</span>
+                                    Select Sizes & Quantities
                                 </p>
+                                {hasSelection && (
+                                    <span className="text-pink-500 text-xs font-bold">
+                                        {totalItems} {totalItems === 1 ? 'item' : 'items'}
+                                    </span>
+                                )}
                             </div>
-                            <div className="grid grid-cols-4 gap-2">
-                                {availableSizes.map((size) => (
-                                    <button
-                                        key={size}
-                                        onClick={() => setSelectedSize(size)}
-                                        className={`py-2 px-3 text-sm font-bold text-center rounded transition-all transform hover:scale-105 ${selectedSize === size
-                                            ? "bg-pink-600 text-white border-2 border-pink-500"
-                                            : "bg-transparent text-gray-300 border border-gray-600 hover:border-gray-400"
-                                            }`}
-                                    >
-                                        {size}
-                                    </button>
-                                ))}
+                            <div className="space-y-3">
+                                {availableSizes.map((size) => {
+                                    const quantity = sizeQuantities[size] || 0;
+                                    const isSelected = quantity > 0;
+
+                                    return (
+                                        <div
+                                            key={size}
+                                            className={`flex items-center justify-between p-3 rounded-lg border-2 transition-all ${isSelected
+                                                    ? "border-pink-500 bg-pink-500/10"
+                                                    : "border-gray-600 bg-transparent hover:border-gray-400"
+                                                }`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <button
+                                                    onClick={() => updateSizeQuantity(size, isSelected ? 0 : 1)}
+                                                    className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all ${isSelected
+                                                            ? "border-pink-500 bg-pink-500"
+                                                            : "border-gray-500"
+                                                        }`}
+                                                >
+                                                    {isSelected && (
+                                                        <span className="material-icons-outlined text-white text-sm">check</span>
+                                                    )}
+                                                </button>
+                                                <span className={`font-bold text-sm ${isSelected ? "text-pink-500" : "text-gray-300"}`}>
+                                                    {size}
+                                                </span>
+                                            </div>
+
+                                            {isSelected && (
+                                                <div className="flex items-center border border-gray-600 rounded bg-[#0f1a1c]">
+                                                    <button
+                                                        onClick={() => updateSizeQuantity(size, Math.max(0, quantity - 1))}
+                                                        className="px-3 py-1 text-white hover:bg-white/10 transition-colors"
+                                                    >
+                                                        <span className="material-icons-outlined text-base">remove</span>
+                                                    </button>
+                                                    <span className="px-3 py-1 text-white text-sm font-bold min-w-[30px] text-center">
+                                                        {quantity}
+                                                    </span>
+                                                    <button
+                                                        onClick={() => updateSizeQuantity(size, quantity + 1)}
+                                                        className="px-3 py-1 text-white hover:bg-white/10 transition-colors"
+                                                    >
+                                                        <span className="material-icons-outlined text-base">add</span>
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    );
+                                })}
                             </div>
-                            {/* Error Message if try to add without size */}
-                            {!selectedSize && (
-                                <p className="text-red-400 text-xs mt-2 hidden group-invalid:block">
-                                    Please select a size
-                                </p>
-                            )}
                         </div>
                     )}
-
-                    {/* Quantity */}
-                    <div className="mb-6">
-                        <p className="text-white text-sm font-semibold mb-3">
-                            Quantity ({quantity} in cart)
-                        </p>
-                        <div className="flex items-center border border-gray-600 rounded bg-[#0f1a1c] w-32">
-                            <button
-                                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                className="px-4 py-2 text-white hover:bg-white/10 transition-colors"
-                            >
-                                <span className="material-icons-outlined text-lg">remove</span>
-                            </button>
-                            <input
-                                className="w-full bg-transparent text-center text-white border-none focus:ring-0 p-0 text-sm font-bold"
-                                type="text"
-                                value={quantity}
-                                onChange={(e) => {
-                                    const val = parseInt(e.target.value) || 1;
-                                    setQuantity(Math.max(1, val));
-                                }}
-                            />
-                            <button
-                                onClick={() => setQuantity(quantity + 1)}
-                                className="px-4 py-2 text-white hover:bg-white/10 transition-colors"
-                            >
-                                <span className="material-icons-outlined text-lg">add</span>
-                            </button>
-                        </div>
-                    </div>
 
                     {/* Action Buttons */}
                     <div className="space-y-3">
                         <button
                             onClick={handleAddToCart}
-                            disabled={!product.in_stock || (requiresSize && !selectedSize)}
-                            className={`w-full font-bold py-3 px-4 rounded transition-all uppercase text-sm flex items-center justify-center gap-2 transform active:scale-95 ${!product.in_stock || (requiresSize && !selectedSize)
-                                ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50"
-                                : "bg-pink-600 hover:bg-pink-700 text-white shadow-lg hover:shadow-pink-500/30"
+                            disabled={!product.in_stock || (requiresSize && !hasSelection)}
+                            className={`w-full font-bold py-3 px-4 rounded transition-all uppercase text-sm flex items-center justify-center gap-2 transform active:scale-95 ${!product.in_stock || (requiresSize && !hasSelection)
+                                    ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50"
+                                    : "bg-pink-600 hover:bg-pink-700 text-white shadow-lg hover:shadow-pink-500/30"
                                 }`}
                         >
                             <span className="material-icons-outlined">shopping_cart</span>
-                            Add to cart - {formatPrice(product.base_price * quantity)}
+                            {requiresSize && hasSelection
+                                ? `Add ${totalItems} ${totalItems === 1 ? 'item' : 'items'} - ${formatPrice(getTotalPrice())}`
+                                : `Add to cart - ${formatPrice(product.base_price)}`
+                            }
                         </button>
                         <button
                             onClick={handleBuyNow}
-                            disabled={!product.in_stock || (requiresSize && !selectedSize)}
-                            className={`w-full font-bold py-3 px-4 rounded transition-all uppercase text-sm transform active:scale-95 ${!product.in_stock || (requiresSize && !selectedSize)
-                                ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50 border border-gray-500"
-                                : "bg-lime-500 hover:bg-lime-600 text-[#1a2b2e] shadow-lg hover:shadow-lime-500/30"
+                            disabled={!product.in_stock || (requiresSize && !hasSelection)}
+                            className={`w-full font-bold py-3 px-4 rounded transition-all uppercase text-sm transform active:scale-95 ${!product.in_stock || (requiresSize && !hasSelection)
+                                    ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50 border border-gray-500"
+                                    : "bg-lime-500 hover:bg-lime-600 text-[#1a2b2e] shadow-lg hover:shadow-lime-500/30"
                                 }`}
                         >
                             BUY IT NOW
