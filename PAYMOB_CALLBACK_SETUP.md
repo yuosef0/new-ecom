@@ -1,254 +1,320 @@
-# 🔧 إعداد Paymob Portal للـ Callback
+# ⚙️ إعداد Paymob Callbacks - الدليل الصحيح
 
-لكي يعمل Callback بشكل صحيح، يجب إعداد Paymob Portal.
-
----
-
-## 📝 الخطوات المطلوبة
-
-### 1. تسجيل الدخول إلى Paymob Portal
-
-اذهب إلى: [https://accept.paymob.com/portal2/en/login](https://accept.paymob.com/portal2/en/login)
+بعد فحص Paymob Portal، إليك الإعدادات الصحيحة:
 
 ---
 
-### 2. إعداد Callback URL في iFrame Settings
+## 📍 موقع Callback Settings
 
-#### الخطوة 1: اذهب إلى iFrames
-1. من القائمة الجانبية، اختر **Developers**
-2. اختر **iFrames**
-3. اختر الـ iFrame الذي تستخدمه (ID: `858127`)
+### ✅ الموقع الصحيح: Payment Integrations
 
-#### الخطوة 2: إضافة Callback URL
-في إعدادات iFrame:
+**ليس في iFrames!** ❌
 
-**للتطوير المحلي (مع ngrok):**
+Callback URLs موجودة في:
 ```
-https://YOUR-NGROK-URL.ngrok.io/api/paymob/callback
+Developers → Payment Integrations → Online Card Integration
 ```
-
-**للإنتاج:**
-```
-https://yourdomain.com/api/paymob/callback
-```
-
-> **⚠️ ملاحظة:** Paymob لا يقبل `http://localhost:3000`
 
 ---
 
-### 3. إعداد Webhook URL (اختياري - كـ backup)
+## 🔧 أنواع Callbacks في Paymob
 
-#### الخطوة 1: اذهب إلى Webhooks
-1. من القائمة الجانبية، اختر **Developers**
-2. اختر **Webhooks**
+يوجد نوعان من Callbacks:
 
-#### الخطوة 2: إضافة Webhook URL
-**للتطوير المحلي (مع ngrok):**
-```
-https://YOUR-NGROK-URL.ngrok.io/api/webhooks/paymob
-```
+### 1. **Processed Callback** 
+**الوصف:** يُستدعى بعد معالجة الدفع (نجح أو فشل)
 
-**للإنتاج:**
+**متى يُستخدم:** 
+- لتحديث حالة الطلب في قاعدة البيانات
+- للتأكد من استلام إشعار الدفع
+
+**الرابط المطلوب:**
 ```
 https://yourdomain.com/api/webhooks/paymob
 ```
 
----
-
-## 🔄 كيف يعمل Callback
-
-### Flow الكامل:
-
+**في التطوير المحلي (مع ngrok/localtunnel):**
 ```
-1. المستخدم يضغط "PLACE ORDER"
-   ↓
-2. يتم إنشاء الطلب (status: pending)
-   ↓
-3. يتم التحويل لصفحة Paymob
-   ↓
-4. المستخدم يدفع
-   ↓
-5. ✅ Paymob يحول المستخدم إلى:
-   /api/paymob/callback?success=true&order=123&id=456&...
-   ↓
-6. Callback Handler يقوم بـ:
-   - التحقق من HMAC
-   - تحديث حالة الطلب (pending → confirmed)
-   - تحديث payment_status (pending → paid)
-   - خصم المخزون
-   - إضافة tracking entry
-   ↓
-7. يتم تحويل المستخدم إلى:
-   /checkout/confirmation?order=ORD-123&status=success
+https://your-tunnel-url.com/api/webhooks/paymob
 ```
 
 ---
 
-## 🧪 اختبار Callback محلياً مع ngrok
+### 2. **Response Callback**
+**الوصف:** يُستدعى لتحويل المستخدم بعد الدفع
 
-### الخطوة 1: تثبيت ngrok
+**متى يُستخدم:**
+- لتحويل المستخدم لصفحة التأكيد
+- لعرض نتيجة الدفع للمستخدم
+
+**الرابط المطلوب:**
+```
+https://yourdomain.com/api/paymob/callback
+```
+
+**في التطوير المحلي (مع ngrok/localtunnel):**
+```
+https://your-tunnel-url.com/api/paymob/callback
+```
+
+---
+
+## 📝 خطوات الإعداد في Paymob Portal
+
+### الخطوة 1: تسجيل الدخول
+
+اذهب إلى: **https://accept.paymob.com/portal2/en/login**
+
+### الخطوة 2: اذهب إلى Payment Integrations
+
+1. من القائمة الجانبية، اضغط على **"Developers"**
+2. اختر **"Payment Integrations"**
+3. ستجد قائمة بالـ integrations
+
+### الخطوة 3: اختر Integration
+
+ابحث عن:
+- **Integration Type:** Online Card
+- **Integration ID:** 4549597 (أو Integration ID الخاص بك)
+
+اضغط عليه للتعديل
+
+### الخطوة 4: أضف Callback URLs
+
+في صفحة Integration Settings، ستجد حقلين:
+
+#### أ) Processed Callback
+```
+https://yourdomain.com/api/webhooks/paymob
+```
+
+**الوظيفة:**
+- ✅ يتم استدعاؤه في الخلفية (server-to-server)
+- ✅ يحدث حالة الطلب
+- ✅ يخصم المخزون
+- ✅ آمن ولا يعتمد على المستخدم
+
+#### ب) Response Callback
+```
+https://yourdomain.com/api/paymob/callback
+```
+
+**الوظيفة:**
+- ✅ يحول المستخدم بعد الدفع
+- ✅ يعرض صفحة التأكيد
+- ✅ تجربة مستخدم أفضل
+
+### الخطوة 5: احفظ التغييرات
+
+اضغط **"Save"** أو **"Update"**
+
+---
+
+## 🎯 الفرق بين Processed و Response
+
+| الميزة | Processed Callback | Response Callback |
+|--------|-------------------|-------------------|
+| **متى يُستدعى** | في الخلفية | عند تحويل المستخدم |
+| **الاستخدام** | تحديث قاعدة البيانات | عرض صفحة للمستخدم |
+| **الأمان** | عالي (server-to-server) | متوسط (يمر بالمستخدم) |
+| **الموثوقية** | عالية | تعتمد على المستخدم |
+| **الأولوية** | ⭐⭐⭐ ضروري | ⭐⭐ مهم |
+
+---
+
+## ✅ الإعداد الموصى به
+
+### للإنتاج (بعد النشر على Vercel):
+
+#### 1. Processed Callback (ضروري)
+```
+https://yoursite.vercel.app/api/webhooks/paymob
+```
+
+**السبب:**
+- يضمن تحديث الطلب حتى لو أغلق المستخدم المتصفح
+- آمن ولا يمكن التلاعب به
+- يعمل في الخلفية
+
+#### 2. Response Callback (موصى به)
+```
+https://yoursite.vercel.app/api/paymob/callback
+```
+
+**السبب:**
+- يحسن تجربة المستخدم
+- يحول المستخدم لصفحة التأكيد مباشرة
+- يعرض رقم الطلب فوراً
+
+---
+
+## 🚀 خطوات النشر على Vercel
+
+### الخطوة 1: تثبيت Vercel CLI
 
 ```bash
-npm install -g ngrok
+npm install -g vercel
 ```
 
-### الخطوة 2: تشغيل ngrok
+### الخطوة 2: تسجيل الدخول
 
 ```bash
-ngrok http 3000
+vercel login
 ```
 
-ستحصل على رابط مثل:
-```
-https://abc123.ngrok.io
-```
+### الخطوة 3: النشر
 
-### الخطوة 3: تحديث Paymob Portal
+```bash
+# في مجلد المشروع
+cd c:\Users\medor\Desktop\new-ecom
 
-في iFrame Settings، أضف:
-```
-https://abc123.ngrok.io/api/paymob/callback
+# النشر
+vercel
 ```
 
-### الخطوة 4: الاختبار
+اتبع التعليمات:
+- اضغط Enter لقبول الإعدادات الافتراضية
+- سيتم رفع المشروع
+- ستحصل على رابط مثل: `https://new-ecom-xxx.vercel.app`
 
-1. افتح الموقع على `http://localhost:3000`
-2. أضف منتج للسلة
-3. اذهب للـ Checkout
-4. اختر Card payment
+### الخطوة 4: إضافة Environment Variables
+
+في Vercel Dashboard:
+1. اذهب إلى Project Settings
+2. اختر Environment Variables
+3. أضف المتغيرات من `.env.local`:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=...
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+   SUPABASE_SERVICE_ROLE_KEY=...
+   PAYMOB_API_KEY=...
+   PAYMOB_INTEGRATION_ID=...
+   PAYMOB_IFRAME_ID=...
+   PAYMOB_HMAC_SECRET=...
+   NEXT_PUBLIC_APP_URL=https://new-ecom-xxx.vercel.app
+   ```
+
+### الخطوة 5: إعادة النشر
+
+```bash
+vercel --prod
+```
+
+### الخطوة 6: تحديث Paymob Portal
+
+الآن حدّث Callbacks في Paymob Portal:
+
+**Processed Callback:**
+```
+https://new-ecom-xxx.vercel.app/api/webhooks/paymob
+```
+
+**Response Callback:**
+```
+https://new-ecom-xxx.vercel.app/api/paymob/callback
+```
+
+---
+
+## 🧪 الاختبار بعد النشر
+
+### 1. افتح الموقع المنشور
+
+```
+https://new-ecom-xxx.vercel.app
+```
+
+### 2. اختبر عملية الشراء
+
+1. أضف منتج للسلة
+2. اذهب للـ Checkout
+3. املأ بيانات الشحن
+4. اختر "Credit/Debit Card"
 5. استخدم بطاقة الاختبار: `4987654321098769`
 6. أكمل الدفع
 
-**النتيجة المتوقعة:**
+### 3. النتيجة المتوقعة
+
+- ✅ الدفع ينجح في Paymob
 - ✅ يتم تحويلك لصفحة التأكيد
-- ✅ حالة الطلب تتحدث إلى "confirmed"
-- ✅ payment_status يتحدث إلى "paid"
+- ✅ رقم الطلب يظهر
+- ✅ حالة الطلب: "confirmed"
+- ✅ payment_status: "paid"
 
 ---
 
-## 📊 التحقق من النتيجة
+## 📊 التحقق من Callbacks
 
-### في قاعدة البيانات:
+### في Paymob Portal
+
+1. اذهب إلى **Transactions**
+2. ابحث عن آخر معاملة
+3. اضغط عليها
+4. تحقق من **Callback Status**
+
+يجب أن ترى:
+- ✅ Processed Callback: Success
+- ✅ Response Callback: Success
+
+### في قاعدة البيانات
 
 ```sql
--- التحقق من الطلب
 SELECT 
   order_number,
   status,
   payment_status,
-  paymob_transaction_id,
-  created_at
+  paymob_transaction_id
 FROM orders
-WHERE order_number = 'ORD-XXXXXX';
-
--- التحقق من Tracking
-SELECT 
-  status,
-  description,
-  created_at
-FROM order_tracking
-WHERE order_id = 'order-id-here'
-ORDER BY created_at DESC;
+ORDER BY created_at DESC
+LIMIT 1;
 ```
 
-**النتيجة المتوقعة:**
+النتيجة المتوقعة:
 ```
-status: "confirmed"
-payment_status: "paid"
-paymob_transaction_id: "123456"
+status: confirmed
+payment_status: paid
+paymob_transaction_id: 123456
 ```
 
 ---
 
-## ⚠️ مشاكل شائعة
+## ⚠️ ملاحظات هامة
 
-### المشكلة: "Callback not called"
+> **💡 استخدم كلا الـ Callbacks**
+> 
+> - **Processed Callback:** للموثوقية
+> - **Response Callback:** لتجربة المستخدم
+> 
+> معاً يوفران أفضل تجربة!
 
-**الأسباب:**
-1. Callback URL غير مُعد في Paymob Portal
-2. ngrok غير مشغل
-3. Callback URL خاطئ
+> **🔒 HMAC Verification**
+> 
+> كلا الـ Callbacks يتحققان من HMAC للأمان
+
+> **⚡ الأولوية**
+> 
+> إذا كان عليك اختيار واحد فقط:
+> - اختر **Processed Callback** (أكثر موثوقية)
+
+---
+
+## 🆘 المشاكل الشائعة
+
+### المشكلة: "Callback not received"
 
 **الحل:**
-1. تأكد من إضافة Callback URL في iFrame Settings
-2. تأكد من أن ngrok يعمل
-3. تأكد من أن الرابط صحيح
+1. تأكد من أن الرابط صحيح
+2. تأكد من أن السيرفر يعمل
+3. تحقق من Logs في Vercel
 
----
-
-### المشكلة: "Invalid HMAC signature"
-
-**السبب:** HMAC Secret خاطئ
+### المشكلة: "Invalid HMAC"
 
 **الحل:**
-1. تحقق من `PAYMOB_HMAC_SECRET` في `.env.local`
-2. تأكد من أنه يطابق HMAC في Paymob Portal
+1. تأكد من `PAYMOB_HMAC_SECRET` في Environment Variables
+2. تأكد من أنه يطابق Portal
 
 ---
 
-### المشكلة: "Order not found"
+**الآن أنت جاهز للنشر! 🚀**
 
-**السبب:** Paymob Order ID غير موجود في قاعدة البيانات
-
-**الحل:**
-1. تحقق من أن الطلب تم إنشاؤه بنجاح
-2. تحقق من أن `paymob_order_id` تم حفظه
-
----
-
-## 🚀 الانتقال للإنتاج
-
-عند الاستعداد للإطلاق:
-
-### 1. تحديث Callback URL
-
-في Paymob Portal → iFrame Settings:
-```
-https://yourdomain.com/api/paymob/callback
-```
-
-### 2. تحديث Webhook URL
-
-في Paymob Portal → Webhooks:
-```
-https://yourdomain.com/api/webhooks/paymob
-```
-
-### 3. استخدام Live API Keys
-
-في `.env.production`:
-```bash
-PAYMOB_API_KEY=your_live_api_key
-PAYMOB_INTEGRATION_ID=your_live_integration_id
-PAYMOB_IFRAME_ID=your_live_iframe_id
-PAYMOB_HMAC_SECRET=your_live_hmac_secret
-```
-
----
-
-## 📝 ملاحظات هامة
-
-> **💡 Callback vs Webhook**
-> 
-> - **Callback:** يحدث فوراً عندما يعود المستخدم (موصى به)
-> - **Webhook:** يحدث في الخلفية (backup)
-> 
-> استخدم كليهما للحصول على أفضل تجربة!
-
-> **🔒 الأمان**
-> 
-> - يتم التحقق من HMAC في كل callback
-> - لا تثق في query parameters بدون تحقق
-> - استخدم HTTPS في Production
-
-> **⚡ السرعة**
-> 
-> - Callback أسرع من Webhook
-> - المستخدم يرى التحديث فوراً
-> - تجربة مستخدم أفضل
-
----
-
-**تم إعداد Callback بنجاح! 🎉**
-
-الآن يمكنك اختبار عملية الدفع الكاملة مع تحديث تلقائي لحالة الطلب.
+بعد النشر على Vercel، حدّث Paymob Portal وستعمل جميع Callbacks بشكل صحيح.

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/stores/cart";
 import { CheckoutForm } from "@/components/storefront/checkout/CheckoutForm";
@@ -19,10 +19,11 @@ export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Redirect if cart is empty
-  if (items.length === 0 && !isProcessing) {
-    router.push("/cart");
-    return null;
-  }
+  useEffect(() => {
+    if (items.length === 0 && !isProcessing) {
+      router.push("/cart");
+    }
+  }, [items.length, isProcessing, router]);
 
   // Mock cart items with product data
   const cartItems = items.map((item) => ({
