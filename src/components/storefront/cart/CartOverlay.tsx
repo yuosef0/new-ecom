@@ -12,6 +12,24 @@ export function CartOverlay() {
   const { isOpen, closeCart, items, updateQuantity, removeItem } = useCartStore();
   const [enrichedItems, setEnrichedItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Handle Mount/Unmount Animations
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      requestAnimationFrame(() => {
+        setIsVisible(true);
+      });
+    } else {
+      setIsVisible(false);
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
 
   // Fetch product details for items in cart
   useEffect(() => {
@@ -88,24 +106,28 @@ export function CartOverlay() {
     return sum + (price * item.quantity);
   }, 0);
 
-  if (!isOpen) return null;
+  if (!shouldRender) return null;
 
   return (
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity"
+        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity duration-300 ${isVisible ? "opacity-100" : "opacity-0"
+          }`}
         onClick={closeCart}
       />
 
       {/* Drawer */}
-      <div className="fixed inset-y-0 right-0 w-full max-w-md bg-brand-burgundy shadow-2xl flex flex-col z-50 transform transition-transform duration-300 ease-in-out">
+      <div
+        className={`fixed inset-y-0 right-0 w-full max-w-md bg-brand-burgundy shadow-2xl flex flex-col z-50 transform transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? "translate-x-0" : "translate-x-full"
+          }`}
+      >
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-white/10">
           <h2 className="text-xl font-semibold text-brand-cream">Shopping cart</h2>
           <button
             onClick={closeCart}
-            className="p-1 rounded-full hover:bg-white/10 text-brand-cream transition-colors"
+            className="p-1 rounded-full hover:bg-white/10 text-brand-cream transition-colors hover:rotate-90 duration-300"
           >
             <Icon name="close" className="text-2xl" />
           </button>
@@ -114,13 +136,13 @@ export function CartOverlay() {
         {/* Cart Items */}
         {items.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center px-4">
-            <Icon name="shopping_cart" className="text-6xl text-brand-cream/30 mb-4" />
+            <Icon name="shopping_cart" className="text-6xl text-brand-cream/30 mb-4 animate-bounce" />
             <p className="text-brand-cream/70 text-center mb-4">
               Your cart is empty
             </p>
             <button
               onClick={closeCart}
-              className="px-6 py-2 bg-brand-primary text-white font-semibold rounded-lg"
+              className="px-6 py-2 bg-brand-primary text-white font-semibold rounded-lg hover:bg-red-700 transition-colors shadow-lg"
             >
               Continue Shopping
             </button>
@@ -149,7 +171,7 @@ export function CartOverlay() {
             <div className="border-t border-white/10 bg-brand-dark p-5 pb-8 shadow-[0_-5px_15px_rgba(0,0,0,0.25)]">
               {/* Note Icon */}
               <div className="flex justify-center mb-4">
-                <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-brand-muted">
+                <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-brand-muted hover:bg-brand-primary/20 transition-colors cursor-pointer">
                   <Icon name="edit_note" className="text-xl" />
                 </div>
               </div>
@@ -163,7 +185,7 @@ export function CartOverlay() {
               </div>
 
               <p className="text-xs text-brand-muted mb-6">
-                Tax included. <a href="#" className="underline hover:text-brand-cream">Shipping</a> calculated at checkout.
+                Tax included. <a href="#" className="underline hover:text-brand-cream transition-colors">Shipping</a> calculated at checkout.
               </p>
 
               {/* Buttons */}
@@ -171,14 +193,14 @@ export function CartOverlay() {
                 <Link
                   href="/cart"
                   onClick={closeCart}
-                  className="w-full py-3.5 px-4 rounded-md border border-brand-cream bg-brand-cream text-brand-charcoal font-medium text-sm hover:bg-opacity-90 transition-all focus:ring-2 focus:ring-offset-2 focus:ring-brand-cream text-center block"
+                  className="w-full py-3.5 px-4 rounded-md border border-brand-cream bg-brand-cream text-brand-charcoal font-medium text-sm hover:bg-white transition-all focus:ring-2 focus:ring-offset-2 focus:ring-brand-cream text-center block shadow-sm active:scale-95 duration-200"
                 >
                   View cart
                 </Link>
                 <Link
                   href="/checkout"
                   onClick={closeCart}
-                  className="w-full py-3.5 px-4 rounded-md bg-brand-primary text-white font-bold text-sm shadow-md hover:bg-red-700 transition-all focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary flex items-center justify-center"
+                  className="w-full py-3.5 px-4 rounded-md bg-brand-primary text-white font-bold text-sm shadow-md hover:bg-red-700 transition-all focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary flex items-center justify-center active:scale-95 duration-200"
                 >
                   Check out
                 </Link>

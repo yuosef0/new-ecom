@@ -20,10 +20,29 @@ export function SideMenu() {
   const { user, profile, loading, signOut, isAuthenticated } = useAuth();
   const [expandedCategory, setExpandedCategory] = useState<string | null>("winter");
   const [collections, setCollections] = useState<Collection[]>([]);
+  const [shouldRender, setShouldRender] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     loadCollections();
   }, []);
+
+  useEffect(() => {
+    if (menuOpen) {
+      setShouldRender(true);
+      // Slight delay to allow render before animating in
+      requestAnimationFrame(() => {
+        setIsVisible(true);
+      });
+    } else {
+      setIsVisible(false);
+      // Wait for animation to finish before unmounting
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [menuOpen]);
 
   const loadCollections = async () => {
     try {
@@ -58,21 +77,25 @@ export function SideMenu() {
       })),
   }));
 
-  if (!menuOpen) return null;
+  if (!shouldRender) return null;
 
   return (
     <>
       {/* Overlay */}
       <div
-        className="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-40"
+        className={`fixed inset-0 bg-black/50 backdrop-blur-[2px] z-40 transition-opacity duration-300 ${isVisible ? "opacity-100" : "opacity-0"
+          }`}
         onClick={toggleMenu}
       />
 
       {/* Side Drawer */}
-      <div className="fixed inset-y-0 left-0 w-4/5 max-w-sm bg-brand-burgundy text-brand-cream flex flex-col z-50 p-4 space-y-3 transform transition-transform duration-300">
+      <div
+        className={`fixed inset-y-0 left-0 w-4/5 max-w-sm bg-brand-burgundy text-brand-cream flex flex-col z-50 p-4 space-y-3 shadow-2xl transform transition-transform duration-300 ease-out ${isVisible ? "translate-x-0" : "-translate-x-full"
+          }`}
+      >
         {/* Close Button */}
         <div className="flex justify-start pb-2">
-          <button onClick={toggleMenu} className="text-brand-cream">
+          <button onClick={toggleMenu} className="text-brand-cream hover:rotate-90 transition-transform duration-300">
             <Icon name="close" className="text-2xl" />
           </button>
         </div>
@@ -98,30 +121,35 @@ export function SideMenu() {
             {categories.map((category) => (
               <li key={category.id}>
                 <div
-                  className="flex justify-between items-center py-2 cursor-pointer"
+                  className="flex justify-between items-center py-2 cursor-pointer group"
                   onClick={() =>
                     setExpandedCategory(expandedCategory === category.id ? null : category.id)
                   }
                 >
-                  <span>{category.name}</span>
+                  <span className="group-hover:text-white transition-colors">{category.name}</span>
                   <Icon
                     name={expandedCategory === category.id ? "remove" : "add"}
-                    className="!text-lg"
+                    className="!text-lg group-hover:text-white transition-colors"
                   />
                 </div>
 
-                {expandedCategory === category.id && (
-                  <ul className="pl-4 space-y-2 pt-2 text-sm font-light">
-                    {category.items.map((item) => (
-                      <li key={item.slug}>
-                        <Link href={`/collections/${item.slug}`} onClick={toggleMenu}>
-                          {item.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                <div className="border-t border-white/20 mt-2"></div>
+                <div
+                  className={`grid transition-all duration-300 ease-in-out ${expandedCategory === category.id ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    }`}
+                >
+                  <div className="overflow-hidden">
+                    <ul className="pl-4 space-y-2 pt-2 text-sm font-light border-l border-white/10 ml-1">
+                      {category.items.map((item) => (
+                        <li key={item.slug}>
+                          <Link href={`/collections/${item.slug}`} onClick={toggleMenu} className="block hover:text-white transition-colors hover:translate-x-1 duration-200">
+                            {item.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="border-t border-white/20 mt-2"></div>
+                  </div>
+                </div>
               </li>
             ))}
 
@@ -149,13 +177,13 @@ export function SideMenu() {
           {/* Quick Actions */}
           <div className="pt-6">
             <button
-              className="w-full bg-brand-primary text-white py-2 px-3 rounded flex items-center justify-center text-sm"
+              className="w-full bg-brand-primary text-white py-2.5 px-3 rounded flex items-center justify-center text-sm hover:bg-red-700 transition-colors shadow-lg active:scale-95 duration-200"
               onClick={() => {
                 toggleMenu();
                 toggleSearch();
               }}
             >
-              <Icon name="search" className="!text-lg mr-1" />
+              <Icon name="search" className="!text-lg mr-2" />
               <span>Search</span>
             </button>
           </div>
@@ -165,12 +193,13 @@ export function SideMenu() {
         <div className="flex-shrink-0 space-y-3">
           {loading ? (
             <div className="w-full bg-brand-cream/20 text-brand-cream py-2 px-4 rounded flex items-center justify-center text-sm">
+              <div className="animate-spin h-4 w-4 border-2 border-brand-cream border-t-transparent rounded-full mr-2"></div>
               <span>Loading...</span>
             </div>
           ) : isAuthenticated ? (
             <>
               {/* User Info */}
-              <div className="bg-brand-cream/10 p-3 rounded">
+              <div className="bg-brand-cream/10 p-3 rounded backdrop-blur-sm">
                 <div className="flex items-center space-x-2 mb-2">
                   <Icon name="person" className="!text-lg text-brand-cream" />
                   <span className="text-sm font-medium text-brand-cream">
@@ -184,7 +213,7 @@ export function SideMenu() {
               <div className="grid grid-cols-2 gap-2">
                 <Link
                   href="/account"
-                  className="bg-brand-cream/20 text-brand-cream py-2 px-3 rounded flex items-center justify-center text-xs"
+                  className="bg-brand-cream/20 text-brand-cream py-2 px-3 rounded flex items-center justify-center text-xs hover:bg-brand-cream/30 transition-colors"
                   onClick={toggleMenu}
                 >
                   <Icon name="settings" className="!text-base mr-1" />
@@ -192,7 +221,7 @@ export function SideMenu() {
                 </Link>
                 <Link
                   href="/orders"
-                  className="bg-brand-cream/20 text-brand-cream py-2 px-3 rounded flex items-center justify-center text-xs"
+                  className="bg-brand-cream/20 text-brand-cream py-2 px-3 rounded flex items-center justify-center text-xs hover:bg-brand-cream/30 transition-colors"
                   onClick={toggleMenu}
                 >
                   <Icon name="receipt_long" className="!text-base mr-1" />
@@ -213,7 +242,7 @@ export function SideMenu() {
           ) : (
             <Link
               href="/login"
-              className="w-full bg-brand-cream text-brand-burgundy py-2 px-4 rounded flex items-center justify-center text-sm font-medium"
+              className="w-full bg-brand-cream text-brand-burgundy py-2.5 px-4 rounded flex items-center justify-center text-sm font-bold shadow-lg hover:bg-white transition-colors active:scale-95 duration-200"
               onClick={toggleMenu}
             >
               <Icon name="person_outline" className="!text-lg mr-1" />
@@ -223,8 +252,8 @@ export function SideMenu() {
 
           <div className="border-t border-white/20"></div>
 
-          <div className="flex items-center space-x-2 text-brand-cream text-sm">
-            <span>🇪🇬</span>
+          <div className="flex items-center space-x-2 text-brand-cream text-sm opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
+            <span className="text-lg">🇪🇬</span>
             <span>EGP</span>
             <Icon name="expand_more" className="!text-base" />
           </div>

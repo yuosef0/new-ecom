@@ -27,11 +27,27 @@ export function SearchOverlay() {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [shouldRender, setShouldRender] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
-  // Focus input when overlay opens
+  // Handle Mount/Unmount Animations
   useEffect(() => {
-    if (searchOpen && inputRef.current) {
-      inputRef.current.focus();
+    if (searchOpen) {
+      setShouldRender(true);
+      requestAnimationFrame(() => {
+        setIsVisible(true);
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      });
+    } else {
+      setIsVisible(false);
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+        setQuery("");
+        setResults([]);
+      }, 300);
+      return () => clearTimeout(timer);
     }
   }, [searchOpen]);
 
@@ -112,8 +128,7 @@ export function SearchOverlay() {
 
   const handleResultClick = (result: SearchResult) => {
     toggleSearch();
-    setQuery("");
-    setResults([]);
+    // Animation handles exit
 
     if (result.type === 'category') {
       router.push(`/products?category=${result.slug}`);
@@ -128,26 +143,30 @@ export function SearchOverlay() {
     inputRef.current?.focus();
   };
 
-  if (!searchOpen) return null;
+  if (!shouldRender) return null;
 
   return (
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-40"
+        className={`fixed inset-0 bg-black/60 backdrop-blur-[2px] z-40 transition-opacity duration-300 ${isVisible ? "opacity-100" : "opacity-0"
+          }`}
         onClick={toggleSearch}
       />
 
       {/* Search Overlay */}
-      <div className="fixed inset-x-0 top-0 bg-brand-burgundy text-brand-cream z-50 max-h-screen flex flex-col animate-slide-down">
+      <div
+        className={`fixed inset-x-0 top-0 bg-brand-burgundy text-brand-cream z-50 max-h-screen flex flex-col shadow-2xl transition-all duration-300 ease-in-out ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-50"
+          }`}
+      >
         {/* Search Header */}
         <div className="p-4 border-b border-white/10">
           <div className="flex items-center gap-3">
             {/* Search Input */}
-            <div className="flex-1 relative">
+            <div className="flex-1 relative group">
               <Icon
                 name="search"
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-cream/50"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-cream/50 transition-colors group-focus-within:text-brand-primary"
               />
               <input
                 ref={inputRef}
@@ -155,12 +174,12 @@ export function SearchOverlay() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search products..."
-                className="w-full pl-10 pr-10 py-3 bg-white/10 border border-white/20 rounded-lg text-brand-cream placeholder:text-brand-cream/50 focus:outline-none focus:border-brand-primary"
+                className="w-full pl-10 pr-10 py-3 bg-white/10 border border-white/20 rounded-lg text-brand-cream placeholder:text-brand-cream/50 focus:outline-none focus:border-brand-primary focus:bg-white/15 transition-all shadow-sm"
               />
               {query && (
                 <button
                   onClick={handleClear}
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-white/10"
                 >
                   <Icon name="close" className="text-brand-cream/70 hover:text-brand-cream" />
                 </button>
@@ -170,7 +189,7 @@ export function SearchOverlay() {
             {/* Close Button */}
             <button
               onClick={toggleSearch}
-              className="p-2 hover:bg-white/10 rounded-lg"
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors hover:rotate-90 duration-300"
             >
               <Icon name="close" className="text-2xl" />
             </button>
@@ -178,10 +197,10 @@ export function SearchOverlay() {
         </div>
 
         {/* Search Results */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto max-h-[80vh]">
           {/* Loading State */}
           {isSearching && (
-            <div className="p-8 text-center">
+            <div className="p-8 text-center animate-pulse">
               <div className="text-brand-cream/70">Searching...</div>
             </div>
           )}
@@ -189,7 +208,7 @@ export function SearchOverlay() {
           {/* No Query State */}
           {!query && !isSearching && (
             <div className="p-8 text-center">
-              <Icon name="search" className="text-6xl text-brand-cream/30 mb-4" />
+              <Icon name="search" className="text-6xl text-brand-cream/30 mb-4 animate-bounce-slow" />
               <p className="text-brand-cream/70">
                 Start typing to search for products
               </p>
@@ -226,7 +245,7 @@ export function SearchOverlay() {
                       <button
                         key={result.id}
                         onClick={() => handleResultClick(result)}
-                        className="w-full flex gap-3 bg-brand-primary/20 hover:bg-brand-primary/30 rounded-lg p-3 transition-colors text-left border border-brand-primary/30"
+                        className="w-full flex gap-3 bg-brand-primary/20 hover:bg-brand-primary/30 rounded-lg p-3 transition-colors text-left border border-brand-primary/30 hover:shadow-md transform hover:-translate-y-0.5 duration-200"
                       >
                         {/* Category Icon */}
                         <div className="w-20 h-20 bg-brand-primary/20 rounded flex-shrink-0 flex items-center justify-center">
@@ -256,26 +275,26 @@ export function SearchOverlay() {
                     result.images.find((img) => img.is_primary) || result.images[0];
                   const discount = result.compare_at_price
                     ? Math.round(
-                        ((result.compare_at_price - result.base_price) /
-                          result.compare_at_price) *
-                          100
-                      )
+                      ((result.compare_at_price - result.base_price) /
+                        result.compare_at_price) *
+                      100
+                    )
                     : 0;
 
                   return (
                     <button
                       key={result.id}
                       onClick={() => handleResultClick(result)}
-                      className="w-full flex gap-3 bg-white/5 hover:bg-white/10 rounded-lg p-3 transition-colors text-left"
+                      className="w-full flex gap-3 bg-white/5 hover:bg-white/10 rounded-lg p-3 transition-colors text-left hover:shadow-md transform hover:-translate-y-0.5 duration-200"
                     >
                       {/* Product Image */}
-                      <div className="relative w-20 h-20 bg-white/10 rounded flex-shrink-0">
+                      <div className="relative w-20 h-20 bg-white/10 rounded flex-shrink-0 overflow-hidden">
                         {primaryImage ? (
                           <Image
                             src={primaryImage.url}
                             alt={result.name}
                             fill
-                            className="object-cover rounded"
+                            className="object-cover transition-transform hover:scale-110 duration-500"
                             sizes="80px"
                           />
                         ) : (
@@ -284,7 +303,7 @@ export function SearchOverlay() {
                           </div>
                         )}
                         {discount > 0 && (
-                          <div className="absolute -top-1 -right-1 bg-brand-primary text-white text-xs font-bold px-1.5 py-0.5 rounded">
+                          <div className="absolute -top-1 -right-1 bg-brand-primary text-white text-xs font-bold px-1.5 py-0.5 rounded shadow-sm z-10">
                             -{discount}%
                           </div>
                         )}
