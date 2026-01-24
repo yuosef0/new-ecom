@@ -32,19 +32,8 @@ export function AdminHeader({ user }: AdminHeaderProps) {
           <span className="material-icons-outlined">menu</span>
         </button>
 
-        {/* Search (placeholder) */}
-        <div className="flex-1 max-w-xl mx-4 hidden md:block">
-          <div className="relative">
-            <span className="material-icons-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
-              search
-            </span>
-            <input
-              type="search"
-              placeholder="Search products, orders, customers..."
-              className="w-full pl-10 pr-4 py-2 bg-white border-2 border-gray-400 text-gray-900 font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary placeholder:text-gray-500 placeholder:font-normal"
-            />
-          </div>
-        </div>
+        {/* Spacer */}
+        <div className="flex-1" />
 
         {/* Right section */}
         <div className="flex items-center gap-4">

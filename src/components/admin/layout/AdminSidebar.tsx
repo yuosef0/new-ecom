@@ -28,11 +28,6 @@ const navigation = [
         href: "/admin/collections",
         icon: "collections",
       },
-      {
-        name: "Reviews",
-        href: "/admin/reviews",
-        icon: "rate_review",
-      },
     ],
   },
   {
@@ -69,11 +64,6 @@ const navigation = [
         icon: "view_carousel",
       },
       {
-        name: "Slider",
-        href: "/admin/slider",
-        icon: "image",
-      },
-      {
         name: "Top Bar Messages",
         href: "/admin/top-bar-messages",
         icon: "chat",
@@ -92,11 +82,6 @@ const navigation = [
         name: "Social Media",
         href: "/admin/social-media",
         icon: "share",
-      },
-      {
-        name: "Theme Settings",
-        href: "/admin/theme-settings",
-        icon: "palette",
       },
       {
         name: "General Settings",
