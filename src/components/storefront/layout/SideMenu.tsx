@@ -32,7 +32,7 @@ export function SideMenu() {
         .from("collections")
         .select("id, name, slug, display_type, parent_id")
         .eq("is_active", true)
-        .order("created_at", { ascending: false});
+        .order("created_at", { ascending: false });
 
       if (data) {
         setCollections(data);
@@ -183,12 +183,20 @@ export function SideMenu() {
                   <Icon name="settings" className="!text-base mr-1" />
                   <span>Account</span>
                 </Link>
+                <Link
+                  href="/orders"
+                  className="bg-brand-cream/20 text-brand-cream py-2 px-3 rounded flex items-center justify-center text-xs"
+                  onClick={toggleMenu}
+                >
+                  <Icon name="receipt_long" className="!text-base mr-1" />
+                  <span>Orders</span>
+                </Link>
                 <button
                   onClick={() => {
                     signOut();
                     toggleMenu();
                   }}
-                  className="bg-brand-cream/20 text-brand-cream py-2 px-3 rounded flex items-center justify-center text-xs"
+                  className="bg-brand-cream/20 text-brand-cream py-2 px-3 rounded flex items-center justify-center text-xs col-span-2 hover:bg-red-500/20 hover:text-red-200 transition-colors"
                 >
                   <Icon name="logout" className="!text-base mr-1" />
                   <span>Logout</span>

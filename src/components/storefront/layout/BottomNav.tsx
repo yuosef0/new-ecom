@@ -68,14 +68,14 @@ export function BottomNav() {
           <span className="text-[9px] sm:text-[10px]">Wishlist</span>
         </Link>
 
-        {/* Orders */}
+        {/* Shop */}
         <Link
-          href="/orders"
-          className={`flex flex-col items-center justify-center gap-0.5 sm:gap-1 py-1.5 px-2 sm:px-3 ${isActive("/orders") ? "text-brand-primary" : "hover:text-brand-cream transition-colors"
+          href="/products"
+          className={`flex flex-col items-center justify-center gap-0.5 sm:gap-1 py-1.5 px-2 sm:px-3 ${isActive("/products") ? "text-brand-primary" : "hover:text-brand-cream transition-colors"
             }`}
         >
-          <span className="material-icons-outlined text-xl sm:text-2xl">receipt_long</span>
-          <span className="text-[9px] sm:text-[10px]">Orders</span>
+          <span className="material-icons-outlined text-xl sm:text-2xl">storefront</span>
+          <span className="text-[9px] sm:text-[10px]">Shop</span>
         </Link>
 
         {/* Home */}
