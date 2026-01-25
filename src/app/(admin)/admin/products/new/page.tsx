@@ -24,6 +24,7 @@ export default function NewProductPage() {
     slug: "",
     description: "",
     base_price: "",
+    compare_at_price: "",
     category_id: "",
     is_active: true,
     is_featured: false,
@@ -90,6 +91,7 @@ export default function NewProductPage() {
           slug: formData.slug,
           description: formData.description,
           base_price: parseFloat(formData.base_price),
+          compare_at_price: formData.compare_at_price ? parseFloat(formData.compare_at_price) : null,
           category_id: formData.category_id || null,
           is_active: formData.is_active,
           is_featured: formData.is_featured,
@@ -236,22 +238,45 @@ export default function NewProductPage() {
           />
         </div>
 
-        {/* Base Price */}
-        <div>
-          <label htmlFor="base_price" className="block text-sm font-medium text-gray-700 mb-2">
-            Base Price (EGP) *
-          </label>
-          <input
-            type="number"
-            id="base_price"
-            required
-            min="0"
-            step="0.01"
-            value={formData.base_price}
-            onChange={(e) => setFormData({ ...formData, base_price: e.target.value })}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
-            placeholder="0.00"
-          />
+        {/* Pricing Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Base Price */}
+          <div>
+            <label htmlFor="base_price" className="block text-sm font-medium text-gray-700 mb-2">
+              سعر البيع (ج.م) * <span className="text-gray-400 font-normal">- Sale Price</span>
+            </label>
+            <input
+              type="number"
+              id="base_price"
+              required
+              min="0"
+              step="0.01"
+              value={formData.base_price}
+              onChange={(e) => setFormData({ ...formData, base_price: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+              placeholder="0.00"
+            />
+          </div>
+
+          {/* Compare at Price */}
+          <div>
+            <label htmlFor="compare_at_price" className="block text-sm font-medium text-gray-700 mb-2">
+              السعر قبل الخصم (ج.م) <span className="text-gray-400 font-normal">- Compare at Price</span>
+            </label>
+            <input
+              type="number"
+              id="compare_at_price"
+              min="0"
+              step="0.01"
+              value={formData.compare_at_price}
+              onChange={(e) => setFormData({ ...formData, compare_at_price: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+              placeholder="اختياري - اتركه فارغ إذا لم يكن هناك خصم"
+            />
+            <p className="mt-1 text-xs text-gray-500">
+              إذا كان أعلى من سعر البيع، سيظهر الخصم على كارد المنتج
+            </p>
+          </div>
         </div>
 
         {/* Category */}

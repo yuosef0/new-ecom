@@ -3,24 +3,23 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-interface Coupon {
+interface PromoCode {
   id: string;
   code: string;
   description: string | null;
   discount_type: "percentage" | "fixed";
   discount_value: number;
-  min_purchase_amount: number;
-  max_discount_amount: number | null;
-  usage_limit: number | null;
+  min_order_amount: number | null;
+  max_uses: number | null;
   used_count: number;
   is_active: boolean;
-  valid_from: string;
-  valid_until: string | null;
+  starts_at: string | null;
+  expires_at: string | null;
   created_at: string;
 }
 
 export default function CouponsManagementPage() {
-  const [coupons, setCoupons] = useState<Coupon[]>([]);
+  const [coupons, setCoupons] = useState<PromoCode[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -32,11 +31,10 @@ export default function CouponsManagementPage() {
     description: "",
     discount_type: "percentage" as "percentage" | "fixed",
     discount_value: "",
-    min_purchase_amount: "",
-    max_discount_amount: "",
-    usage_limit: "",
-    valid_from: new Date().toISOString().split("T")[0],
-    valid_until: "",
+    min_order_amount: "",
+    max_uses: "",
+    starts_at: new Date().toISOString().split("T")[0],
+    expires_at: "",
     is_active: true,
   });
 
@@ -48,7 +46,7 @@ export default function CouponsManagementPage() {
     try {
       const supabase = createClient();
       const { data, error } = await supabase
-        .from("coupons")
+        .from("promo_codes")
         .select("*")
         .order("created_at", { ascending: false });
 
@@ -94,26 +92,25 @@ export default function CouponsManagementPage() {
         description: formData.description || null,
         discount_type: formData.discount_type,
         discount_value: parseFloat(formData.discount_value),
-        min_purchase_amount: parseFloat(formData.min_purchase_amount) || 0,
-        max_discount_amount: formData.max_discount_amount
-          ? parseFloat(formData.max_discount_amount)
+        min_order_amount: formData.min_order_amount
+          ? parseFloat(formData.min_order_amount)
           : null,
-        usage_limit: formData.usage_limit ? parseInt(formData.usage_limit) : null,
-        valid_from: new Date(formData.valid_from).toISOString(),
-        valid_until: formData.valid_until ? new Date(formData.valid_until).toISOString() : null,
+        max_uses: formData.max_uses ? parseInt(formData.max_uses) : null,
+        starts_at: formData.starts_at ? new Date(formData.starts_at).toISOString() : null,
+        expires_at: formData.expires_at ? new Date(formData.expires_at).toISOString() : null,
         is_active: formData.is_active,
       };
 
       if (editingId) {
         const { error: updateError } = await supabase
-          .from("coupons")
+          .from("promo_codes")
           .update(couponData)
           .eq("id", editingId);
 
         if (updateError) throw updateError;
         setSuccess("✅ تم تحديث الكوبون بنجاح");
       } else {
-        const { error: insertError } = await supabase.from("coupons").insert({
+        const { error: insertError } = await supabase.from("promo_codes").insert({
           ...couponData,
           used_count: 0,
         });
@@ -131,17 +128,16 @@ export default function CouponsManagementPage() {
     }
   };
 
-  const editCoupon = (coupon: Coupon) => {
+  const editCoupon = (coupon: PromoCode) => {
     setFormData({
       code: coupon.code,
       description: coupon.description || "",
       discount_type: coupon.discount_type,
       discount_value: coupon.discount_value.toString(),
-      min_purchase_amount: coupon.min_purchase_amount.toString(),
-      max_discount_amount: coupon.max_discount_amount?.toString() || "",
-      usage_limit: coupon.usage_limit?.toString() || "",
-      valid_from: coupon.valid_from.split("T")[0],
-      valid_until: coupon.valid_until ? coupon.valid_until.split("T")[0] : "",
+      min_order_amount: coupon.min_order_amount?.toString() || "",
+      max_uses: coupon.max_uses?.toString() || "",
+      starts_at: coupon.starts_at ? coupon.starts_at.split("T")[0] : "",
+      expires_at: coupon.expires_at ? coupon.expires_at.split("T")[0] : "",
       is_active: coupon.is_active,
     });
     setEditingId(coupon.id);
@@ -153,7 +149,7 @@ export default function CouponsManagementPage() {
 
     try {
       const supabase = createClient();
-      const { error } = await supabase.from("coupons").delete().eq("id", id);
+      const { error } = await supabase.from("promo_codes").delete().eq("id", id);
 
       if (error) throw error;
       setSuccess("✅ تم حذف الكوبون بنجاح");
@@ -167,7 +163,7 @@ export default function CouponsManagementPage() {
     try {
       const supabase = createClient();
       const { error } = await supabase
-        .from("coupons")
+        .from("promo_codes")
         .update({ is_active: !currentStatus })
         .eq("id", id);
 
@@ -184,17 +180,17 @@ export default function CouponsManagementPage() {
       description: "",
       discount_type: "percentage",
       discount_value: "",
-      min_purchase_amount: "",
-      max_discount_amount: "",
-      usage_limit: "",
-      valid_from: new Date().toISOString().split("T")[0],
-      valid_until: "",
+      min_order_amount: "",
+      max_uses: "",
+      starts_at: new Date().toISOString().split("T")[0],
+      expires_at: "",
       is_active: true,
     });
     setEditingId(null);
   };
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return "غير محدد";
     return new Date(dateString).toLocaleDateString("ar-EG", {
       year: "numeric",
       month: "short",
@@ -273,7 +269,7 @@ export default function CouponsManagementPage() {
               <p className="text-2xl font-bold text-red-600 mt-1">
                 {
                   coupons.filter(
-                    (c) => c.valid_until && new Date(c.valid_until) < new Date()
+                    (c) => c.expires_at && new Date(c.expires_at) < new Date()
                   ).length
                 }
               </p>
@@ -375,7 +371,7 @@ export default function CouponsManagementPage() {
                 </div>
               </div>
 
-              {/* Min Purchase Amount */}
+              {/* Min Order Amount */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   الحد الأدنى للشراء (ج.م)
@@ -384,36 +380,16 @@ export default function CouponsManagementPage() {
                   type="number"
                   min="0"
                   step="0.01"
-                  value={formData.min_purchase_amount}
+                  value={formData.min_order_amount}
                   onChange={(e) =>
-                    setFormData({ ...formData, min_purchase_amount: e.target.value })
+                    setFormData({ ...formData, min_order_amount: e.target.value })
                   }
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                   placeholder="0"
                 />
               </div>
 
-              {/* Max Discount Amount (for percentage) */}
-              {formData.discount_type === "percentage" && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    الحد الأقصى للخصم (ج.م) (اختياري)
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={formData.max_discount_amount}
-                    onChange={(e) =>
-                      setFormData({ ...formData, max_discount_amount: e.target.value })
-                    }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
-                    placeholder="غير محدود"
-                  />
-                </div>
-              )}
-
-              {/* Usage Limit */}
+              {/* Max Uses */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   عدد مرات الاستخدام (اختياري)
@@ -421,38 +397,37 @@ export default function CouponsManagementPage() {
                 <input
                   type="number"
                   min="0"
-                  value={formData.usage_limit}
-                  onChange={(e) => setFormData({ ...formData, usage_limit: e.target.value })}
+                  value={formData.max_uses}
+                  onChange={(e) => setFormData({ ...formData, max_uses: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                   placeholder="غير محدود"
                 />
               </div>
 
-              {/* Valid From */}
+              {/* Starts At */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  صالح من *
+                  صالح من
                 </label>
                 <input
                   type="date"
-                  value={formData.valid_from}
-                  onChange={(e) => setFormData({ ...formData, valid_from: e.target.value })}
+                  value={formData.starts_at}
+                  onChange={(e) => setFormData({ ...formData, starts_at: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
-                  required
                 />
               </div>
 
-              {/* Valid Until */}
+              {/* Expires At */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   صالح حتى (اختياري)
                 </label>
                 <input
                   type="date"
-                  value={formData.valid_until}
-                  onChange={(e) => setFormData({ ...formData, valid_until: e.target.value })}
+                  value={formData.expires_at}
+                  onChange={(e) => setFormData({ ...formData, expires_at: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
-                  min={formData.valid_from}
+                  min={formData.starts_at}
                 />
               </div>
 
@@ -513,9 +488,9 @@ export default function CouponsManagementPage() {
               <div className="divide-y divide-gray-200">
                 {coupons.map((coupon) => {
                   const isExpired =
-                    coupon.valid_until && new Date(coupon.valid_until) < new Date();
+                    coupon.expires_at && new Date(coupon.expires_at) < new Date();
                   const isLimitReached =
-                    coupon.usage_limit && coupon.used_count >= coupon.usage_limit;
+                    coupon.max_uses && coupon.used_count >= coupon.max_uses;
 
                   return (
                     <div key={coupon.id} className="p-6 hover:bg-gray-50">
@@ -524,19 +499,18 @@ export default function CouponsManagementPage() {
                           <div className="flex items-center gap-2 mb-2">
                             <h3 className="text-lg font-bold text-gray-900">{coupon.code}</h3>
                             <span
-                              className={`text-xs px-2 py-1 rounded-full ${
-                                coupon.is_active && !isExpired && !isLimitReached
+                              className={`text-xs px-2 py-1 rounded-full ${coupon.is_active && !isExpired && !isLimitReached
                                   ? "bg-green-100 text-green-800"
                                   : "bg-gray-100 text-gray-800"
-                              }`}
+                                }`}
                             >
                               {isExpired
                                 ? "منتهي"
                                 : isLimitReached
-                                ? "مكتمل"
-                                : coupon.is_active
-                                ? "نشط"
-                                : "غير نشط"}
+                                  ? "مكتمل"
+                                  : coupon.is_active
+                                    ? "نشط"
+                                    : "غير نشط"}
                             </span>
                           </div>
 
@@ -554,11 +528,11 @@ export default function CouponsManagementPage() {
                               </p>
                             </div>
 
-                            {coupon.min_purchase_amount > 0 && (
+                            {coupon.min_order_amount && coupon.min_order_amount > 0 && (
                               <div>
                                 <p className="text-gray-500">الحد الأدنى للشراء</p>
                                 <p className="font-medium text-gray-900">
-                                  {coupon.min_purchase_amount} ج.م
+                                  {coupon.min_order_amount} ج.م
                                 </p>
                               </div>
                             )}
@@ -567,14 +541,14 @@ export default function CouponsManagementPage() {
                               <p className="text-gray-500">الاستخدام</p>
                               <p className="font-medium text-gray-900">
                                 {coupon.used_count}
-                                {coupon.usage_limit ? ` / ${coupon.usage_limit}` : " / غير محدود"}
+                                {coupon.max_uses ? ` / ${coupon.max_uses}` : " / غير محدود"}
                               </p>
                             </div>
 
                             <div>
                               <p className="text-gray-500">صالح حتى</p>
                               <p className="font-medium text-gray-900">
-                                {coupon.valid_until ? formatDate(coupon.valid_until) : "غير محدد"}
+                                {formatDate(coupon.expires_at)}
                               </p>
                             </div>
                           </div>
