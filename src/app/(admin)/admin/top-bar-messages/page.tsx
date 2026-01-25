@@ -61,6 +61,14 @@ export default function TopBarMessagesPage() {
     try {
       const supabase = createClient();
 
+      if (formData.is_active) {
+        // Deactivate all active messages
+        await supabase
+          .from("top_bar_messages")
+          .update({ is_active: false })
+          .neq("id", "00000000-0000-0000-0000-000000000000"); // Update all rows
+      }
+
       if (editingId) {
         // Update existing message
         const { error: updateError } = await supabase
@@ -118,9 +126,19 @@ export default function TopBarMessagesPage() {
   const toggleActive = async (id: string, currentStatus: boolean) => {
     try {
       const supabase = createClient();
+      const newStatus = !currentStatus;
+
+      if (newStatus) {
+        // If activating, deactivate others first
+        await supabase
+          .from("top_bar_messages")
+          .update({ is_active: false })
+          .neq("id", id);
+      }
+
       const { error } = await supabase
         .from("top_bar_messages")
-        .update({ is_active: !currentStatus })
+        .update({ is_active: newStatus })
         .eq("id", id);
 
       if (error) throw error;
@@ -306,11 +324,10 @@ export default function TopBarMessagesPage() {
                             الترتيب: {message.display_order}
                           </span>
                           <span
-                            className={`text-xs px-2 py-1 rounded-full ${
-                              message.is_active
+                            className={`text-xs px-2 py-1 rounded-full ${message.is_active
                                 ? "bg-green-100 text-green-800"
                                 : "bg-gray-100 text-gray-800"
-                            }`}
+                              }`}
                           >
                             {message.is_active ? "نشط" : "غير نشط"}
                           </span>
