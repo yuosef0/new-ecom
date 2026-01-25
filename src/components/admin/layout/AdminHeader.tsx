@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useAdminSidebar } from "@/stores/adminSidebar";
 import { useNotifications, Notification } from "@/stores/notifications";
 import Link from "next/link";
+import { useAdminTheme } from "@/stores/adminTheme";
 
 interface AdminHeaderProps {
   user: {
@@ -20,6 +21,7 @@ export function AdminHeader({ user }: AdminHeaderProps) {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const { toggle } = useAdminSidebar();
+  const { isDark, toggle: toggleTheme } = useAdminTheme();
   const { notifications, unreadCount, setNotifications, markAsRead, markAllAsRead } = useNotifications();
 
   // Load low stock notifications on mount
@@ -155,6 +157,17 @@ export function AdminHeader({ user }: AdminHeaderProps) {
 
         {/* Right section */}
         <div className="flex items-center gap-2 sm:gap-4">
+          {/* Dark Mode Toggle */}
+          <button
+            onClick={toggleTheme}
+            className="p-2 text-gray-600 hover:text-brand-primary hover:bg-gray-100 rounded-lg transition-colors"
+            title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          >
+            <span className="material-icons-outlined">
+              {isDark ? "light_mode" : "dark_mode"}
+            </span>
+          </button>
+
           {/* Notifications */}
           <div className="relative">
             <button

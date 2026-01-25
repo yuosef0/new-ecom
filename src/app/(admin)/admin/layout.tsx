@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { AdminSidebar } from "@/components/admin/layout/AdminSidebar";
 import { AdminHeader } from "@/components/admin/layout/AdminHeader";
 import { AdminStyles } from "@/components/admin/AdminStyles";
+import { AdminWrapper } from "@/components/admin/AdminWrapper";
 
 export default async function AdminLayout({
   children,
@@ -34,7 +35,7 @@ export default async function AdminLayout({
   return (
     <>
       <AdminStyles />
-      <div className="min-h-screen bg-gray-50">
+      <AdminWrapper>
         <AdminSidebar />
         <div className="lg:pl-64">
           <AdminHeader
@@ -47,7 +48,7 @@ export default async function AdminLayout({
             <div className="p-4 sm:p-6">{children}</div>
           </main>
         </div>
-      </div>
+      </AdminWrapper>
     </>
   );
 }
