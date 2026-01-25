@@ -13,21 +13,32 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        // Helper to normalize code (trim)
+        const normalizedCode = code.trim();
+
+        console.log(`Checking promo code: "${normalizedCode}"`);
+
         // Fetch promo code
-        // Using admin client to see all coupons, though client with RLS would be safer if configured
-        // For now assuming public readable or admin-only
+        // Using admin client to see all coupons
         const { data: promoCode, error } = await supabaseAdmin
             .from("promo_codes")
             .select("*")
-            .eq("code", code)
+            .ilike("code", normalizedCode) // Use ilike for case-insensitive match
             .single();
 
-        if (error || !promoCode) {
+        if (error) {
+            console.error("Database error fetching promo code:", error);
+        }
+
+        if (!promoCode) {
+            console.log("Promo code not found in database");
             return NextResponse.json(
                 { error: "Invalid promo code" },
                 { status: 404 }
             );
         }
+
+        console.log("Found promo code:", promoCode);
 
         // 1. Check if active
         if (!promoCode.is_active) {
