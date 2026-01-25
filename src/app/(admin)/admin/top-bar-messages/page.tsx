@@ -75,7 +75,7 @@ export default function TopBarMessagesPage() {
           .from("top_bar_messages")
           .update({
             message_en: formData.message_en,
-            message_ar: formData.message_ar || null,
+            message_ar: formData.message_ar || '',
             is_active: formData.is_active,
           })
           .eq("id", editingId);
@@ -90,7 +90,7 @@ export default function TopBarMessagesPage() {
           .from("top_bar_messages")
           .insert({
             message_en: formData.message_en,
-            message_ar: formData.message_ar || null,
+            message_ar: formData.message_ar || '',
             is_active: formData.is_active,
             display_order: maxOrder + 1,
           });
