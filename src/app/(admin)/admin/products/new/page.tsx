@@ -29,21 +29,43 @@ export default function NewProductPage() {
     is_featured: false,
   });
 
-  // Fetch all collections on component mount
+  // Variant management
+  const [variants, setVariants] = useState<{
+    size_id: string;
+    size_name: string;
+    sku: string;
+    price_adjustment: number;
+    stock_quantity: number;
+  }[]>([]);
+  const [sizes, setSizes] = useState<{ id: string; name: string }[]>([]);
+
+  // Fetch all collections and sizes on component mount
   useEffect(() => {
-    async function fetchCollections() {
+    async function fetchData() {
       const supabase = createClient();
-      const { data, error } = await supabase
+
+      // Fetch collections
+      const { data: collectionsData, error: collectionsError } = await supabase
         .from("collections")
         .select("id, name, slug")
         .eq("is_active", true)
         .order("name");
 
-      if (!error && data) {
-        setCollections(data);
+      if (!collectionsError && collectionsData) {
+        setCollections(collectionsData);
+      }
+
+      // Fetch sizes
+      const { data: sizesData, error: sizesError } = await supabase
+        .from("sizes")
+        .select("id, name")
+        .order("name");
+
+      if (!sizesError && sizesData) {
+        setSizes(sizesData);
       }
     }
-    fetchCollections();
+    fetchData();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -103,6 +125,23 @@ export default function NewProductPage() {
           .insert(collectionRecords);
 
         if (collectionsError) throw collectionsError;
+      }
+
+      // Insert variants
+      if (variants.length > 0) {
+        const variantRecords = variants.map(v => ({
+          product_id: product.id,
+          size_id: v.size_id,
+          sku: v.sku || null,
+          price_adjustment: v.price_adjustment || 0,
+          stock_quantity: v.stock_quantity || 0,
+        }));
+
+        const { error: variantsError } = await supabase
+          .from("product_variants")
+          .insert(variantRecords);
+
+        if (variantsError) throw variantsError;
       }
 
       // Redirect to products list
@@ -303,25 +342,116 @@ export default function NewProductPage() {
           </p>
         </div>
 
+        {/* Product Variants (Sizes & Stock) */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-3">
+            Product Variants (Sizes & Stock)
+          </label>
+          <div className="space-y-3 border border-gray-300 rounded-lg p-4">
+            {variants.map((variant, index) => (
+              <div key={index} className="grid grid-cols-4 gap-3 items-end p-3 bg-gray-50 rounded-lg">
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Size *
+                  </label>
+                  <select
+                    value={variant.size_id}
+                    onChange={(e) => {
+                      const newVariants = [...variants];
+                      const selectedSize = sizes.find(s => s.id === e.target.value);
+                      newVariants[index] = {
+                        ...variant,
+                        size_id: e.target.value,
+                        size_name: selectedSize?.name || "",
+                      };
+                      setVariants(newVariants);
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent text-sm"
+                    required
+                  >
+                    <option value="">Select size</option>
+                    {sizes.map((size) => (
+                      <option key={size.id} value={size.id}>
+                        {size.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    SKU
+                  </label>
+                  <input
+                    type="text"
+                    value={variant.sku}
+                    onChange={(e) => {
+                      const newVariants = [...variants];
+                      newVariants[index].sku = e.target.value;
+                      setVariants(newVariants);
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent text-sm"
+                    placeholder="SKU"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Stock Quantity *
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={variant.stock_quantity}
+                    onChange={(e) => {
+                      const newVariants = [...variants];
+                      newVariants[index].stock_quantity = parseInt(e.target.value) || 0;
+                      setVariants(newVariants);
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent text-sm"
+                    placeholder="0"
+                    required
+                  />
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setVariants(variants.filter((_, i) => i !== index));
+                    }}
+                    className="px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-sm"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                setVariants([
+                  ...variants,
+                  {
+                    size_id: "",
+                    size_name: "",
+                    sku: "",
+                    price_adjustment: 0,
+                    stock_quantity: 0,
+                  },
+                ]);
+              }}
+              className="w-full px-4 py-2 border-2 border-dashed border-gray-300 text-gray-600 rounded-lg hover:border-brand-primary hover:text-brand-primary transition-colors text-sm font-medium"
+            >
+              + Add Variant
+            </button>
+          </div>
+          <p className="mt-1 text-xs text-gray-500">
+            Add different sizes with their stock quantities. Leave empty if product has no size variations.
+          </p>
+        </div>
+
         {/* Product Images Upload */}
         <ProductImageUpload
           onImagesUploaded={setImages}
         />
-
-        {/* Note about variants */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="flex items-start gap-2">
-            <span className="material-icons-outlined text-blue-600 text-lg">info</span>
-            <div className="text-sm text-blue-800">
-              <p className="font-medium mb-1">Note:</p>
-              <p>After creating the product, you'll need to add:</p>
-              <ul className="list-disc list-inside mt-2 space-y-1">
-                <li>Product variants (sizes, colors, etc.) via database</li>
-                <li>Stock quantities for each variant</li>
-              </ul>
-            </div>
-          </div>
-        </div>
 
         {/* Actions */}
         <div className="flex gap-3 pt-4">
