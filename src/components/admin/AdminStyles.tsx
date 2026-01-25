@@ -120,6 +120,11 @@ export function AdminStyles() {
         border-color: #374151 !important;
       }
 
+      /* Force body background to white for admin to override globals.css */
+      body {
+        background-color: #ffffff !important;
+      }
+
       /* Tailwind dark mode utilities */
       #admin-wrapper.dark .dark\\:bg-gray-800 {
         background-color: #1f2937 !important;
