@@ -22,7 +22,7 @@ export function TopBarMessages({ messages }: TopBarMessagesProps) {
   const currentMessage = activeMessages[0];
 
   return (
-    <div className="bg-brand-cream py-2 sm:py-3 text-center px-4 overflow-hidden relative min-h-[40px] sm:min-h-[48px] flex flex-col justify-center items-center">
+    <div className="bg-brand-cream py-1.5 sm:py-2 text-center px-4 overflow-hidden relative min-h-[32px] sm:min-h-[40px] flex flex-col justify-center items-center">
       <p className="text-brand-charcoal font-bold text-xs sm:text-sm tracking-wider">
         {currentMessage.message_en}
       </p>
