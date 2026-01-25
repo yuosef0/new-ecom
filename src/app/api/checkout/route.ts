@@ -117,9 +117,8 @@ export async function POST(request: NextRequest) {
         currency: "EGP",
         shipping_name: shipping.full_name,
         shipping_phone: shipping.phone,
-        shipping_address: `${shipping.address_line_1}${
-          shipping.address_line_2 ? ", " + shipping.address_line_2 : ""
-        }`,
+        shipping_address: `${shipping.address_line_1}${shipping.address_line_2 ? ", " + shipping.address_line_2 : ""
+          }`,
         shipping_city: shipping.city,
         shipping_governorate: shipping.governorate,
         payment_method,
@@ -142,8 +141,8 @@ export async function POST(request: NextRequest) {
         item.product.base_price + (item.variant?.price_adjustment || 0);
       const variantName = item.variant
         ? [item.variant.color_name, item.variant.size_name]
-            .filter(Boolean)
-            .join(" / ")
+          .filter(Boolean)
+          .join(" / ")
         : null;
 
       return {
@@ -181,7 +180,19 @@ export async function POST(request: NextRequest) {
 
     // Increment promo code usage if applicable
     if (promo_code && discountAmount > 0) {
-      await supabaseAdmin.rpc("increment_promo_usage", { p_code: promo_code.toUpperCase() });
+      // Get current usage count
+      const { data: promo } = await supabaseAdmin
+        .from("promo_codes")
+        .select("used_count")
+        .eq("code", promo_code)
+        .single();
+
+      if (promo) {
+        await supabaseAdmin
+          .from("promo_codes")
+          .update({ used_count: (promo.used_count || 0) + 1 })
+          .eq("code", promo_code);
+      }
     }
 
     // For Cash on Delivery, no payment processing needed

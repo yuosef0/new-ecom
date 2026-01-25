@@ -21,6 +21,17 @@ export default function CheckoutPage() {
   const [enrichedItems, setEnrichedItems] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Coupon state
+  const [couponCode, setCouponCode] = useState("");
+  const [couponError, setCouponError] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    code: string;
+    discountAmount: number;
+    discountType: "percentage" | "fixed";
+    discountValue: number;
+  } | null>(null);
+  const [validatingCoupon, setValidatingCoupon] = useState(false);
+
   // Redirect if cart is empty
   useEffect(() => {
     if (items.length === 0 && !isProcessing) {
@@ -102,7 +113,50 @@ export default function CheckoutPage() {
     return sum + price * item.quantity;
   }, 0);
   const shipping = 50;
-  const total = subtotal + shipping;
+  const discount = appliedCoupon ? appliedCoupon.discountAmount : 0;
+  const total = Math.max(0, subtotal + shipping - discount);
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+
+    setValidatingCoupon(true);
+    setCouponError("");
+    setAppliedCoupon(null);
+
+    try {
+      const response = await fetch("/api/coupons/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: couponCode, subtotal }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setCouponError(data.error || "Invalid coupon");
+        return;
+      }
+
+      setAppliedCoupon({
+        code: data.code,
+        discountAmount: data.discountAmount,
+        discountType: data.discountType,
+        discountValue: data.discountValue,
+      });
+      setCouponError("");
+    } catch (err) {
+      console.error("Coupon validation error:", err);
+      setCouponError("Failed to validate coupon");
+    } finally {
+      setValidatingCoupon(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode("");
+    setCouponError("");
+  };
 
   const handleShippingSubmit = (data: ShippingFormData) => {
     setShippingData(data);
@@ -134,6 +188,7 @@ export default function CheckoutPage() {
           },
           shipping_method: "standard",
           payment_method: paymentMethod,
+          promo_code: appliedCoupon?.code,
           items: items.map((item) => ({
             productId: item.productId,
             variantId: item.variantId,
@@ -218,6 +273,47 @@ export default function CheckoutPage() {
           {/* Order Summary Preview */}
           <div className="mt-8 bg-white/5 border border-white/10 rounded-lg p-4">
             <h3 className="font-bold text-brand-cream mb-4">Order Summary</h3>
+
+            {/* Coupon Input */}
+            <div className="mb-6">
+              {!appliedCoupon ? (
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                    placeholder="Promo code"
+                    className="flex-1 bg-white/10 border border-white/20 rounded px-3 py-2 text-sm text-brand-cream placeholder:text-brand-cream/30 focus:outline-none focus:border-brand-primary"
+                  />
+                  <button
+                    onClick={handleApplyCoupon}
+                    disabled={validatingCoupon || !couponCode}
+                    className="px-4 py-2 bg-white/10 hover:bg-white/20 text-brand-cream text-sm font-medium rounded transition-colors disabled:opacity-50"
+                  >
+                    {validatingCoupon ? "..." : "Apply"}
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between bg-green-500/10 border border-green-500/30 rounded px-3 py-2">
+                  <div className="flex items-center gap-2">
+                    <Icon name="local_offer" className="text-green-500 text-sm" />
+                    <span className="text-green-500 font-medium text-sm">
+                      {appliedCoupon.code}
+                    </span>
+                  </div>
+                  <button
+                    onClick={handleRemoveCoupon}
+                    className="text-brand-cream/50 hover:text-red-400 transition-colors"
+                  >
+                    <Icon name="close" className="text-sm" />
+                  </button>
+                </div>
+              )}
+              {couponError && (
+                <p className="text-red-400 text-xs mt-1">{couponError}</p>
+              )}
+            </div>
+
             <div className="space-y-3 mb-4 border-b border-white/10 pb-4">
               {enrichedItems.map((item) => (
                 <div key={item.id} className="flex justify-between text-sm">
@@ -237,7 +333,30 @@ export default function CheckoutPage() {
                 </div>
               ))}
             </div>
-            <div className="flex justify-between text-brand-cream font-bold">
+
+            <div className="space-y-2 text-sm text-brand-cream/80 mb-4 border-b border-white/10 pb-4">
+              <div className="flex justify-between">
+                <span>Subtotal</span>
+                <span>{formatPrice(subtotal)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Shipping</span>
+                <span>{formatPrice(shipping)}</span>
+              </div>
+              {appliedCoupon && (
+                <div className="flex justify-between text-green-400 font-medium">
+                  <div className="flex items-center gap-1">
+                    <span>Discount</span>
+                    <span className="text-xs bg-green-400/20 px-1.5 rounded">
+                      {appliedCoupon.code}
+                    </span>
+                  </div>
+                  <span>-{formatPrice(discount)}</span>
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-between text-brand-cream font-bold text-lg">
               <span>Total</span>
               <span>{formatPrice(total)}</span>
             </div>
