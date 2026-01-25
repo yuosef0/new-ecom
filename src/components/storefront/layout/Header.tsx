@@ -87,6 +87,15 @@ export function Header() {
           <span className="material-icons-outlined text-2xl sm:text-[28px]">search</span>
         </button>
 
+        {/* Account */}
+        <Link
+          href="/account"
+          className="text-brand-cream hover:text-white transition-colors p-1"
+          aria-label="My Account"
+        >
+          <span className="material-icons-outlined text-2xl sm:text-[28px]">person_outline</span>
+        </Link>
+
         {/* Cart */}
         <button
           onClick={openCart}
