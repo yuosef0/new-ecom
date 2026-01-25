@@ -440,8 +440,8 @@ export default function CollectionsManagementPage() {
                   {saving || uploading
                     ? "جارٍ الحفظ..."
                     : editingId
-                    ? "تحديث"
-                    : "إضافة"}
+                      ? "تحديث"
+                      : "إضافة"}
                 </button>
                 {editingId && (
                   <button
@@ -496,11 +496,10 @@ export default function CollectionsManagementPage() {
                       </h3>
                       <div className="flex gap-1 flex-shrink-0">
                         <span
-                          className={`text-xs px-2 py-1 rounded-full ${
-                            collection.is_active
+                          className={`text-xs px-2 py-1 rounded-full ${collection.is_active
                               ? "bg-green-100 text-green-800"
                               : "bg-gray-100 text-gray-800"
-                          }`}
+                            }`}
                         >
                           {collection.is_active ? "نشط" : "غير نشط"}
                         </span>
@@ -519,17 +518,16 @@ export default function CollectionsManagementPage() {
                           ⭐ مميز
                         </span>
                       )}
-                      <span className={`text-xs px-3 py-1 rounded-full font-medium ${
-                        collection.display_type === "large"
+                      <span className={`text-xs px-3 py-1 rounded-full font-medium ${collection.display_type === "large"
                           ? "bg-blue-100 text-blue-700"
                           : "bg-purple-100 text-purple-700"
-                      }`}>
+                        }`}>
                         {collection.display_type === "large" ? "كارد كبير" : "كارد صغير"}
                       </span>
                     </div>
 
                     {/* Actions */}
-                    <div className="flex gap-2 pt-3 border-t border-gray-100">
+                    <div className="grid grid-cols-2 sm:flex gap-2 pt-3 border-t border-gray-100">
                       <button
                         onClick={() => toggleActive(collection.id, collection.is_active)}
                         className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-xs bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
@@ -543,11 +541,10 @@ export default function CollectionsManagementPage() {
 
                       <button
                         onClick={() => toggleFeatured(collection.id, collection.is_featured)}
-                        className={`flex-1 flex items-center justify-center gap-1 px-3 py-2 text-xs rounded-lg transition-colors ${
-                          collection.is_featured
+                        className={`flex-1 flex items-center justify-center gap-1 px-3 py-2 text-xs rounded-lg transition-colors ${collection.is_featured
                             ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
                             : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                        }`}
+                          }`}
                         title={collection.is_featured ? "إزالة من المميزة" : "جعله مميزاً"}
                       >
                         <span className="material-icons-outlined text-sm">
