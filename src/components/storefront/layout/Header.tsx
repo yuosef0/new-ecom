@@ -33,7 +33,7 @@ export function Header() {
         {/* Menu Icon - Mobile Only */}
         <button
           onClick={toggleMenu}
-          className="md:hidden text-brand-cream hover:text-white transition-colors p-1"
+          className="text-brand-cream hover:text-white transition-colors p-1"
           aria-label="Open menu"
         >
           <span className="material-icons-outlined text-2xl sm:text-[28px]">menu</span>
