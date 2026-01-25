@@ -36,13 +36,48 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
     ? Array.from(new Set(product.variants.filter((v) => v.size).map((v) => v.size!.name)))
     : [];
 
+  // Helper to get stock for a size
+  const getSizeStock = (sizeName: string) => {
+    const variant = product.variants?.find(v => v.size?.name === sizeName);
+    return variant?.stock_quantity || 0;
+  };
+
+  // Helper to get variant by size
+  const getVariantBySize = (sizeName: string) => {
+    return product.variants?.find(v => v.size?.name === sizeName);
+  };
+
   const handleAddToCart = () => {
-    addItem(product.id, null, quantity);
+    if (availableSizes.length > 0 && !selectedSize) {
+      alert("Please select a size");
+      return;
+    }
+
+    const variant = selectedSize ? getVariantBySize(selectedSize) : null;
+
+    if (variant && variant.stock_quantity === 0) {
+      alert("This size is out of stock");
+      return;
+    }
+
+    addItem(product.id, variant?.id || null, quantity);
     openCart();
   };
 
   const handleBuyNow = () => {
-    addItem(product.id, null, quantity);
+    if (availableSizes.length > 0 && !selectedSize) {
+      alert("Please select a size");
+      return;
+    }
+
+    const variant = selectedSize ? getVariantBySize(selectedSize) : null;
+
+    if (variant && variant.stock_quantity === 0) {
+      alert("This size is out of stock");
+      return;
+    }
+
+    addItem(product.id, variant?.id || null, quantity);
     // Redirect to checkout
     window.location.href = "/checkout";
   };
@@ -131,18 +166,29 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
                   Size: {selectedSize || "Select a size"}
                 </p>
                 <div className="grid grid-cols-2 gap-2">
-                  {availableSizes.map((size) => (
-                    <button
-                      key={size}
-                      onClick={() => setSelectedSize(size)}
-                      className={`py-2 px-3 text-sm font-bold text-center rounded ${selectedSize === size
-                        ? "bg-primary text-white border border-primary"
-                        : "bg-transparent text-brand-gray border border-brand-gray/30 hover:border-brand-gray"
-                        }`}
-                    >
-                      {size}
-                    </button>
-                  ))}
+                  {availableSizes.map((size) => {
+                    const stock = getSizeStock(size);
+                    const isOutOfStock = stock === 0;
+
+                    return (
+                      <button
+                        key={size}
+                        onClick={() => !isOutOfStock && setSelectedSize(size)}
+                        disabled={isOutOfStock}
+                        className={`py-2 px-3 text-sm font-bold text-center rounded relative transition-all ${selectedSize === size
+                            ? "bg-primary text-white border border-primary"
+                            : isOutOfStock
+                              ? "bg-transparent text-brand-gray/40 border border-brand-gray/20 cursor-not-allowed"
+                              : "bg-transparent text-brand-gray border border-brand-gray/30 hover:border-brand-gray"
+                          }`}
+                      >
+                        <span className={isOutOfStock ? "line-through" : ""}>{size}</span>
+                        {isOutOfStock && (
+                          <span className="block text-xs mt-0.5">(Out)</span>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}

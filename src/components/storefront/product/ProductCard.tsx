@@ -71,10 +71,10 @@ export function ProductCard({ product }: ProductCardProps) {
               </span>
             )}
             {!product.in_stock && (
-              <div className="absolute inset-0 bg-white/70 flex items-center justify-center">
-                <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center">
-                  <span className="text-brand-charcoal font-semibold text-sm">
-                    Sold Out
+              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+                <div className="w-24 h-24 rounded-full bg-white/90 flex items-center justify-center shadow-xl">
+                  <span className="text-brand-charcoal font-bold text-sm text-center leading-tight">
+                    SOLD<br />OUT
                   </span>
                 </div>
               </div>
@@ -111,9 +111,10 @@ export function ProductCard({ product }: ProductCardProps) {
         ) : (
           <Link
             href={`/products/${product.slug}`}
-            className="mt-2 w-full bg-gray-500 text-white text-xs font-bold py-2.5 rounded uppercase tracking-wider transition-colors text-center block opacity-60 cursor-not-allowed"
+            className="mt-2 w-full bg-gray-600 hover:bg-gray-700 text-white text-xs font-bold py-2.5 rounded uppercase tracking-wider transition-colors text-center block flex items-center justify-center gap-1.5"
           >
-            OUT OF STOCK
+            <span className="material-icons-outlined text-base">visibility</span>
+            <span>VIEW PRODUCT</span>
           </Link>
         )}
       </div>
