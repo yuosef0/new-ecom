@@ -112,7 +112,7 @@ export default function ProductsPage() {
             stock_quantity: v.stock_quantity,
             size: v.sizes
           })) || [],
-          in_stock: true,
+          in_stock: product.product_variants?.some((v: any) => v.stock_quantity > 0) ?? true,
         }));
         setProducts(mappedProducts);
       }
