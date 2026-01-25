@@ -44,7 +44,7 @@ export default async function AdminLayout({
             }}
           />
           <main className="pt-16">
-            <div className="p-6">{children}</div>
+            <div className="p-4 sm:p-6">{children}</div>
           </main>
         </div>
       </div>

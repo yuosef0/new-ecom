@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useAdminSidebar } from "@/stores/adminSidebar";
 
 const navigation = [
   {
@@ -92,14 +93,14 @@ const navigation = [
   },
 ];
 
-export function AdminSidebar() {
+function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden lg:flex lg:flex-col lg:w-64 bg-white border-r border-gray-200 fixed h-screen">
+    <>
       {/* Logo */}
       <div className="h-16 flex items-center px-6 border-b border-gray-200">
-        <Link href="/admin" className="flex items-center">
+        <Link href="/admin" className="flex items-center" onClick={onLinkClick}>
           <span className="text-2xl font-bold text-brand-primary">DXLR</span>
           <span className="ml-2 text-xs text-gray-500">Admin</span>
         </Link>
@@ -122,6 +123,7 @@ export function AdminSidebar() {
                   <Link
                     key={item.name}
                     href={item.href}
+                    onClick={onLinkClick}
                     className={cn(
                       "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
                       isActive
@@ -145,12 +147,52 @@ export function AdminSidebar() {
       <div className="p-4 border-t border-gray-200">
         <Link
           href="/"
+          onClick={onLinkClick}
           className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-brand-primary transition-colors"
         >
           <span className="material-icons-outlined text-xl">storefront</span>
           Back to Store
         </Link>
       </div>
-    </aside>
+    </>
+  );
+}
+
+export function AdminSidebar() {
+  const { isOpen, close } = useAdminSidebar();
+
+  return (
+    <>
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 bg-white border-r border-gray-200 fixed h-screen">
+        <SidebarContent />
+      </aside>
+
+      {/* Mobile Sidebar Overlay */}
+      {isOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={close}
+        />
+      )}
+
+      {/* Mobile Sidebar Drawer */}
+      <aside
+        className={cn(
+          "lg:hidden fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-300 ease-in-out",
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        {/* Close button */}
+        <button
+          onClick={close}
+          className="absolute top-4 right-4 p-2 text-gray-600 hover:text-gray-900"
+        >
+          <span className="material-icons-outlined">close</span>
+        </button>
+
+        <SidebarContent onLinkClick={close} />
+      </aside>
+    </>
   );
 }
