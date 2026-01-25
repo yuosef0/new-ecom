@@ -246,20 +246,6 @@ export default function TopBarMessagesPage() {
                 />
               </div>
 
-              {/* Arabic Message (Optional) */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  الرسالة بالعربية (اختياري)
-                </label>
-                <textarea
-                  rows={3}
-                  value={formData.message_ar}
-                  onChange={(e) => setFormData({ ...formData, message_ar: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
-                  placeholder="أدخل الرسالة بالعربية (اختياري)"
-                />
-              </div>
-
               {/* Active Toggle */}
               <div className="flex items-center">
                 <input

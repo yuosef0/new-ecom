@@ -59,7 +59,7 @@ async function addDefaultMessage() {
                 .from('top_bar_messages')
                 .insert({
                     message_en: 'FREE SHIPPING ON All Orders',
-                    message_ar: null,
+                    message_ar: '',
                     is_active: true,
                     display_order: 1
                 });
