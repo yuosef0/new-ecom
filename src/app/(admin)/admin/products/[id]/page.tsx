@@ -427,10 +427,10 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
               value={formData.compare_at_price}
               onChange={(e) => setFormData({ ...formData, compare_at_price: e.target.value })}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
-              placeholder="اختياري - اتركه فارغ إذا لم يكن هناك خصم"
+              placeholder="اختياري - اتركه فارغ أو 0 إذا لم يكن هناك خصم"
             />
             <p className="mt-1 text-xs text-gray-500">
-              إذا كان أعلى من سعر البيع، سيظهر الخصم على كارد المنتج
+              إذا كان أعلى من سعر البيع، سيظهر الخصم. إذا كان 0 أو فارغ لن يظهر خصم.
             </p>
           </div>
         </div>
@@ -649,7 +649,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
             Cancel
           </Link>
         </div>
-      </form>
-    </div>
+      </form >
+    </div >
   );
 }

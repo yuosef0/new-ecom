@@ -19,7 +19,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const inWishlist = isInWishlist(product.id);
 
-  const hasDiscount = product.compare_at_price && product.compare_at_price > product.base_price;
+  const hasDiscount = Boolean(product.compare_at_price && product.compare_at_price > product.base_price);
   const discountPercent = hasDiscount
     ? Math.round(((product.compare_at_price! - product.base_price) / product.compare_at_price!) * 100)
     : 0;
