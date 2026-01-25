@@ -165,19 +165,19 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
+                <div className="p-4">
                     {/* Product Title */}
-                    <h2 className="text-white font-bold text-lg mb-3">
+                    <h2 className="text-white font-bold text-base mb-2">
                         {product.name}
                     </h2>
 
                     {/* Price */}
-                    <div className="flex items-center gap-3 mb-5">
-                        <span className="text-lime-500 font-bold text-2xl">
+                    <div className="flex items-center gap-2 mb-3">
+                        <span className="text-lime-500 font-bold text-xl">
                             {formatPrice(product.base_price)}
                         </span>
                         {hasDiscount && (
-                            <span className="text-gray-400 line-through text-sm">
+                            <span className="text-gray-400 line-through text-xs">
                                 {formatPrice(product.compare_at_price!)}
                             </span>
                         )}
@@ -185,18 +185,18 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
 
                     {/* Size Selection with Quantities */}
                     {requiresSize && (
-                        <div className="mb-5">
-                            <div className="flex items-center justify-between mb-3">
-                                <p className="text-white text-sm font-semibold">
+                        <div className="mb-3">
+                            <div className="flex items-center justify-between mb-2">
+                                <p className="text-white text-xs font-semibold">
                                     Select Sizes & Quantities
                                 </p>
                                 {hasSelection && (
-                                    <span className="text-pink-500 text-xs font-bold">
+                                    <span className="text-pink-500 text-[10px] font-bold">
                                         {totalItems} {totalItems === 1 ? 'item' : 'items'}
                                     </span>
                                 )}
                             </div>
-                            <div className="space-y-3">
+                            <div className="space-y-2">
                                 {availableSizes.map((size) => {
                                     const quantity = sizeQuantities[size] || 0;
                                     const isSelected = quantity > 0;
@@ -206,18 +206,18 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                                     return (
                                         <div
                                             key={size}
-                                            className={`flex items-center justify-between p-3 rounded-lg border-2 transition-all ${isOutOfStock
+                                            className={`flex items-center justify-between p-2 rounded-lg border transition-all ${isOutOfStock
                                                 ? "border-gray-700 bg-gray-800/30 opacity-50"
                                                 : isSelected
                                                     ? "border-pink-500 bg-pink-500/10"
                                                     : "border-gray-600 bg-transparent hover:border-gray-400"
                                                 }`}
                                         >
-                                            <div className="flex items-center gap-3">
+                                            <div className="flex items-center gap-2">
                                                 <button
                                                     onClick={() => !isOutOfStock && updateSizeQuantity(size, isSelected ? 0 : 1)}
                                                     disabled={isOutOfStock}
-                                                    className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all ${isOutOfStock
+                                                    className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${isOutOfStock
                                                         ? "border-gray-600 cursor-not-allowed"
                                                         : isSelected
                                                             ? "border-pink-500 bg-pink-500"
@@ -225,10 +225,10 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                                                         }`}
                                                 >
                                                     {isSelected && (
-                                                        <span className="material-icons-outlined text-white text-sm">check</span>
+                                                        <span className="material-icons-outlined text-white text-xs">check</span>
                                                     )}
                                                 </button>
-                                                <span className={`font-bold text-sm ${isOutOfStock
+                                                <span className={`font-bold text-xs ${isOutOfStock
                                                     ? "text-gray-500 line-through"
                                                     : isSelected
                                                         ? "text-pink-500"
@@ -237,7 +237,7 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                                                     {size}
                                                 </span>
                                                 {isOutOfStock && (
-                                                    <span className="text-xs text-gray-500">(Out of Stock)</span>
+                                                    <span className="text-[10px] text-gray-500">(Out of Stock)</span>
                                                 )}
                                             </div>
 
@@ -245,18 +245,18 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                                                 <div className="flex items-center border border-gray-600 rounded bg-[#0f1a1c]">
                                                     <button
                                                         onClick={() => updateSizeQuantity(size, Math.max(0, quantity - 1))}
-                                                        className="px-3 py-1 text-white hover:bg-white/10 transition-colors"
+                                                        className="px-2 py-0.5 text-white hover:bg-white/10 transition-colors"
                                                     >
-                                                        <span className="material-icons-outlined text-base">remove</span>
+                                                        <span className="material-icons-outlined text-sm">remove</span>
                                                     </button>
-                                                    <span className="px-3 py-1 text-white text-sm font-bold min-w-[30px] text-center">
+                                                    <span className="px-2 py-0.5 text-white text-xs font-bold min-w-[24px] text-center">
                                                         {quantity}
                                                     </span>
                                                     <button
                                                         onClick={() => updateSizeQuantity(size, quantity + 1)}
-                                                        className="px-3 py-1 text-white hover:bg-white/10 transition-colors"
+                                                        className="px-2 py-0.5 text-white hover:bg-white/10 transition-colors"
                                                     >
-                                                        <span className="material-icons-outlined text-base">add</span>
+                                                        <span className="material-icons-outlined text-sm">add</span>
                                                     </button>
                                                 </div>
                                             )}
@@ -268,16 +268,16 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                     )}
 
                     {/* Action Buttons */}
-                    <div className="space-y-3">
+                    <div className="space-y-2">
                         <button
                             onClick={handleAddToCart}
                             disabled={!product.in_stock || (requiresSize && !hasSelection)}
-                            className={`w-full font-bold py-3 px-4 rounded transition-all uppercase text-sm flex items-center justify-center gap-2 transform active:scale-95 ${!product.in_stock || (requiresSize && !hasSelection)
+                            className={`w-full font-bold py-2 px-3 rounded transition-all uppercase text-xs flex items-center justify-center gap-1.5 transform active:scale-95 ${!product.in_stock || (requiresSize && !hasSelection)
                                 ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50"
                                 : "bg-pink-600 hover:bg-pink-700 text-white shadow-lg hover:shadow-pink-500/30"
                                 }`}
                         >
-                            <span className="material-icons-outlined">shopping_cart</span>
+                            <span className="material-icons-outlined text-base">shopping_cart</span>
                             {requiresSize && hasSelection
                                 ? `Add ${totalItems} ${totalItems === 1 ? 'item' : 'items'} - ${formatPrice(getTotalPrice())}`
                                 : `Add to cart - ${formatPrice(product.base_price)}`
@@ -286,7 +286,7 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                         <button
                             onClick={handleBuyNow}
                             disabled={!product.in_stock || (requiresSize && !hasSelection)}
-                            className={`w-full font-bold py-3 px-4 rounded transition-all uppercase text-sm transform active:scale-95 ${!product.in_stock || (requiresSize && !hasSelection)
+                            className={`w-full font-bold py-2 px-3 rounded transition-all uppercase text-xs transform active:scale-95 ${!product.in_stock || (requiresSize && !hasSelection)
                                 ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50 border border-gray-500"
                                 : "bg-lime-500 hover:bg-lime-600 text-[#1a2b2e] shadow-lg hover:shadow-lime-500/30"
                                 }`}
