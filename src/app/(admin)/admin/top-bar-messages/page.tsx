@@ -21,8 +21,8 @@ export default function TopBarMessagesPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
-    message_ar: "",
     message_en: "",
+    message_ar: "",
     is_active: true,
   });
 
@@ -49,8 +49,8 @@ export default function TopBarMessagesPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.message_ar.trim()) {
-      setError("الرجاء إدخال الرسالة بالعربية");
+    if (!formData.message_en.trim()) {
+      setError("Please enter the message in English");
       return;
     }
 
@@ -74,8 +74,8 @@ export default function TopBarMessagesPage() {
         const { error: updateError } = await supabase
           .from("top_bar_messages")
           .update({
-            message_ar: formData.message_ar,
-            message_en: formData.message_en || null,
+            message_en: formData.message_en,
+            message_ar: formData.message_ar || null,
             is_active: formData.is_active,
           })
           .eq("id", editingId);
@@ -89,8 +89,8 @@ export default function TopBarMessagesPage() {
         const { error: insertError } = await supabase
           .from("top_bar_messages")
           .insert({
-            message_ar: formData.message_ar,
-            message_en: formData.message_en || null,
+            message_en: formData.message_en,
+            message_ar: formData.message_ar || null,
             is_active: formData.is_active,
             display_order: maxOrder + 1,
           });
@@ -99,7 +99,7 @@ export default function TopBarMessagesPage() {
         setSuccess("✅ تمت إضافة الرسالة بنجاح");
       }
 
-      setFormData({ message_ar: "", message_en: "", is_active: true });
+      setFormData({ message_en: "", message_ar: "", is_active: true });
       setEditingId(null);
       loadMessages();
     } catch (err: any) {
@@ -111,8 +111,8 @@ export default function TopBarMessagesPage() {
 
   const editMessage = (message: TopBarMessage) => {
     setFormData({
-      message_ar: message.message_ar,
       message_en: message.message_en || "",
+      message_ar: message.message_ar || "",
       is_active: message.is_active,
     });
     setEditingId(message.id);
@@ -231,25 +231,10 @@ export default function TopBarMessagesPage() {
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Arabic Message */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  الرسالة بالعربية *
-                </label>
-                <textarea
-                  rows={3}
-                  value={formData.message_ar}
-                  onChange={(e) => setFormData({ ...formData, message_ar: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
-                  placeholder="أدخل الرسالة بالعربية"
-                  required
-                />
-              </div>
-
               {/* English Message */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  الرسالة بالإنجليزية (اختياري)
+                  Message (English) *
                 </label>
                 <textarea
                   rows={3}
@@ -257,6 +242,21 @@ export default function TopBarMessagesPage() {
                   onChange={(e) => setFormData({ ...formData, message_en: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
                   placeholder="Enter message in English"
+                  required
+                />
+              </div>
+
+              {/* Arabic Message (Optional) */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  الرسالة بالعربية (اختياري)
+                </label>
+                <textarea
+                  rows={3}
+                  value={formData.message_ar}
+                  onChange={(e) => setFormData({ ...formData, message_ar: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+                  placeholder="أدخل الرسالة بالعربية (اختياري)"
                 />
               </div>
 
@@ -325,8 +325,8 @@ export default function TopBarMessagesPage() {
                           </span>
                           <span
                             className={`text-xs px-2 py-1 rounded-full ${message.is_active
-                                ? "bg-green-100 text-green-800"
-                                : "bg-gray-100 text-gray-800"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-gray-100 text-gray-800"
                               }`}
                           >
                             {message.is_active ? "نشط" : "غير نشط"}

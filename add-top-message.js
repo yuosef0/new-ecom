@@ -58,8 +58,8 @@ async function addDefaultMessage() {
             const { error } = await supabase
                 .from('top_bar_messages')
                 .insert({
-                    message_ar: 'شحن مجاني لجميع الطلبات',
                     message_en: 'FREE SHIPPING ON All Orders',
+                    message_ar: null,
                     is_active: true,
                     display_order: 1
                 });
