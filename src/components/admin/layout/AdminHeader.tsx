@@ -192,7 +192,7 @@ export function AdminHeader({ user }: AdminHeaderProps) {
                   className="fixed inset-0 z-40"
                   onClick={() => setNotificationsOpen(false)}
                 />
-                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-lg shadow-2xl border border-gray-200 z-50 max-h-[70vh] overflow-hidden flex flex-col">
+                <div className="fixed left-4 right-4 top-20 sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-96 bg-white rounded-lg shadow-2xl border border-gray-200 z-50 max-h-[70vh] overflow-hidden flex flex-col dark:bg-gray-800 dark:border-gray-700">
                   <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between bg-gray-50">
                     <h3 className="font-semibold text-gray-900">Notifications</h3>
                     {unreadCount > 0 && (
