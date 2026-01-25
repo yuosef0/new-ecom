@@ -33,10 +33,34 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     is_featured: false,
   });
 
+  // Variant management
+  const [variants, setVariants] = useState<{
+    id?: string;
+    size_id: string;
+    size_name: string;
+    sku: string;
+    price_adjustment: number;
+    stock_quantity: number;
+  }[]>([]);
+  const [sizes, setSizes] = useState<{ id: string; name: string }[]>([]);
+
   useEffect(() => {
     loadProduct();
     loadCollections();
+    loadSizes();
   }, [id]);
+
+  const loadSizes = async () => {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("sizes")
+      .select("id, name")
+      .order("name");
+
+    if (!error && data) {
+      setSizes(data);
+    }
+  };
 
   const loadCollections = async () => {
     const supabase = createClient();
@@ -92,6 +116,30 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         setImages(product.product_images.map((img: any) => ({
           url: img.url,
           is_primary: img.is_primary,
+        })));
+      }
+
+      // Load variants
+      const { data: variantsData, error: variantsError } = await supabase
+        .from("product_variants")
+        .select(`
+          id,
+          sku,
+          price_adjustment,
+          stock_quantity,
+          size_id,
+          sizes(id, name)
+        `)
+        .eq("product_id", id);
+
+      if (!variantsError && variantsData) {
+        setVariants(variantsData.map((v: any) => ({
+          id: v.id,
+          size_id: v.size_id,
+          size_name: v.sizes?.name || "",
+          sku: v.sku || "",
+          price_adjustment: v.price_adjustment || 0,
+          stock_quantity: v.stock_quantity || 0,
         })));
       }
     } catch (err: any) {
@@ -172,6 +220,30 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
           .insert(collectionRecords);
 
         if (collectionsError) throw collectionsError;
+      }
+
+      // Update variants
+      // Delete old variants
+      await supabase
+        .from("product_variants")
+        .delete()
+        .eq("product_id", id);
+
+      // Insert new variants
+      if (variants.length > 0) {
+        const variantRecords = variants.map(v => ({
+          product_id: id,
+          size_id: v.size_id,
+          sku: v.sku || null,
+          price_adjustment: v.price_adjustment || 0,
+          stock_quantity: v.stock_quantity || 0,
+        }));
+
+        const { error: variantsError } = await supabase
+          .from("product_variants")
+          .insert(variantRecords);
+
+        if (variantsError) throw variantsError;
       }
 
       router.push("/admin/products");
@@ -419,6 +491,112 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
           </div>
           <p className="mt-1 text-xs text-gray-500">
             Select one or more collections this product belongs to
+          </p>
+        </div>
+
+        {/* Product Variants (Sizes & Stock) */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-3">
+            Product Variants (Sizes & Stock)
+          </label>
+          <div className="space-y-3 border border-gray-300 rounded-lg p-4">
+            {variants.map((variant, index) => (
+              <div key={index} className="grid grid-cols-4 gap-3 items-end p-3 bg-gray-50 rounded-lg">
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Size *
+                  </label>
+                  <select
+                    value={variant.size_id}
+                    onChange={(e) => {
+                      const newVariants = [...variants];
+                      const selectedSize = sizes.find(s => s.id === e.target.value);
+                      newVariants[index] = {
+                        ...variant,
+                        size_id: e.target.value,
+                        size_name: selectedSize?.name || "",
+                      };
+                      setVariants(newVariants);
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent text-sm"
+                    required
+                  >
+                    <option value="">Select size</option>
+                    {sizes.map((size) => (
+                      <option key={size.id} value={size.id}>
+                        {size.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    SKU
+                  </label>
+                  <input
+                    type="text"
+                    value={variant.sku}
+                    onChange={(e) => {
+                      const newVariants = [...variants];
+                      newVariants[index].sku = e.target.value;
+                      setVariants(newVariants);
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent text-sm"
+                    placeholder="SKU"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Stock Quantity *
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={variant.stock_quantity}
+                    onChange={(e) => {
+                      const newVariants = [...variants];
+                      newVariants[index].stock_quantity = parseInt(e.target.value) || 0;
+                      setVariants(newVariants);
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent text-sm"
+                    placeholder="0"
+                    required
+                  />
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setVariants(variants.filter((_, i) => i !== index));
+                    }}
+                    className="px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-sm"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                setVariants([
+                  ...variants,
+                  {
+                    size_id: "",
+                    size_name: "",
+                    sku: "",
+                    price_adjustment: 0,
+                    stock_quantity: 0,
+                  },
+                ]);
+              }}
+              className="w-full px-4 py-2 border-2 border-dashed border-gray-300 text-gray-600 rounded-lg hover:border-brand-primary hover:text-brand-primary transition-colors text-sm font-medium"
+            >
+              + Add Variant
+            </button>
+          </div>
+          <p className="mt-1 text-xs text-gray-500">
+            Add different sizes with their stock quantities. Leave empty if product has no size variations.
           </p>
         </div>
 
