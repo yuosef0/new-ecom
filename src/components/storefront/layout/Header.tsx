@@ -29,22 +29,52 @@ export function Header() {
 
   return (
     <header className="bg-brand-dark px-4 py-3 sm:px-6 sm:py-4 flex justify-between items-center sticky top-0 z-50 shadow-md">
-      {/* Menu Icon */}
-      <button
-        onClick={toggleMenu}
-        className="text-brand-cream hover:text-white transition-colors p-1"
-        aria-label="Open menu"
-      >
-        <span className="material-icons-outlined text-2xl sm:text-[28px]">menu</span>
-      </button>
+      <div className="flex items-center gap-4">
+        {/* Menu Icon - Mobile Only */}
+        <button
+          onClick={toggleMenu}
+          className="md:hidden text-brand-cream hover:text-white transition-colors p-1"
+          aria-label="Open menu"
+        >
+          <span className="material-icons-outlined text-2xl sm:text-[28px]">menu</span>
+        </button>
 
-      {/* Logo - Centered */}
-      <Link
-        href="/"
-        className="absolute left-1/2 -translate-x-1/2 text-2xl sm:text-3xl md:text-4xl font-bold text-brand-cream hover:text-white transition-colors"
-      >
-        DXLR
-      </Link>
+        {/* Logo */}
+        <Link
+          href="/"
+          className="text-2xl sm:text-3xl md:text-4xl font-bold text-brand-cream hover:text-white transition-colors"
+        >
+          DXLR
+        </Link>
+      </div>
+
+      {/* Desktop Navigation */}
+      <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
+        <Link href="/" className="text-brand-cream hover:text-white font-medium transition-colors">
+          Home
+        </Link>
+        <Link href="/products" className="text-brand-cream hover:text-white font-medium transition-colors">
+          Shop
+        </Link>
+        <div className="relative group">
+          <button className="text-brand-cream hover:text-white font-medium transition-colors flex items-center">
+            Collections
+            <span className="material-icons-outlined text-sm ml-1">expand_more</span>
+          </button>
+          {/* Simple dropdown for desktop collections */}
+          <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 overflow-hidden">
+            <Link href="/collections/winter-collection" className="block px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm">
+              Winter Collection
+            </Link>
+            <Link href="/collections/summer-vibes" className="block px-4 py-2 text-gray-800 hover:bg-gray-100 text-sm">
+              Summer Vibes
+            </Link>
+          </div>
+        </div>
+        <Link href="/about" className="text-brand-cream hover:text-white font-medium transition-colors">
+          About
+        </Link>
+      </nav>
 
       {/* Right Icons */}
       <div className="flex items-center space-x-3 sm:space-x-4">

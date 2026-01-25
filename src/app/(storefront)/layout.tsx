@@ -23,14 +23,16 @@ export default async function StorefrontLayout({
 
   return (
     <div className="min-h-screen bg-brand-burgundy">
-      <div className="max-w-md mx-auto relative">
+      <div className="max-w-7xl mx-auto relative bg-brand-burgundy min-h-screen">
         {/* Top Bar Messages with Rotation */}
         <TopBarMessages messages={messages || []} />
 
         <Header />
         <main>{children}</main>
         <Footer />
-        <BottomNav />
+        <div className="md:hidden">
+          <BottomNav />
+        </div>
         <SideMenu />
         <CartOverlay />
         <SearchOverlay />
