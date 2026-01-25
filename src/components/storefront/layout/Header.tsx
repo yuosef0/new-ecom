@@ -28,28 +28,26 @@ export function Header() {
   }, [mounted]);
 
   return (
-    <header className="bg-brand-dark px-4 py-3 sm:px-6 sm:py-4 flex justify-between items-center sticky top-0 z-50 shadow-md">
-      <div className="flex items-center gap-4">
-        {/* Menu Icon - Mobile Only */}
-        <button
-          onClick={toggleMenu}
-          className="text-brand-cream hover:text-white transition-colors p-1"
-          aria-label="Open menu"
-        >
-          <span className="material-icons-outlined text-2xl sm:text-[28px]">menu</span>
-        </button>
+    <header className="bg-brand-dark px-4 py-3 sm:px-6 sm:py-4 flex justify-between items-center sticky top-0 z-50 shadow-md relative">
+      {/* Menu Icon */}
+      <button
+        onClick={toggleMenu}
+        className="text-brand-cream hover:text-white transition-colors p-1 z-10"
+        aria-label="Open menu"
+      >
+        <span className="material-icons-outlined text-2xl sm:text-[28px]">menu</span>
+      </button>
 
-        {/* Logo */}
-        <Link
-          href="/"
-          className="text-2xl sm:text-3xl md:text-4xl font-bold text-brand-cream hover:text-white transition-colors"
-        >
-          DXLR
-        </Link>
-      </div>
+      {/* Logo - Centered on mobile, left-aligned on desktop */}
+      <Link
+        href="/"
+        className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 md:ml-4 text-2xl sm:text-3xl md:text-4xl font-bold text-brand-cream hover:text-white transition-colors"
+      >
+        DXLR
+      </Link>
 
       {/* Desktop Navigation */}
-      <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
+      <nav className="hidden md:flex items-center space-x-6 lg:space-x-8 flex-1 justify-center">
         <Link href="/" className="text-brand-cream hover:text-white font-medium transition-colors">
           Home
         </Link>
@@ -77,7 +75,7 @@ export function Header() {
       </nav>
 
       {/* Right Icons */}
-      <div className="flex items-center space-x-3 sm:space-x-4">
+      <div className="flex items-center space-x-3 sm:space-x-4 z-10">
         {/* Search */}
         <button
           onClick={toggleSearch}

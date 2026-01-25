@@ -151,12 +151,11 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                     <span className="material-icons-outlined text-2xl">close</span>
                 </button>
 
-                {/* Product Image */}
                 <div className="relative">
                     <img
                         src={product.primary_image || "https://via.placeholder.com/400x300"}
                         alt={product.name}
-                        className="w-full h-48 object-cover rounded-t-lg"
+                        className="w-full h-32 object-cover rounded-t-lg"
                     />
                     {hasDiscount && (
                         <span className="absolute top-3 right-3 bg-[#1a2b2e] text-white text-xs font-bold px-3 py-1 rounded">
@@ -208,10 +207,10 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                                         <div
                                             key={size}
                                             className={`flex items-center justify-between p-3 rounded-lg border-2 transition-all ${isOutOfStock
-                                                    ? "border-gray-700 bg-gray-800/30 opacity-50"
-                                                    : isSelected
-                                                        ? "border-pink-500 bg-pink-500/10"
-                                                        : "border-gray-600 bg-transparent hover:border-gray-400"
+                                                ? "border-gray-700 bg-gray-800/30 opacity-50"
+                                                : isSelected
+                                                    ? "border-pink-500 bg-pink-500/10"
+                                                    : "border-gray-600 bg-transparent hover:border-gray-400"
                                                 }`}
                                         >
                                             <div className="flex items-center gap-3">
@@ -219,10 +218,10 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                                                     onClick={() => !isOutOfStock && updateSizeQuantity(size, isSelected ? 0 : 1)}
                                                     disabled={isOutOfStock}
                                                     className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all ${isOutOfStock
-                                                            ? "border-gray-600 cursor-not-allowed"
-                                                            : isSelected
-                                                                ? "border-pink-500 bg-pink-500"
-                                                                : "border-gray-500"
+                                                        ? "border-gray-600 cursor-not-allowed"
+                                                        : isSelected
+                                                            ? "border-pink-500 bg-pink-500"
+                                                            : "border-gray-500"
                                                         }`}
                                                 >
                                                     {isSelected && (
@@ -230,10 +229,10 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                                                     )}
                                                 </button>
                                                 <span className={`font-bold text-sm ${isOutOfStock
-                                                        ? "text-gray-500 line-through"
-                                                        : isSelected
-                                                            ? "text-pink-500"
-                                                            : "text-gray-300"
+                                                    ? "text-gray-500 line-through"
+                                                    : isSelected
+                                                        ? "text-pink-500"
+                                                        : "text-gray-300"
                                                     }`}>
                                                     {size}
                                                 </span>
