@@ -79,10 +79,20 @@ export async function POST(request: NextRequest) {
         for (const item of items) {
           if (item.variant_id) {
             try {
-              await supabaseAdmin.rpc("decrement_stock", {
-                p_variant_id: item.variant_id,
-                p_quantity: item.quantity,
-              });
+              // Get current stock
+              const { data: variant } = await supabaseAdmin
+                .from("product_variants")
+                .select("stock_quantity")
+                .eq("id", item.variant_id)
+                .single();
+
+              if (variant) {
+                const newStock = Math.max(0, (variant.stock_quantity || 0) - item.quantity);
+                await supabaseAdmin
+                  .from("product_variants")
+                  .update({ stock_quantity: newStock })
+                  .eq("id", item.variant_id);
+              }
             } catch (error) {
               console.error("Error decrementing stock:", error);
               // Continue processing - don't fail the webhook

@@ -59,7 +59,7 @@ export function CartOverlay() {
         if (variantIds.length > 0) {
           const { data: variantsData } = await supabase
             .from("product_variants")
-            .select("id, price_adjustment, sizes(name), colors(name)")
+            .select("id, price_adjustment, stock_quantity, sizes(name), colors(name)")
             .in("id", variantIds);
           variants = variantsData || [];
         }
@@ -82,7 +82,8 @@ export function CartOverlay() {
               variant: variant ? {
                 size_name: variant.sizes?.name || null,
                 color_name: variant.colors?.name || null,
-                price_adjustment: variant.price_adjustment || 0
+                price_adjustment: variant.price_adjustment || 0,
+                stock_quantity: variant.stock_quantity || 0
               } : null
             };
           }).filter(Boolean);
