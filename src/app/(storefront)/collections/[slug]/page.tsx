@@ -51,11 +51,11 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
       <div className="mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold text-brand-cream">{collection.name}</h1>
         {collection.description && (
-          <p className="text-brand-cream/70 text-sm sm:text-base mt-2">
+          <p className="text-brand-cream/80 text-sm sm:text-base mt-2 font-light">
             {collection.description}
           </p>
         )}
-        <p className="text-brand-cream/70 text-sm sm:text-base mt-1">
+        <p className="text-brand-cream/60 text-xs sm:text-sm mt-1 font-medium">
           {products.length} {products.length === 1 ? "product" : "products"}
         </p>
       </div>

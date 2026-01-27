@@ -66,12 +66,12 @@ export function ProductCard({ product }: ProductCardProps) {
             </button>
 
             {hasDiscount && (
-              <span className="absolute top-2 right-2 bg-green-200 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">
+              <span className="absolute top-2 right-2 bg-[#F3EDE7] text-brand-charcoal text-xs font-semibold px-2 py-1 rounded-full">
                 -{discountPercent}%
               </span>
             )}
             {!product.in_stock && (
-              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+              <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                 <div className="w-24 h-24 rounded-full bg-white/90 flex items-center justify-center shadow-xl">
                   <span className="text-brand-charcoal font-bold text-sm text-center leading-tight">
                     SOLD<br />OUT
@@ -94,7 +94,7 @@ export function ProductCard({ product }: ProductCardProps) {
               {formatPrice(product.compare_at_price!)}
             </p>
           )}
-          <p className="text-green-500 font-bold text-sm">
+          <p className="text-[#F3EDE7] font-bold text-sm">
             {formatPrice(product.base_price)}
           </p>
         </div>
@@ -103,10 +103,10 @@ export function ProductCard({ product }: ProductCardProps) {
         {product.in_stock ? (
           <button
             onClick={handleQuickAdd}
-            className="mt-2 w-full bg-brand-primary hover:bg-red-700 text-white text-xs font-bold py-2.5 rounded uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5"
+            className="mt-2 w-full bg-brand-primary hover:bg-red-700 text-white text-xs font-bold py-2 rounded uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5"
           >
             <span className="material-icons-outlined text-base">shopping_cart</span>
-            <span>ADD TO CART</span>
+            <span>QUICK ADD</span>
           </button>
         ) : (
           <Link

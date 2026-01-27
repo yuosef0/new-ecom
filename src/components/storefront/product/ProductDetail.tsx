@@ -125,11 +125,11 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
 
           {/* Product Info */}
           <div className="w-full lg:w-1/2 text-brand-cream">
-            <h1 className="text-xl font-bold text-lime-400 mb-2">{product.name}</h1>
+            <h1 className="text-xl font-bold text-[#F3EDE7] mb-2">{product.name}</h1>
 
             {/* Price */}
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-xl font-bold text-lime-500">
+              <span className="text-xl font-bold text-[#F3EDE7]">
                 {formatPrice(product.base_price)}
               </span>
               {product.compare_at_price && (
@@ -150,11 +150,11 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
             {product.in_stock && (
               <div className="mb-4">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="w-2 h-2 rounded-full bg-lime-500 animate-pulse"></span>
+                  <span className="w-2 h-2 rounded-full bg-[#F3EDE7] animate-pulse"></span>
                   <span className="text-sm font-medium text-brand-white">Low stock</span>
                 </div>
                 <div className="w-full h-1 bg-brand-dark rounded-full overflow-hidden">
-                  <div className="h-full bg-lime-500 w-1/4 rounded-full"></div>
+                  <div className="h-full bg-[#F3EDE7] w-1/4 rounded-full"></div>
                 </div>
               </div>
             )}
@@ -176,10 +176,10 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
                         onClick={() => !isOutOfStock && setSelectedSize(size)}
                         disabled={isOutOfStock}
                         className={`py-2 px-3 text-sm font-bold text-center rounded relative transition-all ${selectedSize === size
-                            ? "bg-primary text-white border border-primary"
-                            : isOutOfStock
-                              ? "bg-transparent text-brand-gray/40 border border-brand-gray/20 cursor-not-allowed"
-                              : "bg-transparent text-brand-gray border border-brand-gray/30 hover:border-brand-gray"
+                          ? "bg-primary text-white border border-primary"
+                          : isOutOfStock
+                            ? "bg-transparent text-brand-gray/40 border border-brand-gray/20 cursor-not-allowed"
+                            : "bg-transparent text-brand-gray border border-brand-gray/30 hover:border-brand-gray"
                           }`}
                       >
                         <span className={isOutOfStock ? "line-through" : ""}>{size}</span>
@@ -226,14 +226,14 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
               <button
                 onClick={handleAddToCart}
                 disabled={!product.in_stock}
-                className="w-full bg-primary hover:bg-red-700 text-white font-bold py-3 px-4 rounded transition uppercase text-sm disabled:opacity-50"
+                className="w-full bg-[#F3EDE7] hover:bg-[#E5DDD4] text-brand-charcoal font-bold py-3 px-4 rounded transition uppercase text-sm disabled:opacity-50"
               >
                 Add to cart - {formatPrice(product.base_price * quantity)}
               </button>
               <button
                 onClick={handleBuyNow}
                 disabled={!product.in_stock}
-                className="w-full bg-lime-500 hover:bg-lime-600 text-brand-dark font-bold py-3 px-4 rounded transition uppercase text-sm disabled:opacity-50"
+                className="w-full bg-[#F3EDE7] hover:bg-[#E5DDD4] text-brand-charcoal font-bold py-3 px-4 rounded transition uppercase text-sm disabled:opacity-50"
               >
                 Buy it now
               </button>
@@ -270,7 +270,7 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
           )}
           {activeTab === "details" && (
             <div>
-              <p className="font-bold mb-2 text-lime-400">Details:</p>
+              <p className="font-bold mb-2 text-[#F3EDE7]">Details:</p>
               <ul className="list-disc pl-5 space-y-2 marker:text-brand-gray">
                 <li>Premium quality materials</li>
                 <li>Machine wash cold / hang to dry (recommended)</li>

@@ -23,7 +23,7 @@ export function BottomNav() {
   useEffect(() => {
     if (!mounted) return;
 
-    // Update total items when cart changes
+    // Update total items when cart changes  
     const unsubscribe = useCartStore.subscribe((state) => {
       setTotalItems(state.getTotalItems());
     });

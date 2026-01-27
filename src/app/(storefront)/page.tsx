@@ -131,7 +131,7 @@ export default async function HomePage() {
 
       {/* Parent Collections with Products */}
       {parentCollectionsWithProducts.map((parentCollection) => (
-        <div key={parentCollection.id} className="bg-brand-burgundy py-6 sm:py-8 md:py-10 px-4 sm:px-6 md:px-8">
+        <div key={parentCollection.id} className="bg-brand-burgundy py-4 sm:py-6 md:py-8 px-4 sm:px-6 md:px-8">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-brand-cream mb-4 sm:mb-6 md:mb-8">
             {parentCollection.name}
           </h2>

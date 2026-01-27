@@ -74,3 +74,16 @@ body {
   display: inline-block;
   animation: marquee 20s linear infinite;
 }
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-fade-out {
+  animation: fade-out 0.4s ease-out forwards;
+}
