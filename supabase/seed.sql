@@ -214,3 +214,17 @@ END $$;
 INSERT INTO promo_codes (code, description, discount_type, discount_value, min_order_amount, is_active) VALUES
   ('WELCOME10', 'Welcome discount - 10% off', 'percentage', 10, 500, true),
   ('FLAT100', 'Flat 100 EGP off', 'fixed', 100, 1000, true);
+
+-- ============================================
+-- SITE SETTINGS - Free Shipping
+-- ============================================
+INSERT INTO site_settings (key, value)
+VALUES (
+  'free_shipping',
+  '{
+    "is_active": false,
+    "min_order_amount": 500
+  }'::jsonb
+)
+ON CONFLICT (key) DO NOTHING;
+

@@ -5,9 +5,28 @@ interface CartSummaryProps {
   shipping?: number;
   discount?: number;
   total: number;
+  freeShippingThreshold?: number;
+  isFreeShippingActive?: boolean;
 }
 
-export function CartSummary({ subtotal, shipping = 0, discount = 0, total }: CartSummaryProps) {
+export function CartSummary({
+  subtotal,
+  shipping = 0,
+  discount = 0,
+  total,
+  freeShippingThreshold,
+  isFreeShippingActive
+}: CartSummaryProps) {
+  // Calculate progress toward free shipping
+  const showFreeShippingProgress =
+    isFreeShippingActive &&
+    freeShippingThreshold &&
+    subtotal < freeShippingThreshold;
+
+  const amountNeeded = freeShippingThreshold
+    ? freeShippingThreshold - subtotal
+    : 0;
+
   return (
     <div className="bg-white/5 rounded-lg p-4 space-y-3">
       <h2 className="font-semibold text-brand-cream text-lg mb-4">Order Summary</h2>
@@ -17,12 +36,33 @@ export function CartSummary({ subtotal, shipping = 0, discount = 0, total }: Car
         <span className="text-brand-cream font-medium">{formatPrice(subtotal)}</span>
       </div>
 
-      {shipping > 0 && (
-        <div className="flex justify-between text-sm">
-          <span className="text-brand-cream/70">Shipping</span>
-          <span className="text-brand-cream font-medium">{formatPrice(shipping)}</span>
+      {/* Free Shipping Progress */}
+      {showFreeShippingProgress && amountNeeded > 0 && (
+        <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="material-icons-outlined text-green-500 text-sm">local_shipping</span>
+            <span className="text-green-500 text-xs font-medium">
+              Add {formatPrice(amountNeeded)} more for FREE shipping!
+            </span>
+          </div>
+          <div className="w-full bg-white/10 rounded-full h-2">
+            <div
+              className="bg-green-500 h-2 rounded-full transition-all duration-300"
+              style={{ width: `${Math.min((subtotal / (freeShippingThreshold || 1)) * 100, 100)}%` }}
+            />
+          </div>
         </div>
       )}
+
+      {/* Shipping Cost */}
+      <div className="flex justify-between text-sm">
+        <span className="text-brand-cream/70">Shipping</span>
+        {shipping === 0 ? (
+          <span className="text-green-500 font-bold">FREE</span>
+        ) : (
+          <span className="text-brand-cream font-medium">{formatPrice(shipping)}</span>
+        )}
+      </div>
 
       {discount > 0 && (
         <div className="flex justify-between text-sm">

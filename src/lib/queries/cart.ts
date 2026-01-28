@@ -150,11 +150,35 @@ export async function validateCartItems(
 }
 
 /**
- * Get shipping cost based on method
+ * Get shipping cost based on method and subtotal
+ * Returns 0 if free shipping threshold is met
  */
-export async function getShippingCost(method: "standard" | "express"): Promise<number> {
+export async function getShippingCost(
+  method: "standard" | "express",
+  subtotal?: number
+): Promise<number> {
   const supabase = await createClient();
 
+  // Check free shipping settings
+  if (subtotal !== undefined) {
+    const { data: freeShippingData } = await supabase
+      .from("site_settings")
+      .select("value")
+      .eq("key", "free_shipping")
+      .single();
+
+    if (freeShippingData) {
+      const freeShippingConfig = freeShippingData.value as any;
+      if (
+        freeShippingConfig.is_active &&
+        subtotal >= freeShippingConfig.min_order_amount
+      ) {
+        return 0; // Free shipping!
+      }
+    }
+  }
+
+  // Get regular shipping cost
   const { data, error } = await supabase
     .from("site_settings")
     .select("value")

@@ -21,6 +21,12 @@ export default function CheckoutPage() {
   const [enrichedItems, setEnrichedItems] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Free shipping state
+  const [freeShippingSettings, setFreeShippingSettings] = useState<{
+    is_active: boolean;
+    min_order_amount: number;
+  } | null>(null);
+
   // Coupon state
   const [couponCode, setCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
@@ -31,6 +37,22 @@ export default function CheckoutPage() {
     discountValue: number;
   } | null>(null);
   const [validatingCoupon, setValidatingCoupon] = useState(false);
+
+  // Fetch free shipping settings
+  useEffect(() => {
+    const fetchFreeShippingSettings = async () => {
+      try {
+        const response = await fetch("/api/admin/free-shipping");
+        if (response.ok) {
+          const data = await response.json();
+          setFreeShippingSettings(data);
+        }
+      } catch (error) {
+        console.error("Error fetching free shipping settings:", error);
+      }
+    };
+    fetchFreeShippingSettings();
+  }, []);
 
   // Redirect if cart is empty
   useEffect(() => {
@@ -112,7 +134,14 @@ export default function CheckoutPage() {
     const price = item.product.base_price + (item.variant?.price_adjustment || 0);
     return sum + price * item.quantity;
   }, 0);
-  const shipping = 50;
+
+  // Calculate shipping (free if threshold met)
+  const shipping =
+    freeShippingSettings?.is_active &&
+      subtotal >= freeShippingSettings.min_order_amount
+      ? 0
+      : 50;
+
   const discount = appliedCoupon ? appliedCoupon.discountAmount : 0;
   const total = Math.max(0, subtotal + shipping - discount);
 
@@ -341,7 +370,11 @@ export default function CheckoutPage() {
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span>{formatPrice(shipping)}</span>
+                {shipping === 0 ? (
+                  <span className="text-green-400 font-bold">FREE</span>
+                ) : (
+                  <span>{formatPrice(shipping)}</span>
+                )}
               </div>
               {appliedCoupon && (
                 <div className="flex justify-between text-green-400 font-medium">
@@ -470,7 +503,11 @@ export default function CheckoutPage() {
               </div>
               <div className="flex justify-between text-brand-cream/80">
                 <span>Shipping</span>
-                <span>{formatPrice(shipping)}</span>
+                {shipping === 0 ? (
+                  <span className="text-green-400 font-bold">FREE</span>
+                ) : (
+                  <span>{formatPrice(shipping)}</span>
+                )}
               </div>
               <div className="flex justify-between text-brand-cream font-bold text-lg pt-2 border-t border-white/10">
                 <span>Total</span>
