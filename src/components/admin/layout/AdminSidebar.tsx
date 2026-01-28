@@ -49,6 +49,11 @@ const navigation = [
         href: "/admin/coupons",
         icon: "local_offer",
       },
+      {
+        name: "Free Shipping",
+        href: "/admin/free-shipping",
+        icon: "local_shipping",
+      },
     ],
   },
   {
