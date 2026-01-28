@@ -197,6 +197,53 @@ export async function POST(request: NextRequest) {
 
     // For Cash on Delivery, no payment processing needed
     if (payment_method === "cod") {
+      // Update order status to confirmed for COD
+      await supabaseAdmin
+        .from("orders")
+        .update({
+          status: "confirmed",
+        })
+        .eq("id", order.id);
+
+      // Decrement stock for each item
+      const { data: items, error: itemsError } = await supabaseAdmin
+        .from("order_items")
+        .select("variant_id, quantity")
+        .eq("order_id", order.id);
+
+      if (!itemsError && items) {
+        for (const item of items) {
+          if (item.variant_id) {
+            try {
+              // Get current stock
+              const { data: variant } = await supabaseAdmin
+                .from("product_variants")
+                .select("stock_quantity")
+                .eq("id", item.variant_id)
+                .single();
+
+              if (variant) {
+                const newStock = Math.max(0, (variant.stock_quantity || 0) - item.quantity);
+                await supabaseAdmin
+                  .from("product_variants")
+                  .update({ stock_quantity: newStock })
+                  .eq("id", item.variant_id);
+              }
+            } catch (error) {
+              console.error("Error decrementing stock for COD:", error);
+              // Continue processing - don't fail the order
+            }
+          }
+        }
+      }
+
+      // Add tracking entry for COD
+      await supabaseAdmin.from("order_tracking").insert({
+        order_id: order.id,
+        status: "confirmed",
+        description: "Cash on delivery order confirmed",
+      });
+
       return NextResponse.json({
         order_id: order.id,
         order_number: order.order_number,

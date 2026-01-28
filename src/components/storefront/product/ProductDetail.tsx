@@ -203,16 +203,16 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
                       <div
                         key={size}
                         className={`flex items-center justify-between p-3 rounded-lg border transition-all ${isSelected
-                            ? "border-[#F3EDE7] bg-[#F3EDE7]/10"
-                            : "border-brand-gray/30 bg-transparent hover:border-brand-gray"
+                          ? "border-[#F3EDE7] bg-[#F3EDE7]/10"
+                          : "border-brand-gray/30 bg-transparent hover:border-brand-gray"
                           }`}
                       >
                         <div className="flex items-center gap-3">
                           <button
                             onClick={() => updateSizeQuantity(size, isSelected ? 0 : 1)}
                             className={`w-6 h-6 rounded border flex items-center justify-center transition-all ${isSelected
-                                ? "border-[#F3EDE7] bg-[#F3EDE7]"
-                                : "border-brand-gray/50"
+                              ? "border-[#F3EDE7] bg-[#F3EDE7]"
+                              : "border-brand-gray/50"
                               }`}
                           >
                             {isSelected && (
@@ -220,8 +220,8 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
                             )}
                           </button>
                           <span className={`font-bold text-sm ${isSelected
-                              ? "text-[#F3EDE7]"
-                              : "text-brand-gray"
+                            ? "text-[#F3EDE7]"
+                            : "text-brand-gray"
                             }`}>
                             {size}
                           </span>
@@ -267,8 +267,8 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
                 onClick={handleAddToCart}
                 disabled={availableSizes.length > 0 && !hasSelection}
                 className={`w-full font-bold py-3 px-4 rounded transition uppercase text-sm flex items-center justify-center gap-2 ${availableSizes.length > 0 && !hasSelection
-                    ? "bg-brand-gray/30 text-brand-gray cursor-not-allowed"
-                    : "bg-[#F3EDE7] hover:bg-[#E5DDD4] text-brand-charcoal"
+                  ? "bg-brand-gray/30 text-brand-gray cursor-not-allowed"
+                  : "bg-[#F3EDE7] hover:bg-[#E5DDD4] text-brand-charcoal"
                   }`}
               >
                 <span className="material-icons-outlined text-lg">shopping_cart</span>
@@ -282,7 +282,7 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
                 disabled={availableSizes.length > 0 && !hasSelection}
                 className={`w-full font-bold py-3 px-4 rounded transition uppercase text-sm ${availableSizes.length > 0 && !hasSelection
                     ? "bg-brand-gray/30 text-brand-gray cursor-not-allowed"
-                    : "bg-brand-primary hover:bg-brand-primary/90 text-white"
+                    : "bg-[#F3EDE7] hover:bg-[#E5DDD4] text-brand-charcoal"
                   }`}
               >
                 Buy it now
