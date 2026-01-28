@@ -7,6 +7,7 @@ import { useWishlistStore } from "@/stores/wishlist";
 import { formatPrice } from "@/lib/utils";
 import type { ProductWithImages } from "@/lib/queries/products";
 import { ProductQuickAddModal } from "./ProductQuickAddModal";
+import { PreOrderModal } from "./PreOrderModal";
 
 interface ProductCardProps {
   product: ProductWithImages;
@@ -14,6 +15,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPreOrderModalOpen, setIsPreOrderModalOpen] = useState(false);
   const { addItem, openCart } = useCartStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();
 
@@ -26,6 +28,18 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
+
+    if (!product.in_stock) {
+      // Show pre-order modal for sold out products
+      setIsPreOrderModalOpen(true);
+    } else {
+      setIsModalOpen(true);
+    }
+  };
+
+  const handlePreOrderConfirm = () => {
+    setIsPreOrderModalOpen(false);
+    // Open the quick add modal to select variant/size
     setIsModalOpen(true);
   };
 
@@ -70,12 +84,18 @@ export function ProductCard({ product }: ProductCardProps) {
                 -{discountPercent}%
               </span>
             )}
+
+            {/* Pre-order Badge instead of Sold Out */}
             {!product.in_stock && (
               <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                <div className="w-24 h-24 rounded-full bg-white/90 flex items-center justify-center shadow-xl">
-                  <span className="text-brand-charcoal font-bold text-sm text-center leading-tight">
-                    Sold Out
-                  </span>
+                <div className="w-28 h-28 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center shadow-xl">
+                  <div className="text-center">
+                    <span className="material-icons-outlined text-white text-2xl mb-1">schedule</span>
+                    <span className="text-white font-bold text-xs block leading-tight">
+                      Pre-order
+                    </span>
+                    <span className="text-white/80 text-[10px] block">7-10 days</span>
+                  </div>
                 </div>
               </div>
             )}
@@ -99,24 +119,19 @@ export function ProductCard({ product }: ProductCardProps) {
           </p>
         </div>
 
-        {/* Add to Cart Button */}
-        {product.in_stock ? (
-          <button
-            onClick={handleQuickAdd}
-            className="mt-2 w-full bg-brand-primary hover:bg-red-700 text-white text-xs font-bold py-2 rounded uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5"
-          >
-            <span className="material-icons-outlined text-base">shopping_cart</span>
-            <span>QUICK ADD</span>
-          </button>
-        ) : (
-          <Link
-            href={`/products/${product.slug}`}
-            className="mt-2 w-full bg-[#F3EDE7] hover:bg-[#E5DDD4] text-brand-charcoal text-xs font-bold py-2 rounded uppercase tracking-wider transition-colors text-center block flex items-center justify-center gap-1.5"
-          >
-            <span className="material-icons-outlined text-base">visibility</span>
-            <span>VIEW PRODUCT</span>
-          </Link>
-        )}
+        {/* Add to Cart / Pre-order Button */}
+        <button
+          onClick={handleQuickAdd}
+          className={`mt-2 w-full ${product.in_stock
+              ? 'bg-brand-primary hover:bg-red-700'
+              : 'bg-yellow-500 hover:bg-yellow-600'
+            } text-white text-xs font-bold py-2 rounded uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5`}
+        >
+          <span className="material-icons-outlined text-base">
+            {product.in_stock ? 'shopping_cart' : 'schedule'}
+          </span>
+          <span>{product.in_stock ? 'QUICK ADD' : 'PRE-ORDER NOW'}</span>
+        </button>
       </div>
 
       {/* Quick Add Modal */}
@@ -124,6 +139,14 @@ export function ProductCard({ product }: ProductCardProps) {
         product={product}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+
+      {/* Pre-order Confirmation Modal */}
+      <PreOrderModal
+        isOpen={isPreOrderModalOpen}
+        productName={product.name}
+        onConfirm={handlePreOrderConfirm}
+        onCancel={() => setIsPreOrderModalOpen(false)}
       />
     </div>
   );

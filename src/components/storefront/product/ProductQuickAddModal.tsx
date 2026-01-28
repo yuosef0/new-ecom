@@ -206,21 +206,20 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                                     return (
                                         <div
                                             key={size}
-                                            className={`flex items-center justify-between p-2 rounded-lg border transition-all ${isOutOfStock
-                                                ? "border-gray-700 bg-gray-800/30 opacity-50"
-                                                : isSelected
-                                                    ? "border-pink-500 bg-pink-500/10"
+                                            className={`flex items-center justify-between p-2 rounded-lg border transition-all ${isSelected
+                                                    ? isOutOfStock
+                                                        ? "border-yellow-500 bg-yellow-500/10"
+                                                        : "border-pink-500 bg-pink-500/10"
                                                     : "border-gray-600 bg-transparent hover:border-gray-400"
                                                 }`}
                                         >
                                             <div className="flex items-center gap-2">
                                                 <button
-                                                    onClick={() => !isOutOfStock && updateSizeQuantity(size, isSelected ? 0 : 1)}
-                                                    disabled={isOutOfStock}
-                                                    className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${isOutOfStock
-                                                        ? "border-gray-600 cursor-not-allowed"
-                                                        : isSelected
-                                                            ? "border-pink-500 bg-pink-500"
+                                                    onClick={() => updateSizeQuantity(size, isSelected ? 0 : 1)}
+                                                    className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${isSelected
+                                                            ? isOutOfStock
+                                                                ? "border-yellow-500 bg-yellow-500"
+                                                                : "border-pink-500 bg-pink-500"
                                                             : "border-gray-500"
                                                         }`}
                                                 >
@@ -228,20 +227,20 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                                                         <span className="material-icons-outlined text-white text-xs">check</span>
                                                     )}
                                                 </button>
-                                                <span className={`font-bold text-xs ${isOutOfStock
-                                                    ? "text-gray-500 line-through"
-                                                    : isSelected
-                                                        ? "text-pink-500"
+                                                <span className={`font-bold text-xs ${isSelected
+                                                        ? isOutOfStock
+                                                            ? "text-yellow-500"
+                                                            : "text-pink-500"
                                                         : "text-gray-300"
                                                     }`}>
                                                     {size}
                                                 </span>
                                                 {isOutOfStock && (
-                                                    <span className="text-[10px] text-gray-500">(Out of Stock)</span>
+                                                    <span className="text-[10px] text-yellow-500 font-medium">(Pre-order)</span>
                                                 )}
                                             </div>
 
-                                            {isSelected && !isOutOfStock && (
+                                            {isSelected && (
                                                 <div className="flex items-center border border-gray-600 rounded bg-[#0f1a1c]">
                                                     <button
                                                         onClick={() => updateSizeQuantity(size, Math.max(0, quantity - 1))}
@@ -267,26 +266,44 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                         </div>
                     )}
 
+                    {/* Pre-order Notice */}
+                    {!product.in_stock && (
+                        <div className="mb-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3">
+                            <div className="flex items-start gap-2">
+                                <span className="material-icons-outlined text-yellow-500 text-sm mt-0.5">schedule</span>
+                                <p className="text-yellow-500 text-[11px] font-medium">
+                                    Pre-order: This item will be delivered in 7-10 business days
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Action Buttons */}
                     <div className="space-y-2">
                         <button
                             onClick={handleAddToCart}
-                            disabled={!product.in_stock || (requiresSize && !hasSelection)}
-                            className={`w-full font-bold py-2 px-3 rounded transition-all uppercase text-xs flex items-center justify-center gap-1.5 transform active:scale-95 ${!product.in_stock || (requiresSize && !hasSelection)
+                            disabled={requiresSize && !hasSelection}
+                            className={`w-full font-bold py-2 px-3 rounded transition-all uppercase text-xs flex items-center justify-center gap-1.5 transform active:scale-95 ${requiresSize && !hasSelection
                                 ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50"
-                                : "bg-pink-600 hover:bg-pink-700 text-white shadow-lg hover:shadow-pink-500/30"
+                                : product.in_stock
+                                    ? "bg-pink-600 hover:bg-pink-700 text-white shadow-lg hover:shadow-pink-500/30"
+                                    : "bg-yellow-500 hover:bg-yellow-600 text-white shadow-lg hover:shadow-yellow-500/30"
                                 }`}
                         >
-                            <span className="material-icons-outlined text-base">shopping_cart</span>
+                            <span className="material-icons-outlined text-base">
+                                {product.in_stock ? 'shopping_cart' : 'schedule'}
+                            </span>
                             {requiresSize && hasSelection
                                 ? `Add ${totalItems} ${totalItems === 1 ? 'item' : 'items'} - ${formatPrice(getTotalPrice())}`
-                                : `Add to cart - ${formatPrice(product.base_price)}`
+                                : product.in_stock
+                                    ? `Add to cart - ${formatPrice(product.base_price)}`
+                                    : `Pre-order - ${formatPrice(product.base_price)}`
                             }
                         </button>
                         <button
                             onClick={handleBuyNow}
-                            disabled={!product.in_stock || (requiresSize && !hasSelection)}
-                            className={`w-full font-bold py-2 px-3 rounded transition-all uppercase text-xs transform active:scale-95 ${!product.in_stock || (requiresSize && !hasSelection)
+                            disabled={requiresSize && !hasSelection}
+                            className={`w-full font-bold py-2 px-3 rounded transition-all uppercase text-xs transform active:scale-95 ${requiresSize && !hasSelection
                                 ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50 border border-gray-500"
                                 : "bg-lime-500 hover:bg-lime-600 text-[#1a2b2e] shadow-lg hover:shadow-lime-500/30"
                                 }`}
