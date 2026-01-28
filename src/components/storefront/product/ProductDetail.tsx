@@ -266,12 +266,12 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
               <button
                 onClick={handleAddToCart}
                 disabled={availableSizes.length > 0 && !hasSelection}
-                className={`w-full font-bold py-3 px-4 rounded transition uppercase text-sm flex items-center justify-center gap-2 ${availableSizes.length > 0 && !hasSelection
-                  ? "bg-brand-gray/30 text-brand-gray cursor-not-allowed"
-                  : "bg-[#F3EDE7] hover:bg-[#E5DDD4] text-brand-charcoal"
+                className={`w-full font-bold py-4 px-6 rounded-lg transition-all duration-200 uppercase text-sm flex items-center justify-center gap-2 shadow-lg ${availableSizes.length > 0 && !hasSelection
+                    ? "bg-brand-gray/30 text-brand-gray cursor-not-allowed opacity-50"
+                    : "bg-[#F3EDE7] hover:bg-[#E5DDD4] text-brand-charcoal hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
                   }`}
               >
-                <span className="material-icons-outlined text-lg">shopping_cart</span>
+                <span className="material-icons-outlined text-xl">shopping_cart</span>
                 {hasSelection
                   ? `Add ${totalItems} ${totalItems === 1 ? 'item' : 'items'} - ${formatPrice(getTotalPrice())}`
                   : `Add to cart - ${formatPrice(product.base_price)}`
@@ -280,11 +280,12 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
               <button
                 onClick={handleBuyNow}
                 disabled={availableSizes.length > 0 && !hasSelection}
-                className={`w-full font-bold py-3 px-4 rounded transition uppercase text-sm ${availableSizes.length > 0 && !hasSelection
-                    ? "bg-brand-gray/30 text-brand-gray cursor-not-allowed"
-                    : "bg-[#F3EDE7] hover:bg-[#E5DDD4] text-brand-charcoal"
+                className={`w-full font-bold py-4 px-6 rounded-lg transition-all duration-200 uppercase text-sm shadow-lg flex items-center justify-center gap-2 ${availableSizes.length > 0 && !hasSelection
+                    ? "bg-brand-gray/30 text-brand-gray cursor-not-allowed opacity-50"
+                    : "bg-[#F3EDE7] hover:bg-[#E5DDD4] text-brand-charcoal hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] border-2 border-brand-charcoal/10"
                   }`}
               >
+                <span className="material-icons-outlined text-xl">bolt</span>
                 Buy it now
               </button>
             </div>
