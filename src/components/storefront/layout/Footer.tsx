@@ -124,32 +124,32 @@ export async function Footer() {
         <h3 className="text-xl sm:text-2xl font-normal mb-4">Quick Links</h3>
         <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-brand-cream/80">
           <li>
-            <Link href="/about" className="hover:text-white transition-colors">
+            <Link href="/about" className="hover:text-white transition-colors font-bold">
               About us
             </Link>
           </li>
           <li>
-            <Link href="/contact" className="hover:text-white transition-colors">
+            <Link href="/contact" className="hover:text-white transition-colors font-bold">
               Contact us
             </Link>
           </li>
           <li>
-            <Link href="/faqs" className="hover:text-white transition-colors">
+            <Link href="/faqs" className="hover:text-white transition-colors font-bold">
               FAQs
             </Link>
           </li>
           <li>
-            <Link href="/shipping" className="hover:text-white transition-colors">
+            <Link href="/shipping" className="hover:text-white transition-colors font-bold">
               Shipping &amp; Delivery
             </Link>
           </li>
           <li>
-            <Link href="/returns" className="hover:text-white transition-colors">
+            <Link href="/returns" className="hover:text-white transition-colors font-bold">
               Return &amp; Exchange
             </Link>
           </li>
           <li>
-            <Link href="/privacy" className="hover:text-white transition-colors">
+            <Link href="/privacy" className="hover:text-white transition-colors font-bold">
               Privacy Policy
             </Link>
           </li>
