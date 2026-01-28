@@ -90,7 +90,7 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="px-4 sm:px-6 py-6 min-h-[60vh] flex flex-col items-center justify-center pb-24">
+      <div className="px-4 sm:px-6 py-6 min-h-[60vh] flex flex-col items-center justify-center pb-10">
         <div className="text-center">
           <span className="material-icons-outlined text-6xl text-brand-cream/30 mb-4">
             shopping_cart
@@ -111,7 +111,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="px-4 sm:px-6 py-4 sm:py-6 pb-24">
+    <div className="px-4 sm:px-6 py-4 sm:py-6 pb-10">
       {/* Page Header */}
       <h1 className="text-2xl font-bold text-brand-cream mb-6">Shopping Cart</h1>
 

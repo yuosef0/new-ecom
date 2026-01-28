@@ -35,7 +35,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
   const hasChildren = childCollections && childCollections.length > 0;
 
   return (
-    <div className="px-4 sm:px-6 py-4 sm:py-6 pb-24">
+    <div className="px-4 sm:px-6 py-4 sm:py-6 pb-10">
       {/* Back Link */}
       <div className="mb-4">
         <Link

@@ -144,7 +144,7 @@ export default function ProductsPage() {
   const pageTitle = getCategoryName(categorySlug);
 
   return (
-    <div className="px-4 sm:px-6 py-4 sm:py-6 pb-24">
+    <div className="px-4 sm:px-6 py-4 sm:py-6 pb-10">
       {/* Page Header */}
       <div className="mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold text-brand-cream">{pageTitle}</h1>
