@@ -13,7 +13,7 @@ export function MarqueeBanner({ settings }: MarqueeBannerProps) {
   }
 
   return (
-    <div className="bg-brand-primary overflow-hidden py-3 sm:py-4">
+    <div className="bg-brand-primary overflow-hidden py-4 sm:py-5">
       <div className="animate-marquee whitespace-nowrap !flex items-center min-w-full">
         {/* First Set */}
         <div className="flex shrink-0 items-center justify-around">

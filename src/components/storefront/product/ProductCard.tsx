@@ -74,7 +74,7 @@ export function ProductCard({ product }: ProductCardProps) {
               <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                 <div className="w-24 h-24 rounded-full bg-white/90 flex items-center justify-center shadow-xl">
                   <span className="text-brand-charcoal font-bold text-sm text-center leading-tight">
-                    SOLD<br />OUT
+                    Sold Out
                   </span>
                 </div>
               </div>
@@ -111,7 +111,7 @@ export function ProductCard({ product }: ProductCardProps) {
         ) : (
           <Link
             href={`/products/${product.slug}`}
-            className="mt-2 w-full bg-gray-600 hover:bg-gray-700 text-white text-xs font-bold py-2.5 rounded uppercase tracking-wider transition-colors text-center block flex items-center justify-center gap-1.5"
+            className="mt-2 w-full bg-[#F3EDE7] hover:bg-[#E5DDD4] text-brand-charcoal text-xs font-bold py-2 rounded uppercase tracking-wider transition-colors text-center block flex items-center justify-center gap-1.5"
           >
             <span className="material-icons-outlined text-base">visibility</span>
             <span>VIEW PRODUCT</span>

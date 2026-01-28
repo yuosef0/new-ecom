@@ -16,7 +16,7 @@ export async function Footer() {
   } | null;
 
   return (
-    <footer className="bg-brand-burgundy text-brand-cream px-4 sm:px-6 py-8 sm:py-10 pb-24 space-y-8 sm:space-y-10">
+    <footer className="bg-brand-burgundy text-brand-cream px-4 sm:px-6 py-6 sm:py-8 pb-24 space-y-8 sm:space-y-10">
       {/* About DXLR Section */}
       <div id="about">
         <h3 className="text-lg sm:text-xl font-normal mb-3 uppercase tracking-wide">
@@ -29,10 +29,9 @@ export async function Footer() {
         </p>
         <Link
           href="/products"
-          className="inline-flex items-center text-xs sm:text-sm font-bold underline decoration-1 underline-offset-2 hover:text-white transition-colors leading-tight"
+          className="inline-block text-xs sm:text-sm font-bold underline decoration-1 underline-offset-2 hover:text-white transition-colors leading-tight whitespace-nowrap"
         >
-          Discover Products
-          <span className="material-icons-outlined text-sm ml-1">north_east</span>
+          Discover Products <span className="material-icons-outlined text-sm ml-1 align-middle">north_east</span>
         </Link>
 
         {/* Social Media Icons */}
@@ -42,7 +41,7 @@ export async function Footer() {
               href={socialLinks.facebook}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#1877f2] flex items-center justify-center text-white hover:opacity-80 transition-opacity"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-brand-cream flex items-center justify-center text-brand-cream hover:bg-brand-cream/10 transition-all"
               aria-label="Facebook"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -56,7 +55,7 @@ export async function Footer() {
               href={socialLinks.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#dc2743] flex items-center justify-center text-white hover:opacity-80 transition-opacity"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-brand-cream flex items-center justify-center text-brand-cream hover:bg-brand-cream/10 transition-all"
               aria-label="Instagram"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -70,7 +69,7 @@ export async function Footer() {
               href={socialLinks.tiktok}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black flex items-center justify-center text-white hover:opacity-80 transition-opacity"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-brand-cream flex items-center justify-center text-brand-cream hover:bg-brand-cream/10 transition-all"
               aria-label="TikTok"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
