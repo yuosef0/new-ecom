@@ -65,7 +65,7 @@ export default async function HomePage() {
   const smallCollections = collections.filter(col => col.display_type === "small");
 
   return (
-    <div className="pb-20 sm:pb-24 md:pb-28">
+    <div className="pb-10 sm:pb-12 md:pb-14">
       {/* Hero Section - Dynamic */}
       <HeroSection settings={heroSettings} />
 
