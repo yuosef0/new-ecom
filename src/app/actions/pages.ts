@@ -17,9 +17,15 @@ export async function updatePage(slug: string, data: { title: string; content: s
         throw new Error(error.message);
     }
 
-    revalidatePath(`/admin/pages/${slug}`);
-    revalidatePath(`/${slug}`); // Revalidate storefront page
-    if (slug === 'faqs') revalidatePath('/faqs');
+    revalidatePath(`/admin/${slug}`);
+    revalidatePath(`/${slug}`, 'page');
+    // Also revalidate the path with layout to be safe
+    revalidatePath(`/${slug}`, 'layout');
+
+    if (slug === 'faqs') {
+        revalidatePath('/faqs');
+        revalidatePath('/faqs', 'page');
+    }
 }
 
 export async function getPage(slug: string) {

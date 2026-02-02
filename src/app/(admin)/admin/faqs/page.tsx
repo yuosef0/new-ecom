@@ -122,14 +122,19 @@ export default function AdminFaqsPage() {
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-3xl font-bold text-gray-900">FAQ Management</h1>
-                    <p className="mt-2 text-gray-600">Manage Frequently Asked Questions displayed on the FAQs page.</p>
+            <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-lg bg-brand-primary/10 flex items-center justify-center">
+                        <span className="material-icons-outlined text-brand-primary text-2xl">quiz</span>
+                    </div>
+                    <div>
+                        <h1 className="text-3xl font-bold text-gray-900">FAQ Management</h1>
+                        <p className="mt-1 text-gray-600">Manage your Frequently Asked Questions</p>
+                    </div>
                 </div>
                 <button
                     onClick={handleNew}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-brand-primary hover:bg-brand-dark text-white font-medium rounded-lg transition-colors"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-brand-primary hover:bg-brand-dark text-white font-medium rounded-lg transition-colors shadow-sm hover:shadow-md"
                 >
                     <span className="material-icons-outlined text-xl">add</span>
                     Add New Item
@@ -138,14 +143,16 @@ export default function AdminFaqsPage() {
 
             {/* Alerts */}
             {error && (
-                <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-4">
-                    {error}
+                <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-4 flex items-start gap-3">
+                    <span className="material-icons-outlined text-red-600">error</span>
+                    <span>{error}</span>
                 </div>
             )}
 
             {success && (
-                <div className="bg-green-50 border border-green-200 text-green-800 rounded-lg p-4">
-                    {success}
+                <div className="bg-green-50 border border-green-200 text-green-800 rounded-lg p-4 flex items-start gap-3">
+                    <span className="material-icons-outlined text-green-600">check_circle</span>
+                    <span>{success}</span>
                 </div>
             )}
 
@@ -153,15 +160,24 @@ export default function AdminFaqsPage() {
                 {/* Form Column - Left Side */}
                 <div className="lg:col-span-1">
                     {editing || isNew ? (
-                        <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-6">
-                            <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                                {isNew ? "Add New FAQ" : "Edit FAQ Item"}
-                            </h2>
+                        <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-6 shadow-sm">
+                            <div className="flex items-center gap-2 mb-6 pb-4 border-b border-gray-100">
+                                <span className="material-icons-outlined text-brand-primary">
+                                    {isNew ? 'add_circle' : 'edit'}
+                                </span>
+                                <h2 className="text-lg font-semibold text-gray-900">
+                                    {isNew ? "Add New FAQ" : "Edit FAQ Item"}
+                                </h2>
+                            </div>
+
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                                        <span className="material-icons-outlined text-lg opacity-50">category</span>
+                                        Category
+                                    </label>
                                     <select
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none"
+                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all"
                                         value={formData.category}
                                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                                     >
@@ -172,37 +188,48 @@ export default function AdminFaqsPage() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Sort Order</label>
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                                        <span className="material-icons-outlined text-lg opacity-50">sort</span>
+                                        Sort Order
+                                    </label>
                                     <input
                                         type="number"
                                         required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none"
+                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all"
                                         value={formData.sort_order}
                                         onChange={(e) => setFormData({ ...formData, sort_order: parseInt(e.target.value) })}
                                     />
                                     <p className="text-xs text-gray-500 mt-1">Lower numbers appear first</p>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Question</label>
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                                        <span className="material-icons-outlined text-lg opacity-50">help_outline</span>
+                                        Question
+                                    </label>
                                     <input
                                         type="text"
                                         required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none"
+                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all"
                                         value={formData.question}
                                         onChange={(e) => setFormData({ ...formData, question: e.target.value })}
+                                        placeholder="e.g. How long does shipping take?"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Answer</label>
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                                        <span className="material-icons-outlined text-lg opacity-50">description</span>
+                                        Answer
+                                    </label>
                                     <textarea
                                         required
                                         rows={5}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none resize-none"
+                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none resize-none transition-all"
                                         value={formData.answer}
                                         onChange={(e) => setFormData({ ...formData, answer: e.target.value })}
+                                        placeholder="Enter the answer here..."
                                     />
                                 </div>
-                                <div className="flex gap-2 pt-2">
+                                <div className="flex gap-2 pt-4">
                                     <button
                                         type="button"
                                         onClick={handleCancel}
@@ -212,8 +239,9 @@ export default function AdminFaqsPage() {
                                     </button>
                                     <button
                                         type="submit"
-                                        className="flex-1 px-4 py-2.5 bg-brand-primary hover:bg-brand-dark text-white rounded-lg transition-colors font-medium"
+                                        className="flex-1 px-4 py-2.5 bg-brand-primary hover:bg-brand-dark text-white rounded-lg transition-colors font-medium flex items-center justify-center gap-2 shadow-sm"
                                     >
+                                        <span className="material-icons-outlined text-lg">save</span>
                                         {isNew ? "Create" : "Update"}
                                     </button>
                                 </div>
@@ -221,57 +249,65 @@ export default function AdminFaqsPage() {
                         </div>
                     ) : (
                         <div className="bg-gray-50 border border-dashed border-gray-300 rounded-lg p-8 text-center text-gray-500 sticky top-6">
-                            <span className="material-icons-outlined text-5xl text-gray-300 mb-2">quiz</span>
-                            <p>Select an item to edit or click "Add New Item"</p>
+                            <span className="material-icons-outlined text-5xl text-gray-300 mb-3">quiz</span>
+                            <h3 className="text-lg font-medium text-gray-900 mb-1">Manage FAQs</h3>
+                            <p className="text-sm">Select an item to edit or click "Add New Item"</p>
                         </div>
                     )}
                 </div>
 
                 {/* List Column - Right Side */}
                 <div className="lg:col-span-2">
-                    <div className="bg-white rounded-lg border border-gray-200">
-                        <div className="px-6 py-4 border-b border-gray-200">
-                            <h2 className="text-lg font-semibold text-gray-900">All FAQ Items ({faqs.length})</h2>
+                    <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50/50 flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <span className="material-icons-outlined text-brand-primary">list_alt</span>
+                                <h2 className="text-lg font-semibold text-gray-900">All FAQ Items ({faqs.length})</h2>
+                            </div>
                         </div>
 
                         {faqs.length === 0 ? (
-                            <div className="px-6 py-12 text-center text-gray-500">
-                                <span className="material-icons-outlined text-5xl text-gray-300 mb-4">quiz</span>
-                                <p>No FAQs found. Add one to get started.</p>
+                            <div className="px-6 py-16 text-center text-gray-500">
+                                <span className="material-icons-outlined text-6xl text-gray-200 mb-4 block">quiz</span>
+                                <p className="text-lg text-gray-900 font-medium mb-1">No FAQs found</p>
+                                <p>Add your first FAQ item to get started.</p>
                             </div>
                         ) : (
                             <div className="divide-y divide-gray-100">
                                 {faqs.map((item) => (
                                     <div
                                         key={item.id}
-                                        className={`p-4 hover:bg-gray-50 transition-colors ${editing?.id === item.id ? "bg-blue-50" : ""
+                                        className={`p-5 hover:bg-gray-50 transition-colors group ${editing?.id === item.id ? "bg-brand-primary/5 hover:bg-brand-primary/10" : ""
                                             }`}
                                     >
                                         <div className="flex justify-between items-start gap-4">
                                             <div className="flex-1">
                                                 <div className="flex items-center gap-2 mb-2">
-                                                    <span className="text-xs font-semibold uppercase tracking-wider text-brand-primary bg-brand-primary/10 px-2 py-1 rounded">
+                                                    <span className="text-xs font-bold uppercase tracking-wider text-brand-primary bg-brand-primary/10 px-2.5 py-1 rounded-full">
                                                         {item.category}
                                                     </span>
-                                                    <span className="text-xs text-gray-400">Sort: {item.sort_order}</span>
+                                                    <span className="text-xs text-gray-400 flex items-center gap-1">
+                                                        <span className="material-icons-outlined text-[14px]">sort</span>
+                                                        {item.sort_order}
+                                                    </span>
                                                 </div>
-                                                <h3 className="font-semibold text-gray-900 mb-1">{item.question}</h3>
-                                                <p className="text-sm text-gray-600 line-clamp-2">{item.answer}</p>
+                                                <h3 className="font-semibold text-gray-900 mb-1.5 text-lg">{item.question}</h3>
+                                                <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">{item.answer}</p>
                                             </div>
-                                            <div className="flex gap-2 shrink-0">
+                                            <div className="flex gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
                                                 <button
                                                     onClick={() => handleEdit(item)}
-                                                    className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                                    className="p-2 text-gray-500 hover:text-brand-primary hover:bg-brand-primary/10 rounded-lg transition-colors"
                                                     title="Edit"
                                                 >
-                                                    <span className="material-icons-outlined text-lg">edit</span>
+                                                    <span className="material-icons-outlined text-xl">edit</span>
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(item.id)}
                                                     className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                                                     title="Delete"
                                                 >
-                                                    <span className="material-icons-outlined text-lg">delete</span>
+                                                    <span className="material-icons-outlined text-xl">delete</span>
                                                 </button>
                                             </div>
                                         </div>
