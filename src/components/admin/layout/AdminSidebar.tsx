@@ -76,17 +76,17 @@ const navigation = [
       },
       {
         name: "Privacy Policy",
-        href: "/admin/pages/privacy-policy",
+        href: "/admin/pages/privacy",
         icon: "privacy_tip",
       },
       {
         name: "Shipping & Delivery",
-        href: "/admin/pages/shipping-delivery",
+        href: "/admin/pages/shipping",
         icon: "local_shipping",
       },
       {
         name: "Return & Exchange",
-        href: "/admin/pages/return-exchange",
+        href: "/admin/pages/returns",
         icon: "autorenew",
       },
       {
