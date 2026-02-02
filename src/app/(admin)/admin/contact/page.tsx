@@ -8,7 +8,16 @@ export default function ContactPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
-    const [page, setPage] = useState<{ title: string; content: string } | null>(null);
+
+    // Default structure
+    const [contactData, setContactData] = useState({
+        whatsapp: "",
+        email: "",
+        address: ""
+    });
+
+    // Page metadata
+    const [title, setTitle] = useState("");
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
 
@@ -16,7 +25,26 @@ export default function ContactPage() {
         async function load() {
             const data = await getPage('contact');
             if (data) {
-                setPage({ title: data.title, content: data.content || "" });
+                setTitle(data.title);
+                try {
+                    // Try parsing content as JSON, fallback to empty strings if specific keys missing
+                    // If content is plain string (legacy), we treat it as empty or handle appropriately.
+                    // Here we assume if it starts with { it might be JSON.
+                    if (data.content && data.content.trim().startsWith('{')) {
+                        const parsed = JSON.parse(data.content);
+                        setContactData({
+                            whatsapp: parsed.whatsapp || "",
+                            email: parsed.email || "",
+                            address: parsed.address || ""
+                        });
+                    } else {
+                        // Legacy HTML content or empty, start fresh
+                        setContactData({ whatsapp: "", email: "", address: "" });
+                    }
+                } catch (e) {
+                    // JSON parse error, ignore
+                    setContactData({ whatsapp: "", email: "", address: "" });
+                }
             }
             setLoading(false);
         }
@@ -25,15 +53,21 @@ export default function ContactPage() {
 
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!page) return;
 
         setSaving(true);
         setError("");
         setSuccess("");
 
         try {
-            await updatePage('contact', page);
-            setSuccess("✅ Page updated successfully!");
+            // Store as JSON string in content field
+            const contentJson = JSON.stringify(contactData);
+
+            await updatePage('contact', {
+                title: title,
+                content: contentJson
+            });
+
+            setSuccess("✅ Contact info updated successfully!");
             router.refresh();
         } catch (err: any) {
             setError(err.message || "Failed to update page");
@@ -51,15 +85,6 @@ export default function ContactPage() {
         );
     }
 
-    if (!page) {
-        return (
-            <div className="p-8 text-center">
-                <span className="material-icons-outlined text-5xl text-gray-300 mb-4">error</span>
-                <p className="text-gray-500">Page not found in database</p>
-            </div>
-        );
-    }
-
     return (
         <div className="space-y-6">
             {/* Header */}
@@ -70,8 +95,8 @@ export default function ContactPage() {
                             <span className="material-icons-outlined text-brand-primary text-2xl">contact_mail</span>
                         </div>
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900">Contact Us Page</h1>
-                            <p className="mt-1 text-gray-600">Manage your Contact Us page content</p>
+                            <h1 className="text-3xl font-bold text-gray-900">Contact Settings</h1>
+                            <p className="mt-1 text-gray-600">Manage your contact information</p>
                         </div>
                     </div>
                 </div>
@@ -97,42 +122,67 @@ export default function ContactPage() {
                 <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
                     <div className="flex items-center gap-2">
                         <span className="material-icons-outlined text-brand-primary">edit_note</span>
-                        <h2 className="text-lg font-semibold text-gray-900">Page Content</h2>
+                        <h2 className="text-lg font-semibold text-gray-900">Contact Details</h2>
                     </div>
                 </div>
 
                 <div className="p-6 space-y-6">
                     <div>
                         <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                            <span className="material-icons-outlined text-lg">title</span>
+                            <span className="material-icons-outlined text-lg opacity-50">title</span>
                             Page Title
                         </label>
                         <input
                             type="text"
                             required
                             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all"
-                            value={page.title}
-                            onChange={(e) => setPage({ ...page, title: e.target.value })}
-                            placeholder="Enter page title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            placeholder="e.g. Get in Touch"
                         />
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                                <span className="material-icons-outlined text-lg opacity-50 md:text-green-600">phone</span>
+                                WhatsApp / Phone
+                            </label>
+                            <input
+                                type="text"
+                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all"
+                                value={contactData.whatsapp}
+                                onChange={(e) => setContactData({ ...contactData, whatsapp: e.target.value })}
+                                placeholder="e.g. +20 100 000 0000"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                                <span className="material-icons-outlined text-lg opacity-50 md:text-blue-500">email</span>
+                                Email Address
+                            </label>
+                            <input
+                                type="email"
+                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all"
+                                value={contactData.email}
+                                onChange={(e) => setContactData({ ...contactData, email: e.target.value })}
+                                placeholder="e.g. support@riliks.com"
+                            />
+                        </div>
                     </div>
 
                     <div>
                         <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                            <span className="material-icons-outlined text-lg">code</span>
-                            Content (HTML Support)
+                            <span className="material-icons-outlined text-lg opacity-50 md:text-purple-500">location_on</span>
+                            Physical Address
                         </label>
-                        <p className="text-xs text-gray-500 mb-3 flex items-start gap-2">
-                            <span className="material-icons-outlined text-sm">info</span>
-                            <span>You can use basic HTML tags like &lt;p&gt;, &lt;h2&gt;, &lt;ul&gt;, &lt;strong&gt;, etc.</span>
-                        </p>
                         <textarea
-                            required
-                            rows={15}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all font-mono text-sm leading-relaxed"
-                            value={page.content}
-                            onChange={(e) => setPage({ ...page, content: e.target.value })}
-                            placeholder="Enter page content with HTML formatting"
+                            rows={3}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all resize-none"
+                            value={contactData.address}
+                            onChange={(e) => setContactData({ ...contactData, address: e.target.value })}
+                            placeholder="e.g. 123 Fashion Street, Cairo, Egypt"
                         />
                     </div>
                 </div>
