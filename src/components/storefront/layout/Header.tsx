@@ -75,7 +75,7 @@ export function Header() {
       </nav>
 
       {/* Right Icons */}
-      <div className="flex items-center space-x-3 sm:space-x-4 z-10">
+      <div className="flex items-center space-x-2 sm:space-x-4 z-10">
         {/* Search */}
         <button
           onClick={toggleSearch}
