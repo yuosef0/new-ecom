@@ -13,8 +13,8 @@ export function MarqueeBanner({ settings }: MarqueeBannerProps) {
   }
 
   return (
-    <div className="bg-brand-primary overflow-hidden py-3 sm:py-4">
-      <div className="animate-marquee whitespace-nowrap !flex items-center min-w-full">
+    <div className="bg-brand-primary overflow-hidden py-1.5 sm:py-2">
+      <div className="animate-marquee whitespace-nowrap !flex items-center min-w-full" style={{ animationDuration: '15s' }}>
         {/* First Set */}
         <div className="flex shrink-0 items-center justify-around">
           {[...Array(10)].map((_, i) => (
