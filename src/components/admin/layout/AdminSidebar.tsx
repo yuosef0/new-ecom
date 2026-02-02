@@ -60,14 +60,34 @@ const navigation = [
     section: "Content",
     items: [
       {
-        name: "Pages",
-        href: "/admin/pages",
-        icon: "description",
+        name: "About Us",
+        href: "/admin/pages/about",
+        icon: "info",
+      },
+      {
+        name: "Contact Us",
+        href: "/admin/pages/contact",
+        icon: "contact_mail",
       },
       {
         name: "FAQs",
         href: "/admin/faqs",
         icon: "quiz",
+      },
+      {
+        name: "Privacy Policy",
+        href: "/admin/pages/privacy-policy",
+        icon: "privacy_tip",
+      },
+      {
+        name: "Shipping & Delivery",
+        href: "/admin/pages/shipping-delivery",
+        icon: "local_shipping",
+      },
+      {
+        name: "Return & Exchange",
+        href: "/admin/pages/return-exchange",
+        icon: "autorenew",
       },
       {
         name: "Hero Image",
