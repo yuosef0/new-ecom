@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "RiLIKS - Premium Fashion E-Commerce",
-  description: "Discover the latest fashion trends and premium clothing at RiLIKS",
+  title: "RILIKS - Premium Fashion E-Commerce",
+  description: "Discover the latest fashion trends and premium clothing at RILIKS",
 };
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link
-          href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Rubik+Glitch&display=swap"
           rel="stylesheet"
         />
         <link
