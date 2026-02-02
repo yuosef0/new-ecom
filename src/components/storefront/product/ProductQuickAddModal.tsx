@@ -173,7 +173,7 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
 
                     {/* Price */}
                     <div className="flex items-center gap-2 mb-3">
-                        <span className="text-lime-500 font-bold text-xl">
+                        <span className="text-brand-cream font-bold text-xl">
                             {formatPrice(product.base_price)}
                         </span>
                         {hasDiscount && (
@@ -207,20 +207,20 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                                         <div
                                             key={size}
                                             className={`flex items-center justify-between p-2 rounded-lg border transition-all ${isSelected
-                                                    ? isOutOfStock
-                                                        ? "border-yellow-500 bg-yellow-500/10"
-                                                        : "border-pink-500 bg-pink-500/10"
-                                                    : "border-gray-600 bg-transparent hover:border-gray-400"
+                                                ? isOutOfStock
+                                                    ? "border-yellow-500 bg-yellow-500/10"
+                                                    : "border-pink-500 bg-pink-500/10"
+                                                : "border-gray-600 bg-transparent hover:border-gray-400"
                                                 }`}
                                         >
                                             <div className="flex items-center gap-2">
                                                 <button
                                                     onClick={() => updateSizeQuantity(size, isSelected ? 0 : 1)}
                                                     className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${isSelected
-                                                            ? isOutOfStock
-                                                                ? "border-yellow-500 bg-yellow-500"
-                                                                : "border-pink-500 bg-pink-500"
-                                                            : "border-gray-500"
+                                                        ? isOutOfStock
+                                                            ? "border-yellow-500 bg-yellow-500"
+                                                            : "border-pink-500 bg-pink-500"
+                                                        : "border-gray-500"
                                                         }`}
                                                 >
                                                     {isSelected && (
@@ -228,10 +228,10 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                                                     )}
                                                 </button>
                                                 <span className={`font-bold text-xs ${isSelected
-                                                        ? isOutOfStock
-                                                            ? "text-yellow-500"
-                                                            : "text-pink-500"
-                                                        : "text-gray-300"
+                                                    ? isOutOfStock
+                                                        ? "text-yellow-500"
+                                                        : "text-pink-500"
+                                                    : "text-gray-300"
                                                     }`}>
                                                     {size}
                                                 </span>
@@ -305,7 +305,7 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                             disabled={requiresSize && !hasSelection}
                             className={`w-full font-bold py-2 px-3 rounded transition-all uppercase text-xs transform active:scale-95 ${requiresSize && !hasSelection
                                 ? "bg-gray-600 text-gray-400 cursor-not-allowed opacity-50 border border-gray-500"
-                                : "bg-lime-500 hover:bg-lime-600 text-[#1a2b2e] shadow-lg hover:shadow-lime-500/30"
+                                : "bg-brand-cream hover:bg-white text-brand-charcoal shadow-lg hover:shadow-white/20"
                                 }`}
                         >
                             BUY IT NOW
