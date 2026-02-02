@@ -61,12 +61,12 @@ const navigation = [
     items: [
       {
         name: "About Us",
-        href: "/admin/pages/about",
+        href: "/admin/about",
         icon: "info",
       },
       {
         name: "Contact Us",
-        href: "/admin/pages/contact",
+        href: "/admin/contact",
         icon: "contact_mail",
       },
       {
@@ -76,17 +76,17 @@ const navigation = [
       },
       {
         name: "Privacy Policy",
-        href: "/admin/pages/privacy",
+        href: "/admin/privacy",
         icon: "privacy_tip",
       },
       {
         name: "Shipping & Delivery",
-        href: "/admin/pages/shipping",
+        href: "/admin/shipping",
         icon: "local_shipping",
       },
       {
         name: "Return & Exchange",
-        href: "/admin/pages/returns",
+        href: "/admin/returns",
         icon: "autorenew",
       },
       {
