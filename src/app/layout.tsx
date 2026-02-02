@@ -15,7 +15,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link
-          href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Rubik+Glitch&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Wallpoet&display=swap"
           rel="stylesheet"
         />
         <link
