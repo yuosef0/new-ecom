@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useCartStore } from "@/stores/cart";
 import { formatPrice } from "@/lib/utils";
 import { ProductGrid } from "./ProductGrid";
+import { trackViewContent, trackAddToCart } from "@/components/analytics/FacebookPixel";
 import type { ProductWithImages, ProductDetailWithVariants } from "@/lib/queries/products";
 
 interface ProductDetailProps {
@@ -17,6 +18,16 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
   const [activeTab, setActiveTab] = useState("description");
 
   const { addItem, openCart } = useCartStore();
+
+  // Track ViewContent event when product is viewed
+  useEffect(() => {
+    trackViewContent(
+      product.id,
+      product.name,
+      product.base_price,
+      "EGP"
+    );
+  }, [product.id, product.name, product.base_price]);
 
   const discountPercentage = product.compare_at_price
     ? Math.round(
@@ -87,6 +98,15 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
       addItem(product.id, null, 1);
     }
 
+    // Track AddToCart event
+    trackAddToCart(
+      product.id,
+      product.name,
+      product.base_price,
+      getTotalItems() || 1,
+      "EGP"
+    );
+
     openCart();
   };
 
@@ -108,6 +128,15 @@ export function ProductDetail({ product, recommendedProducts }: ProductDetailPro
     } else {
       addItem(product.id, null, 1);
     }
+
+    // Track AddToCart event
+    trackAddToCart(
+      product.id,
+      product.name,
+      product.base_price,
+      getTotalItems() || 1,
+      "EGP"
+    );
 
     window.location.href = "/checkout";
   };

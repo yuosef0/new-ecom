@@ -6,6 +6,7 @@ import { useCartStore } from "@/stores/cart";
 import { CheckoutForm } from "@/components/storefront/checkout/CheckoutForm";
 import { Icon } from "@/components/storefront/ui/Icon";
 import { formatPrice } from "@/lib/utils";
+import { trackInitiateCheckout } from "@/components/analytics/FacebookPixel";
 import type { ShippingFormData } from "@/lib/validations/checkout";
 import { createClient } from "@/lib/supabase/client";
 
@@ -60,6 +61,20 @@ export default function CheckoutPage() {
       router.push("/cart");
     }
   }, [items.length, isProcessing, router]);
+
+  // Track InitiateCheckout event when page loads
+  useEffect(() => {
+    if (items.length > 0 && !isLoading) {
+      const total = enrichedItems.reduce((sum, item) => {
+        const price = item.product?.base_price + (item.variant?.price_adjustment || 0);
+        return sum + price * item.quantity;
+      }, 0);
+
+      if (total > 0) {
+        trackInitiateCheckout(total, "EGP");
+      }
+    }
+  }, [enrichedItems, isLoading, items.length]);
 
   // Fetch product details
   useEffect(() => {

@@ -3,6 +3,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { formatPrice } from "@/lib/utils";
 import { Icon } from "@/components/storefront/ui/Icon";
+import { OrderTracking } from "@/components/analytics/OrderTracking";
 import Image from "next/image";
 
 // Force dynamic rendering
@@ -74,6 +75,7 @@ export default async function OrderDetailsPage({
 
     return (
         <div className="min-h-screen bg-brand-dark py-8 px-4">
+            <OrderTracking orderId={order.id} total={order.total} />
             <div className="max-w-4xl mx-auto">
                 {/* Back Button */}
                 <Link
@@ -104,24 +106,24 @@ export default async function OrderDetailsPage({
                         <div className="mt-4 md:mt-0 flex gap-3">
                             <span
                                 className={`px-4 py-2 text-sm font-semibold rounded-lg ${order.status === "delivered"
-                                        ? "bg-green-500/20 text-green-400"
-                                        : order.status === "confirmed"
-                                            ? "bg-blue-500/20 text-blue-400"
-                                            : order.status === "pending"
-                                                ? "bg-yellow-500/20 text-yellow-400"
-                                                : order.status === "cancelled"
-                                                    ? "bg-red-500/20 text-red-400"
-                                                    : "bg-gray-500/20 text-gray-400"
+                                    ? "bg-green-500/20 text-green-400"
+                                    : order.status === "confirmed"
+                                        ? "bg-blue-500/20 text-blue-400"
+                                        : order.status === "pending"
+                                            ? "bg-yellow-500/20 text-yellow-400"
+                                            : order.status === "cancelled"
+                                                ? "bg-red-500/20 text-red-400"
+                                                : "bg-gray-500/20 text-gray-400"
                                     }`}
                             >
                                 {order.status.toUpperCase()}
                             </span>
                             <span
                                 className={`px-4 py-2 text-sm font-semibold rounded-lg ${order.payment_status === "paid"
-                                        ? "bg-green-500/20 text-green-400"
-                                        : order.payment_status === "failed"
-                                            ? "bg-red-500/20 text-red-400"
-                                            : "bg-gray-500/20 text-gray-400"
+                                    ? "bg-green-500/20 text-green-400"
+                                    : order.payment_status === "failed"
+                                        ? "bg-red-500/20 text-red-400"
+                                        : "bg-gray-500/20 text-gray-400"
                                     }`}
                             >
                                 {order.payment_status.toUpperCase()}

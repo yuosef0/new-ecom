@@ -120,6 +120,11 @@ const navigation = [
         icon: "share",
       },
       {
+        name: "Integrations",
+        href: "/admin/integrations",
+        icon: "integration_instructions",
+      },
+      {
         name: "General Settings",
         href: "/admin/settings",
         icon: "settings",

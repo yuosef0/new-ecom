@@ -7,6 +7,7 @@ import { SearchOverlay } from "@/components/storefront/search/SearchOverlay";
 import { TopBarMessages } from "@/components/storefront/TopBarMessages";
 import { ScrollToTopButton } from "@/components/storefront/ui/ScrollToTopButton";
 import { PageTransition } from "@/components/storefront/PageTransition";
+import { FacebookPixel } from "@/components/analytics/FacebookPixel";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function StorefrontLayout({
@@ -21,6 +22,18 @@ export default async function StorefrontLayout({
     .select("*")
     .eq("is_active", true)
     .order("display_order", { ascending: true });
+
+  // Fetch Facebook Pixel settings
+  const { data: pixelData } = await supabase
+    .from("site_settings")
+    .select("value")
+    .eq("key", "facebook_pixel")
+    .single();
+
+  const pixelSettings = (pixelData?.value as { pixel_id: string; is_active: boolean }) || {
+    pixel_id: "",
+    is_active: false,
+  };
 
   return (
     <div className="min-h-screen bg-brand-burgundy">
@@ -39,6 +52,7 @@ export default async function StorefrontLayout({
         <SearchOverlay />
         <ScrollToTopButton />
         <PageTransition />
+        <FacebookPixel pixelId={pixelSettings.pixel_id} isActive={pixelSettings.is_active} />
       </div>
     </div>
   );
