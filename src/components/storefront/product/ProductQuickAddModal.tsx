@@ -141,7 +141,7 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
 
             {/* Modal */}
             <div
-                className={`relative bg-[#1a2b2e] rounded-lg shadow-2xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto transform transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isAnimating ? "scale-100 translate-y-0 opacity-100" : "scale-90 translate-y-8 opacity-0"}`}
+                className={`relative bg-brand-burgundy rounded-lg shadow-2xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto transform transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isAnimating ? "scale-100 translate-y-0 opacity-100" : "scale-90 translate-y-8 opacity-0"}`}
             >
                 {/* Close Button */}
                 <button
@@ -158,7 +158,7 @@ export function ProductQuickAddModal({ product, isOpen, onClose }: ProductQuickA
                         className="w-full h-32 object-cover rounded-t-lg"
                     />
                     {hasDiscount && (
-                        <span className="absolute top-3 right-3 bg-[#1a2b2e] text-white text-xs font-bold px-3 py-1 rounded">
+                        <span className="absolute top-3 right-3 bg-brand-burgundy text-white text-xs font-bold px-3 py-1 rounded">
                             -{discountPercent}% OFF
                         </span>
                     )}
