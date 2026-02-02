@@ -60,6 +60,16 @@ const navigation = [
     section: "Content",
     items: [
       {
+        name: "Pages",
+        href: "/admin/pages",
+        icon: "description",
+      },
+      {
+        name: "FAQs",
+        href: "/admin/faqs",
+        icon: "quiz",
+      },
+      {
         name: "Hero Image",
         href: "/admin/hero-image",
         icon: "wallpaper",

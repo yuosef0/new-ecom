@@ -1,115 +1,86 @@
-"use client";
-
-import { Icon } from "@/components/storefront/ui/Icon";
+import { getPage, getFaqItems } from "@/app/actions/pages";
 import Link from "next/link";
-import { useState } from "react";
+import { Icon } from "@/components/storefront/ui/Icon";
+import { ClientAccordion } from "@/components/storefront/faqs/ClientAccordion";
 
-const faqs = [
-    {
-        category: "Orders & Shipping",
-        items: [
-            {
-                question: "How do I track my order?",
-                answer: "Once your order is shipped, you will receive an email and SMS with a tracking number. You can also track it directly from the 'My Orders' section in your account."
-            },
-            {
-                question: "How long does delivery take?",
-                answer: "Standard delivery within Cairo takes 2-3 business days. For other governorates, it usually takes 3-5 business days."
-            },
-            {
-                question: "Do you ship internationally?",
-                answer: "Currently, we only ship within Egypt. We plan to expand internationally soon."
-            }
-        ]
-    },
-    {
-        category: "Returns & Refunds",
-        items: [
-            {
-                question: "What is your return policy?",
-                answer: "We offer a 14-day return policy for unworn items in their original condition with tags attached. Sale items are final sale."
-            },
-            {
-                question: "How do I request a return?",
-                answer: "Go to 'My Orders', select the order, and click 'Request Return'. Our courier will pick up the item within 48 hours."
-            },
-            {
-                question: "When will I get my refund?",
-                answer: "Refunds are processed within 5-7 business days after we receive and inspect the returned item."
-            }
-        ]
-    },
-    {
-        category: "Products & Sizing",
-        items: [
-            {
-                question: "How do I know my size?",
-                answer: "Check our Size Guide linked on every product page. If you're unsure, feel free to contact our support team for advice."
-            },
-            {
-                question: "Are your products authentic?",
-                answer: "Yes, all our products are 100% authentic and sourced directly from manufacturers or authorized distributors."
-            }
-        ]
-    }
-];
+type FaqItem = {
+    id: string;
+    question: string;
+    answer: string;
+    category: string;
+};
 
-export default function FAQPage() {
-    const [openIndex, setOpenIndex] = useState<string | null>(null);
-
-    const toggleAccordion = (id: string) => {
-        setOpenIndex(openIndex === id ? null : id);
+export async function generateMetadata() {
+    const page = await getPage('faqs');
+    return {
+        title: `${page?.title || 'Frequently Asked Questions'} | RiLIKS`,
+        description: "Quick answers to common questions about our products and services.",
     };
+}
+
+export default async function FAQPage() {
+    const page = await getPage('faqs');
+    const faqItems = await getFaqItems();
+
+    // Group items by category
+    const groupedFaqs: { category: string; items: FaqItem[] }[] = [];
+
+    // Define preferred order of categories
+    const categoryOrder = ["Orders & Shipping", "Returns & Refunds", "Products & Sizing", "General"];
+
+    if (faqItems) {
+        // Grouping logic
+        faqItems.forEach(item => {
+            const existingGroup = groupedFaqs.find(g => g.category === item.category);
+            if (existingGroup) {
+                existingGroup.items.push(item);
+            } else {
+                groupedFaqs.push({ category: item.category, items: [item] });
+            }
+        });
+
+        // Sort categories
+        groupedFaqs.sort((a, b) => {
+            const indexA = categoryOrder.indexOf(a.category);
+            const indexB = categoryOrder.indexOf(b.category);
+            // If both are in the known list, sort by index
+            if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+            // If only A is known, it comes first
+            if (indexA !== -1) return -1;
+            // If only B is known, it comes first
+            if (indexB !== -1) return 1;
+            // Otherwise sort alphabetically
+            return a.category.localeCompare(b.category);
+        });
+    }
 
     return (
         <div className="min-h-screen bg-brand-dark py-12 px-4 sm:px-6">
             <div className="max-w-3xl mx-auto space-y-12">
                 {/* Header */}
                 <div className="text-center space-y-4">
-                    <h1 className="text-4xl font-bold text-brand-cream">Frequently Asked Questions</h1>
-                    <p className="text-xl text-brand-cream/70 max-w-2xl mx-auto">
-                        Quick answers to common questions about our products and services.
-                    </p>
+                    <h1 className="text-4xl font-bold text-brand-cream">{page?.title || 'Frequently Asked Questions'}</h1>
+                    <div className="text-xl text-brand-cream/70 max-w-2xl mx-auto"
+                        dangerouslySetInnerHTML={{ __html: page?.content || '' }}
+                    />
                 </div>
 
                 {/* FAQs */}
                 <div className="space-y-8">
-                    {faqs.map((section, sIndex) => (
+                    {groupedFaqs.map((section, sIndex) => (
                         <div key={section.category} className="space-y-4">
                             <h2 className="text-xl font-bold text-brand-primary px-2 border-l-4 border-brand-primary">
                                 {section.category}
                             </h2>
                             <div className="space-y-3">
-                                {section.items.map((item, iIndex) => {
-                                    const id = `${sIndex}-${iIndex}`;
-                                    const isOpen = openIndex === id;
-
-                                    return (
-                                        <div
-                                            key={iIndex}
-                                            className="bg-white/5 border border-white/10 rounded-xl overflow-hidden transition-colors hover:bg-white/10"
-                                        >
-                                            <button
-                                                onClick={() => toggleAccordion(id)}
-                                                className="w-full flex items-center justify-between p-5 text-left focus:outline-none"
-                                            >
-                                                <span className="font-semibold text-brand-cream text-lg">{item.question}</span>
-                                                <Icon
-                                                    name="expand_more"
-                                                    className={`text-2xl text-brand-cream/60 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
-                                                />
-                                            </button>
-                                            <div
-                                                className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-48' : 'max-h-0'
-                                                    }`}
-                                            >
-                                                <div className="p-5 pt-0 text-brand-cream/70 leading-relaxed border-t border-white/5 mx-5 mt-2">
-                                                    {item.answer}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                                {section.items.map((item, iIndex) => (
+                                    <ClientAccordion
+                                        key={item.id}
+                                        id={`${sIndex}-${iIndex}`}
+                                        question={item.question}
+                                        answer={item.answer}
+                                    />
+                                ))}
                             </div>
                         </div>
                     ))}
@@ -140,3 +111,4 @@ export default function FAQPage() {
         </div>
     );
 }
+

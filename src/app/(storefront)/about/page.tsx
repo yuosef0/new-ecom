@@ -1,41 +1,35 @@
-import { Icon } from "@/components/storefront/ui/Icon";
+import { getPage } from "@/app/actions/pages";
 import Link from "next/link";
-import Image from "next/image";
+import { Icon } from "@/components/storefront/ui/Icon";
+import { notFound } from "next/navigation";
 
-export const metadata = {
-    title: "About Us | RiLIKS",
-    description: "Learn about RiLIKS story, mission, and commitment to premium fashion.",
-};
+export async function generateMetadata() {
+    const page = await getPage('about');
+    return {
+        title: `${page?.title || 'About Us'} | RiLIKS`,
+        description: "Learn about RiLIKS story, mission, and commitment to premium fashion.",
+    };
+}
 
-export default function AboutPage() {
+export default async function AboutPage() {
+    const page = await getPage('about');
+
+    if (!page) notFound();
+
     return (
         <div className="min-h-screen bg-brand-dark py-12 px-4 sm:px-6">
             <div className="max-w-4xl mx-auto space-y-12">
                 {/* Header */}
                 <div className="text-center space-y-4">
-                    <h1 className="text-4xl font-bold text-brand-cream">About RiLIKS</h1>
-                    <p className="text-xl text-brand-cream/70 max-w-2xl mx-auto">
-                        Redefining premium fashion with curated collections that blend timeless elegance with modern trends.
-                    </p>
+                    <h1 className="text-4xl font-bold text-brand-cream">{page.title}</h1>
                 </div>
 
-                {/* Brand Story */}
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-8 md:p-12 space-y-6">
-                    <div className="flex items-center gap-3 text-brand-primary mb-2">
-                        <Icon name="history_edu" className="text-2xl" />
-                        <h2 className="text-2xl font-bold">Our Story</h2>
-                    </div>
-                    <div className="prose prose-invert max-w-none text-brand-cream/80 space-y-4 leading-relaxed">
-                        <p>
-                            Founded in 2024, RiLIKS emerged from a desire to bring high-quality, accessible fashion to the Egyptian market. We noticed a gap between premium international brands and local offerings – and set out to bridge it.
-                        </p>
-                        <p>
-                            What started as a small curated collection has grown into a comprehensive fashion destination. We believe that style shouldn't come at the cost of comfort or quality. Every piece in our collection is hand-picked and tested to meet our rigorous standards.
-                        </p>
-                    </div>
-                </div>
+                {/* Content */}
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-8 md:p-12 prose prose-invert max-w-none text-brand-cream/80 space-y-4 leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: page.content || '' }}
+                />
 
-                {/* Values Grid */}
+                {/* Values Grid - Kept hardcoded as it's layout specific */}
                 <div className="grid md:grid-cols-3 gap-6">
                     <div className="bg-white/5 border border-white/10 rounded-xl p-6 text-center space-y-4">
                         <div className="w-12 h-12 bg-brand-primary/20 text-brand-primary rounded-full flex items-center justify-center mx-auto">
@@ -77,3 +71,4 @@ export default function AboutPage() {
         </div>
     );
 }
+
