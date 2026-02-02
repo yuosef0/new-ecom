@@ -108,13 +108,24 @@ export async function createFaqItem(data: { question: string; answer: string; ca
 export async function updateFaqItem(id: string, data: { question: string; answer: string; category: string; sort_order: number }) {
     const supabase = await createClient();
     console.log(`Updating FAQ item ${id}:`, data);
-    const { error, count } = await supabase.from("faq_items").update(data).eq("id", id).select('count');
+
+    const { data: returned, error } = await supabase
+        .from("faq_items")
+        .update(data)
+        .eq("id", id)
+        .select();
 
     if (error) {
         console.error(`Error updating FAQ ${id}:`, error);
         throw new Error(error.message);
     }
-    console.log(`FAQ updated successfully. Rows affected:`, count); // Check if count is 0 (means ID not found or RLS blocked it)
+
+    if (!returned || returned.length === 0) {
+        console.error(`Update success but NO rows modified for ID ${id}. RLS might be blocking it or ID is wrong.`);
+        throw new Error("Update failed: No rows modified. Please check database permissions.");
+    }
+
+    console.log(`FAQ updated successfully:`, returned);
 
     revalidatePath("/admin/faqs");
     revalidatePath("/faqs");
