@@ -1,4 +1,4 @@
-"use client";
+
 
 import { Icon } from "@/components/storefront/ui/Icon";
 import Link from "next/link";
