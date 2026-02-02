@@ -41,8 +41,7 @@ export function Header() {
       {/* Logo - Centered on mobile, left-aligned on desktop */}
       <Link
         href="/"
-        className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 md:ml-4 text-3xl sm:text-4xl md:text-5xl text-brand-cream hover:text-white transition-colors tracking-wider"
-        style={{ fontFamily: '"Wallpoet", cursive' }}
+        className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 md:ml-4 text-3xl sm:text-4xl md:text-5xl font-bold text-brand-cream hover:text-white transition-colors tracking-wider"
       >
         RILIKS
       </Link>
