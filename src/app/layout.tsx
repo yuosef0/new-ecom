@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "DXLR - Premium Fashion E-Commerce",
-  description: "Discover the latest fashion trends and premium clothing at DXLR",
+  title: "RiLIKS - Premium Fashion E-Commerce",
+  description: "Discover the latest fashion trends and premium clothing at RiLIKS",
 };
 
 export default function RootLayout({

@@ -44,8 +44,8 @@ export default function ContactPage() {
                                 <p className="text-brand-cream/60 text-sm mb-1">
                                     We'll respond within 24 hours
                                 </p>
-                                <a href="mailto:support@dxlr.com" className="text-brand-primary hover:underline">
-                                    support@dxlr.com
+                                <a href="mailto:support@riliks.com" className="text-brand-primary hover:underline">
+                                    support@riliks.com
                                 </a>
                             </div>
                         </div>

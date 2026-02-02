@@ -106,7 +106,7 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
       {/* Logo */}
       <div className="h-16 flex items-center px-6 border-b border-gray-200">
         <Link href="/admin" className="flex items-center" onClick={onLinkClick}>
-          <span className="text-2xl font-bold text-brand-primary">DXLR</span>
+          <span className="text-2xl font-bold text-brand-primary">RiLIKS</span>
           <span className="ml-2 text-xs text-gray-500">Admin</span>
         </Link>
       </div>

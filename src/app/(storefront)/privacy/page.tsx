@@ -2,7 +2,7 @@ import { Icon } from "@/components/storefront/ui/Icon";
 import Link from "next/link";
 
 export const metadata = {
-    title: "Privacy Policy | DXLR",
+    title: "Privacy Policy | RiLIKS",
     description: "Read our privacy policy and how we handle your data.",
 };
 
@@ -25,7 +25,7 @@ export default function PrivacyPage() {
                     <section className="mb-8">
                         <h2 className="text-2xl font-bold text-brand-primary mb-4">1. Introduction</h2>
                         <p>
-                            DXLR ("we", "our", or "us") respects your privacy and is committed to protecting your personal data. This privacy policy will inform you as to how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you.
+                            RiLIKS ("we", "our", or "us") respects your privacy and is committed to protecting your personal data. This privacy policy will inform you as to how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you.
                         </p>
                     </section>
 
@@ -60,7 +60,7 @@ export default function PrivacyPage() {
                     <section>
                         <h2 className="text-2xl font-bold text-brand-primary mb-4">5. Contact Us</h2>
                         <p>
-                            If you have any questions about this privacy policy or our privacy practices, please contact us at: <a href="mailto:privacy@dxlr.com" className="text-brand-primary hover:underline">privacy@dxlr.com</a>
+                            If you have any questions about this privacy policy or our privacy practices, please contact us at: <a href="mailto:privacy@riliks.com" className="text-brand-primary hover:underline">privacy@riliks.com</a>
                         </p>
                     </section>
                 </div>

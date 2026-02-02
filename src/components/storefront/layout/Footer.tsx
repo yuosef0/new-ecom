@@ -20,7 +20,7 @@ export async function Footer() {
       {/* About DXLR Section */}
       <div id="about">
         <h3 className="text-lg sm:text-xl font-normal mb-3 uppercase tracking-wide">
-          About DXLR
+          About RiLIKS
         </h3>
         <p className="text-xs sm:text-sm leading-relaxed text-brand-cream/80 mb-3">
           We are a clothing brand designed for tech enthusiasts and gamers who value simplicity.

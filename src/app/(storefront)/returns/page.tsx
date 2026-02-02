@@ -2,7 +2,7 @@ import { Icon } from "@/components/storefront/ui/Icon";
 import Link from "next/link";
 
 export const metadata = {
-    title: "Return & Exchange | DXLR",
+    title: "Return & Exchange | RiLIKS",
     description: "Learn about our return and exchange policy.",
 };
 

@@ -43,7 +43,7 @@ export function Header() {
         href="/"
         className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 md:ml-4 text-2xl sm:text-3xl md:text-4xl font-bold text-brand-cream hover:text-white transition-colors"
       >
-        DXLR
+        RiLIKS
       </Link>
 
       {/* Desktop Navigation */}

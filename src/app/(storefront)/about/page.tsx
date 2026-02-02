@@ -3,8 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 export const metadata = {
-    title: "About Us | DXLR",
-    description: "Learn about DXLR story, mission, and commitment to premium fashion.",
+    title: "About Us | RiLIKS",
+    description: "Learn about RiLIKS story, mission, and commitment to premium fashion.",
 };
 
 export default function AboutPage() {
@@ -13,7 +13,7 @@ export default function AboutPage() {
             <div className="max-w-4xl mx-auto space-y-12">
                 {/* Header */}
                 <div className="text-center space-y-4">
-                    <h1 className="text-4xl font-bold text-brand-cream">About DXLR</h1>
+                    <h1 className="text-4xl font-bold text-brand-cream">About RiLIKS</h1>
                     <p className="text-xl text-brand-cream/70 max-w-2xl mx-auto">
                         Redefining premium fashion with curated collections that blend timeless elegance with modern trends.
                     </p>
@@ -27,7 +27,7 @@ export default function AboutPage() {
                     </div>
                     <div className="prose prose-invert max-w-none text-brand-cream/80 space-y-4 leading-relaxed">
                         <p>
-                            Founded in 2024, DXLR emerged from a desire to bring high-quality, accessible fashion to the Egyptian market. We noticed a gap between premium international brands and local offerings – and set out to bridge it.
+                            Founded in 2024, RiLIKS emerged from a desire to bring high-quality, accessible fashion to the Egyptian market. We noticed a gap between premium international brands and local offerings – and set out to bridge it.
                         </p>
                         <p>
                             What started as a small curated collection has grown into a comprehensive fashion destination. We believe that style shouldn't come at the cost of comfort or quality. Every piece in our collection is hand-picked and tested to meet our rigorous standards.

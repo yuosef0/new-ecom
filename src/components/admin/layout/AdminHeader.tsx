@@ -148,7 +148,7 @@ export function AdminHeader({ user }: AdminHeaderProps) {
 
         {/* Mobile Logo */}
         <div className="lg:hidden flex items-center">
-          <span className="text-xl font-bold text-brand-primary">DXLR</span>
+          <span className="text-xl font-bold text-brand-primary">RiLIKS</span>
           <span className="ml-1 text-xs text-gray-500">Admin</span>
         </div>
 

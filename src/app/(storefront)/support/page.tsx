@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Icon } from "@/components/storefront/ui/Icon";
 
 export const metadata = {
-    title: "Help & Support | DXLR",
+    title: "Help & Support | RiLIKS",
     description: "Get help with your orders, returns, and account inquiries.",
 };
 
