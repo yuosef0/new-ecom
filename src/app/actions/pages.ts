@@ -93,16 +93,29 @@ export async function getFaqItems() {
 
 export async function createFaqItem(data: { question: string; answer: string; category: string; sort_order: number }) {
     const supabase = await createClient();
+    console.log("Creating FAQ item:", data);
     const { error } = await supabase.from("faq_items").insert(data);
-    if (error) throw new Error(error.message);
+
+    if (error) {
+        console.error("Error creating FAQ:", error);
+        throw new Error(error.message);
+    }
+    console.log("FAQ created successfully");
     revalidatePath("/admin/faqs");
     revalidatePath("/faqs");
 }
 
 export async function updateFaqItem(id: string, data: { question: string; answer: string; category: string; sort_order: number }) {
     const supabase = await createClient();
-    const { error } = await supabase.from("faq_items").update(data).eq("id", id);
-    if (error) throw new Error(error.message);
+    console.log(`Updating FAQ item ${id}:`, data);
+    const { error, count } = await supabase.from("faq_items").update(data).eq("id", id).select('count');
+
+    if (error) {
+        console.error(`Error updating FAQ ${id}:`, error);
+        throw new Error(error.message);
+    }
+    console.log(`FAQ updated successfully. Rows affected:`, count); // Check if count is 0 (means ID not found or RLS blocked it)
+
     revalidatePath("/admin/faqs");
     revalidatePath("/faqs");
 }
