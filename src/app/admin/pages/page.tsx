@@ -14,16 +14,19 @@ export default async function AdminPagesList() {
                 </p>
             </div>
 
-            {/* Pages Table */}
+            {/* Pages Grid */}
             <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                <div className="px-6 py-4 border-b border-gray-200">
-                    <h2 className="text-lg font-semibold text-gray-900">All Pages ({pages.length})</h2>
+                <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
+                    <div className="flex items-center gap-2">
+                        <span className="material-icons-outlined text-brand-primary">description</span>
+                        <h2 className="text-lg font-semibold text-gray-900">All Pages ({pages.length})</h2>
+                    </div>
                 </div>
 
                 {pages.length === 0 ? (
                     <div className="px-6 py-12 text-center text-gray-500">
                         <span className="material-icons-outlined text-5xl text-gray-300 mb-4">description</span>
-                        <p>No pages found</p>
+                        <p className="text-sm">No pages found</p>
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
@@ -31,13 +34,22 @@ export default async function AdminPagesList() {
                             <thead className="bg-gray-50 border-b border-gray-200">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                        Page Title
+                                        <div className="flex items-center gap-2">
+                                            <span className="material-icons-outlined text-sm">title</span>
+                                            Page Title
+                                        </div>
                                     </th>
                                     <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                        Slug
+                                        <div className="flex items-center gap-2">
+                                            <span className="material-icons-outlined text-sm">link</span>
+                                            Slug
+                                        </div>
                                     </th>
                                     <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                        Last Updated
+                                        <div className="flex items-center gap-2">
+                                            <span className="material-icons-outlined text-sm">schedule</span>
+                                            Last Updated
+                                        </div>
                                     </th>
                                     <th className="px-6 py-3 text-right text-xs font-semibold text-gray-700 uppercase tracking-wider">
                                         Actions
@@ -46,23 +58,37 @@ export default async function AdminPagesList() {
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-100">
                                 {pages.map((page) => (
-                                    <tr key={page.id} className="hover:bg-gray-50 transition-colors">
+                                    <tr key={page.id} className="hover:bg-gray-50 transition-colors group">
                                         <td className="px-6 py-4">
-                                            <div className="font-medium text-gray-900">{page.title}</div>
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-10 h-10 rounded-lg bg-brand-primary/10 flex items-center justify-center">
+                                                    <span className="material-icons-outlined text-brand-primary text-xl">description</span>
+                                                </div>
+                                                <div className="font-medium text-gray-900">{page.title}</div>
+                                            </div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <code className="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">/{page.slug}</code>
+                                            <code className="text-sm text-gray-600 bg-gray-100 px-3 py-1.5 rounded-md font-mono">
+                                                /{page.slug}
+                                            </code>
                                         </td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">
-                                            {new Date(page.updated_at).toLocaleDateString()}
+                                        <td className="px-6 py-4">
+                                            <div className="flex items-center gap-2 text-sm text-gray-500">
+                                                <span className="material-icons-outlined text-sm">calendar_today</span>
+                                                {new Date(page.updated_at).toLocaleDateString('en-US', {
+                                                    year: 'numeric',
+                                                    month: 'short',
+                                                    day: 'numeric'
+                                                })}
+                                            </div>
                                         </td>
                                         <td className="px-6 py-4 text-right">
                                             <Link
                                                 href={`/admin/pages/${page.slug}`}
-                                                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-brand-primary hover:bg-brand-dark rounded-lg transition-colors"
+                                                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-brand-primary hover:bg-brand-dark rounded-lg transition-all shadow-sm hover:shadow-md"
                                             >
-                                                <span className="material-icons-outlined text-sm">edit</span>
-                                                Edit
+                                                <span className="material-icons-outlined text-lg">edit</span>
+                                                Edit Page
                                             </Link>
                                         </td>
                                     </tr>

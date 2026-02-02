@@ -67,74 +67,101 @@ export default function EditPage({ params }: { params: { slug: string } }) {
             <div className="flex items-center gap-4">
                 <Link
                     href="/admin/pages"
-                    className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="p-2.5 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                    title="Back to Pages"
                 >
                     <span className="material-icons-outlined text-xl">arrow_back</span>
                 </Link>
-                <div>
-                    <h1 className="text-3xl font-bold text-gray-900">Edit Page: {params.slug}</h1>
-                    <p className="mt-2 text-gray-600">Update the content for this page</p>
+                <div className="flex-1">
+                    <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-lg bg-brand-primary/10 flex items-center justify-center">
+                            <span className="material-icons-outlined text-brand-primary text-2xl">description</span>
+                        </div>
+                        <div>
+                            <h1 className="text-3xl font-bold text-gray-900">Edit Page</h1>
+                            <p className="mt-1 text-gray-600">Update content for <code className="text-sm bg-gray-100 px-2 py-0.5 rounded">{params.slug}</code></p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             {/* Alerts */}
             {error && (
-                <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-4">
-                    {error}
+                <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-4 flex items-start gap-3">
+                    <span className="material-icons-outlined text-red-600">error</span>
+                    <span>{error}</span>
                 </div>
             )}
 
             {success && (
-                <div className="bg-green-50 border border-green-200 text-green-800 rounded-lg p-4">
-                    {success}
+                <div className="bg-green-50 border border-green-200 text-green-800 rounded-lg p-4 flex items-start gap-3">
+                    <span className="material-icons-outlined text-green-600">check_circle</span>
+                    <span>{success}</span>
                 </div>
             )}
 
             {/* Form */}
-            <form onSubmit={handleSave} className="bg-white rounded-lg border border-gray-200 p-6 space-y-6">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Page Title</label>
-                    <input
-                        type="text"
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all"
-                        value={page.title}
-                        onChange={(e) => setPage({ ...page, title: e.target.value })}
-                    />
+            <form onSubmit={handleSave} className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
+                    <div className="flex items-center gap-2">
+                        <span className="material-icons-outlined text-brand-primary">edit_note</span>
+                        <h2 className="text-lg font-semibold text-gray-900">Page Content</h2>
+                    </div>
                 </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Content (HTML Support)
-                    </label>
-                    <p className="text-xs text-gray-500 mb-2">
-                        You can use basic HTML tags like &lt;p&gt;, &lt;h2&gt;, &lt;ul&gt;, &lt;strong&gt;, etc.
-                    </p>
-                    <textarea
-                        required
-                        rows={15}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all font-mono text-sm"
-                        value={page.content}
-                        onChange={(e) => setPage({ ...page, content: e.target.value })}
-                    />
+                <div className="p-6 space-y-6">
+                    <div>
+                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                            <span className="material-icons-outlined text-lg">title</span>
+                            Page Title
+                        </label>
+                        <input
+                            type="text"
+                            required
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all"
+                            value={page.title}
+                            onChange={(e) => setPage({ ...page, title: e.target.value })}
+                            placeholder="Enter page title"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                            <span className="material-icons-outlined text-lg">code</span>
+                            Content (HTML Support)
+                        </label>
+                        <p className="text-xs text-gray-500 mb-3 flex items-start gap-2">
+                            <span className="material-icons-outlined text-sm">info</span>
+                            <span>You can use basic HTML tags like &lt;p&gt;, &lt;h2&gt;, &lt;ul&gt;, &lt;strong&gt;, etc.</span>
+                        </p>
+                        <textarea
+                            required
+                            rows={15}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all font-mono text-sm leading-relaxed"
+                            value={page.content}
+                            onChange={(e) => setPage({ ...page, content: e.target.value })}
+                            placeholder="Enter page content with HTML formatting"
+                        />
+                    </div>
                 </div>
 
-                <div className="pt-4 border-t border-gray-100 flex justify-end gap-3">
+                <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
                     <Link
                         href="/admin/pages"
-                        className="px-6 py-2.5 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors"
+                        className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
                     >
+                        <span className="material-icons-outlined text-lg">close</span>
                         Cancel
                     </Link>
                     <button
                         type="submit"
                         disabled={saving}
-                        className="px-6 py-2.5 bg-brand-primary hover:bg-brand-dark text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="px-6 py-2.5 bg-brand-primary hover:bg-brand-dark text-white font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm hover:shadow-md"
                     >
                         {saving ? (
                             <>
-                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                Saving...
+                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                Saving Changes...
                             </>
                         ) : (
                             <>
