@@ -122,7 +122,7 @@ export async function Footer() {
       {/* Quick Links Section */}
       <div id="contact">
         <h3 className="text-xl sm:text-2xl font-normal mb-4">Quick Links</h3>
-        <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-brand-cream">
+        <ul className="space-y-2 sm:space-y-3 text-base sm:text-lg text-brand-cream">
           <li>
             <Link href="/about" className="hover:text-white transition-colors font-extrabold">
               About us
