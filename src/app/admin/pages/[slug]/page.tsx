@@ -54,9 +54,46 @@ export default function EditPage({ params }: { params: { slug: string } }) {
 
     if (!page) {
         return (
-            <div className="p-8 text-center">
-                <span className="material-icons-outlined text-5xl text-gray-300 mb-4">error</span>
-                <p className="text-gray-500">Page not found</p>
+            <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                    <Link
+                        href="/admin"
+                        className="p-2.5 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                        title="Back to Dashboard"
+                    >
+                        <span className="material-icons-outlined text-xl">arrow_back</span>
+                    </Link>
+                    <div>
+                        <h1 className="text-3xl font-bold text-gray-900">Page Not Found</h1>
+                    </div>
+                </div>
+
+                <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
+                    <span className="material-icons-outlined text-6xl text-red-400 mb-4">error_outline</span>
+                    <h2 className="text-xl font-semibold text-gray-900 mb-2">Page "{params.slug}" Not Found</h2>
+                    <p className="text-gray-600 mb-6">
+                        This page doesn't exist in the database. Please make sure the page has been created.
+                    </p>
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6 text-left">
+                        <p className="text-sm text-yellow-800 mb-2">
+                            <strong>Available pages in database:</strong>
+                        </p>
+                        <ul className="text-sm text-yellow-700 list-disc list-inside space-y-1">
+                            <li>about</li>
+                            <li>contact</li>
+                            <li>privacy</li>
+                            <li>shipping</li>
+                            <li>returns</li>
+                        </ul>
+                    </div>
+                    <Link
+                        href="/admin"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-brand-primary hover:bg-brand-dark text-white font-medium rounded-lg transition-colors"
+                    >
+                        <span className="material-icons-outlined">dashboard</span>
+                        Go to Dashboard
+                    </Link>
+                </div>
             </div>
         );
     }
