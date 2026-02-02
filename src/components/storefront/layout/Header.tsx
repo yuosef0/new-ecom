@@ -28,11 +28,11 @@ export function Header() {
   }, [mounted]);
 
   return (
-    <header className="bg-brand-dark px-4 py-3 sm:px-6 sm:py-4 flex justify-between items-center sticky top-0 z-50 shadow-md relative">
+    <header className="bg-brand-cream px-4 py-3 sm:px-6 sm:py-4 flex justify-between items-center sticky top-0 z-50 shadow-md relative">
       {/* Menu Icon */}
       <button
         onClick={toggleMenu}
-        className="text-brand-cream hover:text-white transition-colors p-1 z-10"
+        className="text-brand-charcoal hover:text-brand-primary transition-colors p-1 z-10"
         aria-label="Open menu"
       >
         <span className="material-icons-outlined text-2xl sm:text-[28px]">menu</span>
@@ -41,7 +41,7 @@ export function Header() {
       {/* Logo - Centered on mobile, left-aligned on desktop */}
       <Link
         href="/"
-        className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 md:ml-4 text-3xl sm:text-4xl md:text-5xl text-brand-cream hover:text-white transition-colors tracking-wider"
+        className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 md:ml-4 text-3xl sm:text-4xl md:text-5xl text-brand-charcoal hover:text-brand-primary transition-colors tracking-wider"
         style={{ fontFamily: '"Wallpoet", cursive' }}
       >
         RILIKS
@@ -49,14 +49,14 @@ export function Header() {
 
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center space-x-6 lg:space-x-8 flex-1 justify-center">
-        <Link href="/" className="text-brand-cream hover:text-white font-medium transition-colors">
+        <Link href="/" className="text-brand-charcoal hover:text-brand-primary font-medium transition-colors">
           Home
         </Link>
-        <Link href="/products" className="text-brand-cream hover:text-white font-medium transition-colors">
+        <Link href="/products" className="text-brand-charcoal hover:text-brand-primary font-medium transition-colors">
           Shop
         </Link>
         <div className="relative group">
-          <button className="text-brand-cream hover:text-white font-medium transition-colors flex items-center">
+          <button className="text-brand-charcoal hover:text-brand-primary font-medium transition-colors flex items-center">
             Collections
             <span className="material-icons-outlined text-sm ml-1">expand_more</span>
           </button>
@@ -70,7 +70,7 @@ export function Header() {
             </Link>
           </div>
         </div>
-        <Link href="/about" className="text-brand-cream hover:text-white font-medium transition-colors">
+        <Link href="/about" className="text-brand-charcoal hover:text-brand-primary font-medium transition-colors">
           About
         </Link>
       </nav>
@@ -80,7 +80,7 @@ export function Header() {
         {/* Search */}
         <button
           onClick={toggleSearch}
-          className="text-brand-cream hover:text-white transition-colors p-1"
+          className="text-brand-charcoal hover:text-brand-primary transition-colors p-1"
           aria-label="Search products"
         >
           <span className="material-icons-outlined text-2xl sm:text-[28px]">search</span>
@@ -89,7 +89,7 @@ export function Header() {
         {/* Account */}
         <Link
           href="/account"
-          className="text-brand-cream hover:text-white transition-colors p-1"
+          className="text-brand-charcoal hover:text-brand-primary transition-colors p-1"
           aria-label="My Account"
         >
           <span className="material-icons-outlined text-2xl sm:text-[28px]">person_outline</span>
@@ -98,7 +98,7 @@ export function Header() {
         {/* Cart */}
         <button
           onClick={openCart}
-          className="relative p-1 text-brand-cream hover:text-white transition-colors"
+          className="relative p-1 text-brand-charcoal hover:text-brand-primary transition-colors"
           aria-label="Open cart"
         >
           <span className="material-icons-outlined text-2xl sm:text-[28px]">
