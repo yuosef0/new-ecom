@@ -28,37 +28,37 @@ export function Header() {
   }, [mounted]);
 
   return (
-    <header className="bg-brand-dark px-4 py-5 sm:px-6 sm:py-6 flex justify-between items-center sticky top-0 z-50 shadow-md relative">
+    <header className="bg-brand-dark px-4 py-3 sm:px-6 sm:py-4 flex justify-between items-center sticky top-0 z-50 shadow-md relative">
       {/* Menu Icon */}
       <button
         onClick={toggleMenu}
         className="text-brand-cream hover:text-white transition-colors p-1 z-10"
         aria-label="Open menu"
       >
-        <span className="material-icons-outlined text-3xl sm:text-[32px]">menu</span>
+        <span className="material-icons-outlined text-2xl sm:text-[28px]">menu</span>
       </button>
 
       {/* Logo - Centered on mobile, left-aligned on desktop */}
       <Link
         href="/"
-        className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 md:ml-4 text-4xl sm:text-5xl md:text-6xl text-brand-cream hover:text-white transition-colors tracking-wider"
+        className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 md:ml-4 text-3xl sm:text-4xl md:text-5xl text-brand-cream hover:text-white transition-colors tracking-wider"
         style={{ fontFamily: '"Wallpoet", cursive' }}
       >
         RILIKS
       </Link>
 
       {/* Desktop Navigation */}
-      <nav className="hidden md:flex items-center space-x-8 lg:space-x-10 flex-1 justify-center">
-        <Link href="/" className="text-brand-cream hover:text-white font-medium text-lg transition-colors">
+      <nav className="hidden md:flex items-center space-x-6 lg:space-x-8 flex-1 justify-center">
+        <Link href="/" className="text-brand-cream hover:text-white font-medium transition-colors">
           Home
         </Link>
-        <Link href="/products" className="text-brand-cream hover:text-white font-medium text-lg transition-colors">
+        <Link href="/products" className="text-brand-cream hover:text-white font-medium transition-colors">
           Shop
         </Link>
         <div className="relative group">
-          <button className="text-brand-cream hover:text-white font-medium text-lg transition-colors flex items-center">
+          <button className="text-brand-cream hover:text-white font-medium transition-colors flex items-center">
             Collections
-            <span className="material-icons-outlined text-base ml-1">expand_more</span>
+            <span className="material-icons-outlined text-sm ml-1">expand_more</span>
           </button>
           {/* Simple dropdown for desktop collections */}
           <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 overflow-hidden">
@@ -70,7 +70,7 @@ export function Header() {
             </Link>
           </div>
         </div>
-        <Link href="/about" className="text-brand-cream hover:text-white font-medium text-lg transition-colors">
+        <Link href="/about" className="text-brand-cream hover:text-white font-medium transition-colors">
           About
         </Link>
       </nav>

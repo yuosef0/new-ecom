@@ -13,30 +13,11 @@ export function MarqueeBanner({ settings }: MarqueeBannerProps) {
   }
 
   return (
-    <div className="bg-brand-primary overflow-hidden py-1.5 sm:py-2">
-      <div className="animate-marquee whitespace-nowrap !flex items-center min-w-full" style={{ animationDuration: '15s' }}>
-        {/* First Set */}
-        <div className="flex shrink-0 items-center justify-around">
-          {[...Array(10)].map((_, i) => (
-            <span
-              key={`set1-${i}`}
-              className="text-white font-bold text-sm sm:text-base tracking-wider mx-8"
-            >
-              {settings.text}
-            </span>
-          ))}
-        </div>
-        {/* Second Set (Duplicate) */}
-        <div className="flex shrink-0 items-center justify-around">
-          {[...Array(10)].map((_, i) => (
-            <span
-              key={`set2-${i}`}
-              className="text-white font-bold text-sm sm:text-base tracking-wider mx-8"
-            >
-              {settings.text}
-            </span>
-          ))}
-        </div>
+    <div className="bg-brand-primary overflow-hidden py-3 sm:py-4">
+      <div className="flex items-center justify-center min-w-full px-4">
+        <span className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wider text-center uppercase">
+          {settings.text}
+        </span>
       </div>
     </div>
   );
